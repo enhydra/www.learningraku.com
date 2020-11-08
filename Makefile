@@ -1,0 +1,2 @@
+cook:
+	$(PERL) bin/cook

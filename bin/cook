@@ -1,0 +1,15 @@
+#!perl
+use v5.10;
+use strict;
+use warnings;
+use experimental qw(signatures);
+
+use Mojo::Template;
+
+my @files = glob( "_posts/*.html" );
+
+foreach my $file ( @files ) {
+	say "$file";
+
+
+	}
