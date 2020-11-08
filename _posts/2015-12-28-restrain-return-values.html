@@ -8,11 +8,11 @@ post_name: restrain-return-values
 status: publish
 type: post
 categories: subroutines
-tags: 
+tags:
 -->
 
 
-The utility of Perl 6 (or any language) is something that I can't already do. When people ask me if they should use Perl 6 (or even 
+The utility of Perl 6 (or any language) is something that I can't already do. When people ask me if they should use Perl 6 (or even
 regular Perl), I ask them if they are having trouble getting what they want out of their current tools. <!--more-->
 
 Looking forward to Perl 6, I see many features that I've wished for in other languages, or that other languages have but Perl doesn't. That's always the problem. Perl has most of the stuff I want, but some other language has a feature I want. Moving to that other language usually means I lose the stuff Perl had.
@@ -32,7 +32,7 @@ say is-even( 2 );
 </pre>
 
 I get back what I've been told—and what I've told others—is true or false:
- 
+
 <pre class="brush:plain">
 $ perl6 is_excellent.p6
 0
@@ -94,7 +94,7 @@ sub is-even(Int $number) returns Bool {
 </pre>
 
 
-That's a <a href="http://doc.perl6.org/language/operators#Operator_classification">prefix operator</a>, meaning it comes before the single value it operates on. It turns any sort of thing into either <code>True</code> or <code>False</code>. Now my code runs without an error. 
+That's a <a href="http://doc.perl6.org/language/operators#Operator_classification">prefix operator</a>, meaning it comes before the single value it operates on. It turns any sort of thing into either <code>True</code> or <code>False</code>. Now my code runs without an error.
 
 <pre class="brush:plain">
 $ perl6 is-even.p6
@@ -114,7 +114,7 @@ say is-even( 137 );
 say is-even( 2 );
 </pre>
 
-I don't get an error, but I don't get the right answer either. I correctly get <code>False</code> for the first case, but I incorrectly get back a type for the second case <i>with no error</i>: 
+I don't get an error, but I don't get the right answer either. I correctly get <code>False</code> for the first case, but I incorrectly get back a type for the second case <i>with no error</i>:
 
 <pre class="brush:plain">
 $ perl6 is_excellent.p6
@@ -167,7 +167,7 @@ sub is-even(Int $number --> Bool:D) {
 	}
 </pre>
 
-Lastly, even though I'm writing about return values, I can use the same modifier to fix up my problem with the parameter. I specify that I expect an <code>Int</code>, but that can be definite or indefinite as well: 
+Lastly, even though I'm writing about return values, I can use the same modifier to fix up my problem with the parameter. I specify that I expect an <code>Int</code>, but that can be definite or indefinite as well:
 
 <pre class="brush:plain">
 sub is-even(Int $number --> Bool:D) {
