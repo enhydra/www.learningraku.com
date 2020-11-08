@@ -1,0 +1,39 @@
+<!--
+title: Quick Tip #12: Unicode Helper Apps
+link: http://www.learningraku.com/2016/11/27/quick-tip-12-unicode-helper-apps/
+author: brian
+post_id: 124
+date: 2016-11-27 10:26:02
+post_name: quick-tip-12-unicode-helper-apps
+status: publish
+type: post
+categories: editing kickstarter-tips unicode
+tags: 
+-->
+
+
+Perl 6 uses fancy Unicode characters to do some of its work, but those don't show up on most keyboards. I like the Mac program <a href="https://earthlingsoft.net/UnicodeChecker/">UnicodeChecker</a>. I can search by name, code point, or I can paste a character. I find the one that I want, copy it, and paste it into source. The Windows program <a href="http://www.babelstone.co.uk/Software/BabelMap.html">BabelStine</A> looks similar. Leave me suggestions if you know something for your distro. <!--more-->
+
+<div class="image align">
+<div>
+<img src="/images/unicode_checker.png" height="518" width="500" />
+<p class="caption"> UnicodeChecker </p>
+</div>
+</div>
+
+Or, you can write your own program. Here's one that takes codepoints and prints their characters (assuming that your terminal is already set up for UTF-8):
+
+<pre class="brush:plain">
+$ perl6 -e 'for @*ARGS { say chr(:16($_)) }' 2150 2153
+⅐
+⅓
+</pre>
+
+The <code>:16()</code> interprets its string argument as base 16. You can convert any base between 2 and 36 that way. 
+
+I can have some command-line aliases:
+
+<pre class="brush:plain">
+alias u2char='perl6 -e "for @*ARGS { say chr(:16(\$_)) }"'
+</pre>
+

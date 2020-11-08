@@ -1,0 +1,77 @@
+<!--
+title: Buffers, hexdump, and Perl 6 Power Tools
+link: http://www.learningraku.com/2017/01/09/buffers-hexdump-and-perl-6-power-tools/
+author: brian
+post_id: 288
+date: 2017-01-09 04:25:08
+post_name: buffers-hexdump-and-perl-6-power-tools
+status: publish
+type: post
+categories: files-directories
+tags: 
+-->
+
+
+I was playing the <a href="https://docs.perl6.org/type/Buf">buffers</a> and reading binary data but I ended up implementing a <A href="https://github.com/briandfoy/Perl6PowerTools/blob/master/bin/hexdump">Perl 6 version of hexdump</a>. Looking for a place to put it, I figured <A href="https://github.com/briandfoy/Perl6PowerTools">Perl6PowerTools</a> might as well exist. Now it has a single program, but I figure there are people who will look at the original <A href="http://www.perlpowertools.com/">PerlPowerTools</a> and want to translate some of those to Perl 6.
+
+<div class="image center">
+<div>
+<img src="/images/hexdump.png" style="border:0" width="500" height="384" />
+</div>
+</div>
+
+<!--more-->
+
+There's quite a bit going on in the program, but I'll pull out just a bit of it. 
+
+<pre class="brush:plain">
+	my @options = qw/ C c d b o x /.grep: { $::($_) };
+	while my Buf $buf = $fh.read( octets_to_read( $counter, $n ) ) {
+		# You can select more than one option at a time
+		# change the option order to change the output order
+		# These correspond to the named Bool parameters in the signature
+		for @options -> $option {
+			put $counter.fmt( '%08x  ' ), &::("show_$option")($buf);
+			}
+		$counter += $buf.elems;
+		last if $n && $counter >= $n;
+		}
+</pre>
+
+I implemented the <code>-C</code>, <code>-c</code>, <code>-d</code>, <code>-b</code>, <code>-o</code>, and <code>-x</code> switches. Each of these present the data in a different way, making all the combinations of octet or words with octal, decimal, or hexadecimal. 
+
+Surprisingly, the hexdump I have on my Mac will happily do all of these at once. That means I have it a bit easier since I don't have to create an option processing hierarchy to exclude others. I figured that Perl 6's <a href="https://docs.perl6.org/routine/multi">multi methods</a> would be good for that, which is one of the reasons I started writing the program. Even when I found out I didn't need that I kept going.
+
+So, on each group of octets that I read, I have the opportunity to print several lines. I need to check which options are set to True. I could do that with a lot of repeated code:
+
+<pre class="brush:plain">
+		put $counter.fmt( '%08x  ' ), show_C($buf) if $C;
+		put $counter.fmt( '%08x  ' ), show_c($buf) if $c;
+		put $counter.fmt( '%08x  ' ), show_d($buf) if $d;
+		...
+</pre>
+
+Instead, I use a variable to decide the variable name with <code>$::($some_variable)</code>. I filter out all the ones that are False:
+
+<pre class="brush:plain">
+	my @options = qw/ C c d b o x /.grep: { $::($_) };
+</pre>
+
+When it's time to output something, I go through the options that I have left. Each one has an associated subroutine, which I lookup in the same way:
+
+<pre class="brush:plain">
+		for @options -> $option {
+			put $counter.fmt( '%08x  ' ), &::("show_$option")($buf);
+			}
+</pre>
+
+I also thought of translating those subroutine lookups beforehand but I didn't get that far. I don't really need to keep constructing the subroutine name. That's something I can fix later.
+
+There's something that's probably surprising to Perl 5 people. This little trick isn't limited to a particular set of variables. It works with lexicals too:
+
+<pre class="brush:plain">
+my $foo = "Some value";
+
+put "The value of \$foo is ", $::('foo'); # works just fine.
+</pre>
+

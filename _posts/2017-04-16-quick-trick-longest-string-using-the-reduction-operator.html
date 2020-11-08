@@ -1,0 +1,52 @@
+<!--
+title: Quick Trick: Longest string using the reduction operator
+link: http://www.learningraku.com/2017/04/16/quick-trick-longest-string-using-the-reduction-operator/
+author: brian
+post_id: 354
+date: 2017-04-16 15:51:33
+post_name: quick-trick-longest-string-using-the-reduction-operator
+status: publish
+type: post
+categories: quick-tricks sorting
+tags: infix reduction-operator
+-->
+
+
+I had a problem where I wanted the longest string from a list. I didn't want to sort because I wanted to do it with a single pass. (The comments show sorting through <code>max</code>, which I was also avoiding). <!--more-->
+
+<pre class="brush:plain">
+# quote words, but with quote protection!
+my @strings = qww/
+	"This is a line"
+	short
+	"A very very long string maybe, certainly the longest"
+	other
+	not
+	this
+	a
+	one
+	or
+	even
+	1
+	/;
+
+# If you give one thing to sort, it does that to both things and
+# compares with camp
+my ($longest) = @strings.sort( *.chars ).[*-1];
+</pre>
+
+Instead, I decided to use the <A href="https://docs.perl6.org/language/operators#Reduction_Operators">reduction operator</a> with an operator that I make up (and limit to the lexical scope). The infix <code>longest</code> takes two strings and returns the longest. I let the reduction take care of the rest:
+
+<pre class="brush:plain">
+my sub infix:<longest> { $^a.chars > $^b.chars ?? $^a !! $^b }
+my $longest = [longest] @strings;
+
+say "Longest is ｢$longest｣";
+</pre>
+
+Some commenters point out that calling <code>.max</code> does the same thing. Looking in the <a href="https://github.com/rakudo/rakudo/blob/8bf67298c7bac51790e924efc125e4f8f7600013/src/core/Any-iterable-methods.pm">Rakudo source for max</code>, you see that it's single pass too:
+
+<pre class="brush:plain">
+my $longest = @strings.max: *.chars;
+say "Longest is ｢$longest｣";
+</pre>

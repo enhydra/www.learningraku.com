@@ -1,0 +1,38 @@
+<!--
+title: Quick Tip #30: Uninstall a Perl 6 module
+link: http://www.learningraku.com/2016/12/15/quick-tip-30-uninstall-a-perl-6-module/
+author: brian
+post_id: 199
+date: 2016-12-15 09:23:41
+post_name: quick-tip-30-uninstall-a-perl-6-module
+status: publish
+type: post
+categories: kickstarter-tips modules
+tags: panda zef
+-->
+
+
+You can uninstall Perl 6 modules. Many people have asked for a way to uninstall a Perl 5 module, but that toolchain didn't do the sort of tracking that Perl 6 does. Some of these are recent developments, so you should have the most recent <a href="http://www.rakudo.org">Rakudo</a> that you can use. <!--more-->
+
+In <a href="https://github.com/ugexe/zef">zef</a>:
+
+<pre class="brush:plain">
+$ zef uninstall Some::Module
+</pre>
+
+You might like <a href="http://ugexe.com/slightly-less-basic-perl6-module-management/">Slightly less basic Perl6 module management</a>, as well as the rest of Nick's blog.
+
+If that doesn't work, niner has <A href="https://gist.github.com/niner/b39258032f70c083e57b">a gist that reaches into the internals</A>:
+
+<pre class="brush:plain">
+#!/usr/bin/env perl6
+use v6.c;
+
+sub MAIN($short-name, :$ver = True, :$auth = True, :$api = True) {
+    my $comp-unit = $*REPO.resolve(CompUnit::DependencySpecification.new(:$short-name, :$ver, :$auth, :$api));
+    $comp-unit.repo.uninstall($comp-unit.distribution);
+}
+</pre>
+
+This is the final <A href="https://www.learningperl6.com/category/kickstarter-tips/">Quick Tip</a>. Thanks to everyone who helped me reach my Kickstarter goal. Now I have to get down to fulfilling your rewards and writing the book!
+

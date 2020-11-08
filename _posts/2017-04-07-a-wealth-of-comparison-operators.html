@@ -1,0 +1,135 @@
+<!--
+title: All things being equal, not all things are eqv
+link: http://www.learningraku.com/2017/04/07/a-wealth-of-comparison-operators/
+author: brian
+post_id: 346
+date: 2017-04-07 12:12:12
+post_name: a-wealth-of-comparison-operators
+status: publish
+type: post
+categories: lists
+tags: identity permutations unique
+-->
+
+
+Perl 6 has a wealth of comparison operators so I don't have to do a lot of work to test complex data structures. Consider the case where I want to test two lists. I might reach for the <a href="https://docs.perl6.org/language/operators#infix_eq"><code>eq</code></a> and think that it works. Here's a demonstration of that in the REPL: <!--more-->
+
+<pre class="brush:plain">
+$ perl6
+> ( 1, 2, 3 ) eq ( 1, 2, 4 )
+False
+> ( 1, 2, 3 ) eq ( 1, 2, 3 )
+True
+</pre>
+
+That looks like it works. The list that has different elements returns <code>False</code> and the one that looks like it has the same elements returns <code>True</code>. But, this is a quirk of my choice of test cases. Had I read the docs (and, admit it, many of us only do that when something expected happens), I would have known that <code>eq</code> coerces its arguments to strings and compares those. It is, after all, a string comparison operator (although in a multi-dispatch language you (and I) might guess such operators would multi-dispatch).
+
+Using <code>eq</code> breaks if lists with different values stringify the same way, like these. Since the string coercion joins the elements with a space, spaces at the start or end of elements make it impossible to distinguish the separator from the values:
+
+<pre class="brush:plain">
+> ( 1, '2 ', 3 ) eq ( 1, 2, ' 3' )
+True
+</pre>
+
+That's no good. But, this is why Perl 6 has more comparison operators. The <a href="https://docs.perl6.org/language/operators#infix_eq"><code>eqv</code></a> tests that two things have the same values:
+
+<pre class="brush:plain">
+> ( 1, '2 ', 3 ) eqv ( 1, 2, ' 3' )
+False
+</pre>
+
+This extends to deeper levels even. The values and the structure must be the same. Even if the ultimate scalar values are the same, they have show up in the structure in the same way:
+
+<pre class="brush:plain">
+> ( 1, 2, (4,5) ) eqv ( 1, (2,4), 5 )
+False
+</pre>
+
+And even to the object identity. And Array may hold the same values, but it is not the same thing:
+
+<pre class="brush:plain">
+> ( 1, 2, (4,5) ) eqv ( 1, 2, [4,5] )
+False
+</pre>
+
+Besides <code>eq</code> and <code>eqv</code>, Perl 6 has the <A href="https://docs.perl6.org/language/operators#infix_==="><code>===</code></a> that tests for object identity. This was the start of my thinking on this post, but more about that in a moment. Even if the two lists have the same values and structure, they aren't the same object:
+
+<pre class="brush:plain">
+> ( 1, 2, 3 ) === ( 1, 2, 3 )
+False
+</pre>
+
+But, I might have the same object stored differently. This Array and Scalar are the same because they store the same object:
+
+<pre class="brush:plain">
+> my @array = ( 1, 2, 3 )
+[1 2 3]
+> my $scalar = @array
+[1 2 3]
+> @array === $scalar
+True
+</pre>
+
+A change in one shows up in the other, which is almost a non-sensical thing to say because there is no "other". It's the same thing:
+
+<pre class="brush:plain">
+> $scalar[*-1] = 'Hamadryas'
+Hamadryas
+> @array
+[1 2 Hamadryas]
+</pre>
+
+And here where this came up for me. I need the permutations of a list (which, as you know, if the <i>ordered</i> structure that allows the same value to show up multiple times). Consider permutations of <code>(1, 3, 3)</code>:
+
+<pre class="brush:plain">
+> (1,3,3).permutations
+((1 3 3) (1 3 3) (3 1 3) (3 3 1) (3 1 3) (3 3 1))
+</pre>
+
+I might not care that two permutations are <code>(1, 3, 3)</code> show up twice as long as I process one of them. Suppose I want the list of all the values of the sum of the first two items multiplied by the third:
+
+<pre class="brush:plain">
+> (1,3,3).permutations.map: { ($_[0] + $_[1])*$_[2] }
+(12 12 12 6 12 6)
+</pre>
+
+I've done that operation six times, but if I only care about the unique values, I've done a lot more work than I needed to do to get two value:
+
+<pre class="brush:plain">
+> (1,3,3).permutations.map( { ($_[0] + $_[1])*$_[2] } ).unique
+(12 6)
+</pre>
+
+In this example it's not a big deal, but imagine much larger lists and more complicated operations. Consider how that makes <a href="https://docs.perl6.org/type/Junction">junctions</a> much larger:
+
+<pre class="brush:plain">
+> any( (1,3,3).permutations.map( { ($_[0] + $_[1])*$_[2] } ) ) > 13
+any(False, False, False, False, False, False)
+</pre>
+
+Curiously, this gives a Junction back instead of a Boolean, but I've asked about that in the <A href="https://github.com/perl6/doc/issues/1269">docs repo</a> and on <A href="https://rt.perl.org/Public/Bug/Display.html?id=131114">RT</a>.
+
+So, I might try <a href="https://docs.perl6.org/type/List#routine_unique"><code>.unique</code></a>:
+
+<pre class="brush:plain">
+> (1,3,3).permutations.unique
+((1 3 3) (1 3 3) (3 1 3) (3 3 1) (3 1 3) (3 3 1))
+</pre>
+
+That didn't reduce the list, though. That method checks pairs of items with <code>===</code>. That's the check for object identity. The duplicated permutations look the same because they have the same values in the same order, but they are different objects.
+
+No matter. I can tell <code>.unique</code> to compare elements any way that I like by using the <code>:with</code> adverb. If I use <code>eqv</code>, I end up with only the permutations I can distinguish:
+
+<pre class="brush:plain">
+> (1,3,3).permutations.unique( :with(&[eqv]) )
+((1 3 3) (3 1 3) (3 3 1))
+</pre>
+
+Now I process half the number of elements:
+
+<pre class="brush:plain">
+> any( (1,3,3).permutations.unique( :with(&[eqv]) ).map( { ($_[0] + $_[1])*$_[2] } ) ) > 13
+any(False, False, False)
+</pre>
+
+There are many other <a href="https://docs.perl6.org/language/operators#infix_eqv">comparison operations</a>.  Some of them might not give you a "wrong" answer, but you might end up doing more processing than you need to do.

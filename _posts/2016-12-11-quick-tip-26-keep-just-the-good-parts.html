@@ -1,0 +1,76 @@
+<!--
+title: Quick Tip #26: Keep just the good parts
+link: http://www.learningraku.com/2016/12/11/quick-tip-26-keep-just-the-good-parts/
+author: brian
+post_id: 234
+date: 2016-12-11 12:11:25
+post_name: quick-tip-26-keep-just-the-good-parts
+status: publish
+type: post
+categories: kickstarter-tips
+tags: comb
+-->
+
+
+Ever wanted to break up a string based on the parts that you wanted to keep? You probably already know about <code><a href="https://docs.perl6.org/routine/split">split</a></code>; it uses a pattern to find the parts to discard. Perl 6's <code><A hre"https://docs.perl6.org/routine/comb">comb</a></code> uses a pattern to find the parts of a string it keeps. <!--more-->
+
+Suppose you want to keep all the words, which for this example you consider that to mean groups of non-whitespace. The pattern you want to keep is <code>/ \S+ /</code> (remember that patterns have insignificant). Here's what that could look like in the REPL:
+
+<pre class="brush:plain">
+$ perl6
+To exit type 'exit' or '^D'
+> $_ = 'Hamadryas chloe'
+Hamadryas chloe
+> .comb( /\S+/ )  # operates on $_ by default
+(Hamadryas chloe)
+> .comb( /\S+/ ).elems
+2
+</pre>
+
+That doesn't look much different than the string you started with even though it is now two elements. The REPL prints out what it considers to be a nicely formatted string, but sometimes that's confusing. You could look at it with <code>.perl</code> instead:
+
+<pre class="brush:plain">
+> .comb( /\S+/ ).perl
+("Hamadryas", "chloe").Seq
+</pre>
+
+Now you see the two elements. However, there's a more interesting way to do this. You can use the <code><a href="https://docs.perl6.org/routine/fmt">fmt</a></code> method on a list. It will apply its template to each item in the list. You can easily surround each word with braces, for example:
+
+<pre class="brush:plain">
+> .comb( /\S+/ ).fmt( '{%s}' )
+{Hamadryas} {chloe}
+</pre>
+
+Now you can see which parts of the string belong to which element. This feature pleases me more and more each time I use it. Even though you could do this with a <code>map</code>, this is so much easier.
+
+Try it on this string to extract the species from these scientific names. The <code>&lt;?after ...</code> is a <A href="https://docs.perl6.org/language/regexes#Lookbehind_assertions">lookbehind assertion</a> that says that pattern has to come before the part the matches. But, it matches a condition at a particular point of the string instead of matching characters so that part is part of what <code>comb</code> keeps:
+
+<pre class="brush:plain">
+> $_ = 'Hamadryas chloe, Hamadryas epinome, Hamadryas laodamia'
+Hamadryas chloe, Hamadryas epinome, Hamadryas laodamia
+> .comb( /&lt;?after Hamadryas \s+> &lt;[a..z]>+/ )
+(chloe epinome laodamia)
+> .comb( /&lt;?after Hamadryas \s+> &lt;[a..z]>+/ ).fmt( '{%s}' )
+{chloe} {epinome} {laodamia}
+</pre>
+
+Here's something a bit more complicated (and contrived even). Make a pattern to grab the items out of a list separated by commas with a final <code>and</code>:
+
+<pre class="brush:plain">
+> $_ = 'Daphnaeae, Epimeliades, Kissiae, and Meliae'
+Daphnaeae, Epimeliades, Kissiae, and Meliae
+> .comb( rx:i/ &lt;[a..z]>+ &lt;?before [\, \s+ [and \s+]? | $ ]> / )
+(Daphnaeae Epimeliades Kissiae Meliae)
+</pre>
+
+There's a lookahead assertion that looks for a "comma whitespace with optional and" or the end of string. I'll leave it as an exercise for the reader to work this out for styles that (mistakenly) eschew the Oxford comma.
+
+It's probably easier to split on the separators in this case, but you're playing with <code>comb</code> in this tip. You'll appreciate this more when the parts separating the good bits are more complicated to match than the other way around.
+
+And, for a final tip, <code>comb</code> with no pattern splits into characters:
+
+<pre class="brush:plain">
+> .comb
+(D a p h n a e a e ,   E p i m e l i a d e s ,   K i s s i a e ,   a n d   M e l i a e)
+</pre>
+

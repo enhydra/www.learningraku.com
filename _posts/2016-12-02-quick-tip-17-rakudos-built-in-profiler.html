@@ -1,0 +1,128 @@
+<!--
+title: Quick Tip #17: Rakudo's built-in profiler
+link: http://www.learningraku.com/2016/12/02/quick-tip-17-rakudos-built-in-profiler/
+author: brian
+post_id: 174
+date: 2016-12-02 14:03:06
+post_name: quick-tip-17-rakudos-built-in-profiler
+status: publish
+type: post
+categories: kickstarter-tips performance rakudo
+tags: fibonacci profiling
+-->
+
+
+Rakudo comes with a built-in profiler. Invoke the program with the <code>--profiler</code> option and
+
+<pre class="brush:plain">
+$ perl6 --profiler some_script.p6
+... output ...
+Writing profiler output to profile-1480712222.02931.html
+</pre>
+
+That profile is an HTML file using Bootstrap and other fun things to make it look pretty. It's not as sophisticated as something like Perl 5's <a href="https://www.metacpan.org/module/Devel::NYTProf">Devel::NYTProf</a>, but it's still pretty interesting. <!--more-->
+
+Let's write some routines to do Fibonacci numbers, which seem to be most authors' favorite example for this sort of thing. Indeed, I used it in the "Benchmarking" chapter of <a href="http://www.masteringperl.org">Mastering Perl</a>, but mostly to point out how wrong the simple benchmarks were.
+
+I'll implement it in four ways, none of which I claim to be the best:
+
+<ul>
+<li>The recursive way you see in most examples
+<li>A recursive fashion with memoization
+<li>Using the sequence operator
+<li>Using memoization with an iterative approach.
+</ul>
+
+In <a href="http://www.masteringperl.org">Mastering Perl</a>, I presented a few arguments that escape the usual discussion:
+
+<ul>
+<li>The routine that runs fastest the first time isn't necessarily the best
+<li>Caching results you'll use again eventually pays off in time
+<li>Using less time usually means using less memory
+<li>You improve with better algorithms instead of different syntax.
+</ul>
+
+Here are some implementations in Perl 6, where I didn't try at all to make them efficient. I merely want something to show the workings of the profiler:
+
+<pre class="brush:plain">
+sub fib_recursive ( Int $n where * >= 0 --> Int ) {
+	return 1 if $n < 2;
+
+	return fib_recursive( $n - 1 ) + fib_recursive( $n - 2 )
+	}
+
+sub fib_recursive_memoize ( Int $n where * >= 0 --> Int ) {
+	state @n = ( 1, 1 );
+
+	return @n[$n] if $n < @n.elems;
+
+	return @n[$n] = fib_recursive_memoize( $n - 1 ) + fib_recursive_memoize( $n - 2 )
+	}
+
+sub fib_sequence ( Int $n where * >= 0 --> Int ) {
+	my $seq := 1, 1, * + * ... *;
+	$seq[$n]
+	}
+
+sub fib_memoize ( Int $n where * >= 0 --> Int ) {
+	state @n = ( 1, 1 );
+	return @n[$n] if $n < @n.elems;
+
+	for @n.elems .. $n -> $index {
+		@n[$index] = @n[$index-1] + @n[$index-2];
+		}
+
+	@n[*-1]
+	}
+
+sub MAIN ( Int $n where * >= 0 --> Int ) {
+	for 1 .. 10 {
+		say fib_recursive( $n );
+		say fib_recursive_memoize( $n );
+		say fib_sequence( $n );
+		say fib_memoize( $n );
+		}
+	}
+</pre>
+
+I run this program under the profiler, and if I've everything correctly, I should see the same number output several times. Or, I've done it wrong the same way each time.
+
+<pre class="brush:perl">
+$ perl6 --profile fib.p6 20
+10946
+10946
+.....
+10946
+10946
+Writing profiler output to profile-1480712222.02931.html
+</pre>
+
+If you don't like that filename, you can choose your own:
+
+<pre class="brush:perl">
+$ perl6 --profile --profile-filename=fibonacci.html fib.p6 20
+10946
+10946
+.....
+10946
+10946
+Writing profiler output to fibonacci.html
+</pre>
+
+I can then look at the profiler output. Here's a screenshot that shows the time spent in each of the subroutines:
+
+<div class="image center">
+<div>
+<img src="/images/fibonacci_profiler.png" width="500" height="250" />
+</div>
+</div>
+
+To see the rest of the report, run the program yourself!
+
+I won't write too much about interpreting these results, but there are several things you should think about in these sorts of comparisons.
+
+First, test with a variety of values, especially those of vastly different orders of magnitude. The recursive solution might look really fast for small <i>N</i>, but it gets bad very quickly.
+
+Second, test it several times, as I've done in this example. Some implementations always take the same amount of time while others get faster and faster. In a program where this level of optimization matters, you're likely to run the interesting routine several times.
+
+Third, consider a completely different approach than any you see here. The Fibonacci numbers aren't going to change (neither are the values of other sequences). Why compute them again? Just look them up. (I'll write more about this tomorrow when <A href="https://www.learningperl6.com/2016/12/03/quick-tip-18-short-circuit-subroutines-with-multi/">I use multi subs</a>) Something like Redis can store huge lists without eating all your resources or complicating your program.

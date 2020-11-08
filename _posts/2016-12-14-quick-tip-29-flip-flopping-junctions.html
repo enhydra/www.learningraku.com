@@ -1,0 +1,126 @@
+<!--
+title: Quick Tip #29: Flip-flopping junctions
+link: http://www.learningraku.com/2016/12/14/quick-tip-29-flip-flopping-junctions/
+author: brian
+post_id: 201
+date: 2016-12-14 13:52:13
+post_name: quick-tip-29-flip-flopping-junctions
+status: publish
+type: post
+categories: junctions kickstarter-tips
+tags: 
+-->
+
+
+The <a href="https://docs.perl6.org/language/operators#infix_ff">flip flop operator</a> isn't just something for politicians and nervous interface designers. It's a feature designed to turn on and off to set a window of processing. <!--more-->
+
+Suppose I want to see all the words between two words in <i>/usr/share/dict/words</i> (your distro may place it elsewhere). I want to extract a window of lines from a big text.
+
+The <code><a href="https://docs.perl6.org/language/operators#infix_ff">ff</a></code> operator is False until its lefthand expression is true, and then True until its righthand expression is True. After that, it's false. So, it turns on when the left side becomes true and turns off when the right side does.
+
+Here's a program that reads lines from a file and prints the ones between the two words I specify:
+
+<pre class="brush:plain">
+sub MAIN (
+	Str :$file  = '/usr/share/dict/words',
+	Str :$first!,
+	Str :$last!,
+	) {
+	my $fh = open( $file );
+
+	for $fh.lines -> $line {
+		say $line if $line ~~ $first ff $line ~~ $last; # flip-flop
+		}
+	}
+</pre>
+
+It's up to me to ensure that the first value is less than the last one, and I'm going to ignore matters of case for this example:
+
+<pre class="brush:plain">
+$ perl6 words.p6 --first=fox --last=hound
+fox
+foxbane
+foxberry
+foxchop
+...
+Houghton
+hounce
+hound
+</pre>
+
+I can specify the same word for the start and end. When the particular word shows up, the flip-flop evaluates the lefthand side. Since it's the same word, the flip-flop turns on.
+
+<pre class="brush:plain">
+$ perl6 words.p6 --first=fox --last=fox
+fox
+</pre>
+
+I still have to read all the lines in this example, but there it is.
+
+The flip-flop has inclusive and exclusive versions, just like the ranges and sequences I wrote about in <a href="https://www.learningperl6.com/2016/11/18/quick-tip-3-inclusive-and-exclusive/">Quick Tip #3: Inclusive and Exclusive</a>. I can exclude either endpoint with a <code>^</code>:
+
+<pre class="brush:plain">
+sub MAIN (
+	Str :$file  = '/usr/share/dict/words',
+	Str :$first!,
+	Str :$last!,
+	) {
+	my $fh = open( $file );
+
+	for $fh.lines -> $line {
+		say $line if $line ~~ $first ^ff^ $line ~~ $last; # changed!
+		}
+	}
+</pre>
+
+Now I don't see "fox" or "hound" in the output:
+
+<pre class="brush:plain">
+$ perl6 words.p6 --first=fox --last=hound
+foxbane
+foxberry
+foxchop
+...
+Houghton
+hounce
+</pre>
+
+In that example I excluded both endpoints with <code>^ff^</code>, but I can exclude either side on their own with <code><a href="https://docs.perl6.org/language/operators#infix_^ff">^ff</a></code> or <code><a href="https://docs.perl6.org/language/operators#infix_ff^">ff^</a></code>.
+
+But, I don't have to be satisfied with one window. I can put <a href="https://docs.perl6.org/type/Junction">Junctions</a> into <code>$first</code> and <code>$last</code> to make multiple windows. Any of the values in <code>$first</code> can turn it on and any of the values in <code>$last</code> can turn it off.
+
+<pre class="brush:perl">
+sub MAIN (
+	Str :$file  = '/usr/share/dict/words',
+	) {
+	my $fh = open( $file );
+
+	my $first = any( &lt;cat fox> );
+	my $last  = any( &lt;dog hound> );
+
+	for $fh.lines -> $line {
+		say $line if $line ~~ $first ff $line ~~ $last;
+		}
+	}
+</pre>
+
+Now I see that it turns off at "dog" but turns on again at "fox":
+
+<pre class="brush:perl">
+cat
+catabaptist
+catabases
+...
+doffer
+doftberry
+dog
+fox
+foxbane
+foxberry
+...
+houghmagandy
+Houghton
+hounce
+</pre>
+
+If you're used to the sed version of flip-flopping, there's also <code><a href="https://docs.perl6.org/language/operators#infix_fff">fff</a></code>. This one doesn't evaluate both sides for the same element.

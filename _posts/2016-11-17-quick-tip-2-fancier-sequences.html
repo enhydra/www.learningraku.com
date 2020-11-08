@@ -1,0 +1,77 @@
+<!--
+title: Quick Tip #2: Fancier sequences
+link: http://www.learningraku.com/2016/11/17/quick-tip-2-fancier-sequences/
+author: brian
+post_id: 69
+date: 2016-11-17 06:47:21
+post_name: quick-tip-2-fancier-sequences
+status: publish
+type: post
+categories: kickstarter-tips sequences
+tags: 
+-->
+
+
+Every day of the <A href="https://www.kickstarter.com/projects/1422827986/learning-perl-6">Learning Perl 6 Kickstarter campaign</a>, I'll present a <a href="/category/kickstarter-tips/">quick tip</a> about something I like in Perl 6. Yesterday I posted <a href="/2016/11/16/quick-tip-1-user-defined-infinite-sequences/">User-defined infinite sequences</a>. In that post I only showed sequences of positive numbers. That's a bit boring. Let's make something fancier. <!--more-->
+
+Let's start with one of the boring examples that every programming language likes to use. It's a bit not-safe-for-work. About 800 years ago, Fibonacci spent a lot of time thinking about what adult rabbits do with their free time. He didn't invent the problem, but he gets all the credit:
+
+<pre class="brush:plain">
+my $fibonacci := 1, 1, { $^a + $^b } ... *;
+say "Fibonacci: " ~ $fibonacci[0..10];
+</pre>
+
+Here's the result:
+
+<pre class="brush:plain">
+Fibonacci: 1 1 2 3 5 8 13 21 34 55 89
+</pre>
+
+We can create an infinite, lazy sequence. (As a side not, doesn't that sound wrong? The order of adjectives in English is customarily quantity followed by opinion. Doesn't lazy, infinite lists sound better?)
+
+But, what's going on with that sequence? I start off with two literals, the <code>1</code> and <code>1</code>. But, after that I have a <a href="https://docs.perl6.org/language/functions#Blocks_and_Lambdas">block</a>. When Perl 6 sees a block in the sequence, it uses it to compute the next element. And, I can do anything I like in that block.
+
+But, what's going in the block? There's a <code>$^a</code> and a <code>$^b</code>. Perl 6 figures out that this block takes two arguments and grabs the previous two items from the sequence to fill those variables. The last evaluated expression in the block becomes the next value in the sequence. After that it starts all over. And, since I used the Whatever <code>*</code> at the end, the sequence goes on forever.
+
+The Lucas Sequence is similar:
+
+<pre class="brush:plain">
+my $lucas := 2, 1, 3, { $^a + $^b } ... *;
+say "Lucas: " ~ $lucas[0..10];
+</pre>
+
+Here's the result:
+
+<pre class="brush:plain">
+Lucas: 2 1 3 4 7 11 18 29 47 76 123
+</pre>
+
+Let's do something more interesting. There's a sequence of "digit product". You take the number and split it up into individual decimal digits. Multiply all of those and add that product to the original number. That's the next number in the sequence. Here it is:
+
+<pre class="brush:plain">
+my $d := 1, { $^a + [*] $^a.comb } ... *;
+say "Digit product: " ~ $d[0..10];
+</pre>
+
+Here's the result:
+
+<pre class="brush:plain">
+Digit product: 1 2 4 8 16 22 26 38 62 74 102
+</pre>
+
+There are a few interesting things in that block. First, I call the <code>comb</code> method to break the number up into digits. In front of that is the <code>[*]</code> <a href="https://docs.perl6.org/language/operators#Reduction_Operators">reduction operator</a>. It takes two elements from the succeeding list, performs the operation inside the square braces, and puts the result back on the list. It does this until there's a single element left. That gives me the product of the digits.
+
+Once I have the product, I add it to the original number (still in <code>$^a</code>). Now I have the next item in the sequence.
+
+Not fancy enough? How abou the "speak and say" sequence? Take a number, such as 1. Now, say the count of the like digits and the digit word. So, there is "one 1". Translate that into digits, so <code>11</code>. Do it again. There's "two 1s", or <code>21</code>, then, "one 2 and one 1", so <code>1211</code>. Keep doing that until you get bored with it:
+
+<pre class="brush:plain">
+my $speak_and_say := 1, { .subst( /(<[0..9]>)$0*/, { .chars() ~ .[0] }, :g ) } ... *;
+say "Speak and say: " ~ $speak_and_say[0..5];
+</pre>
+
+The result is:
+
+<pre class="brush:plain">
+Speak and say: 1 11 21 1211 111221 312211
+</pre>

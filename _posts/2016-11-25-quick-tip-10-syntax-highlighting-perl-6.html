@@ -1,0 +1,31 @@
+<!--
+title: Quick Tip #10: Syntax highlighting Perl 6
+link: http://www.learningraku.com/2016/11/25/quick-tip-10-syntax-highlighting-perl-6/
+author: brian
+post_id: 118
+date: 2016-11-25 08:33:46
+post_name: quick-tip-10-syntax-highlighting-perl-6
+status: publish
+type: post
+categories: editing kickstarter-tips
+tags: 
+-->
+
+
+So far, my quick tips haven't been that quick. I've gotten mired in the tarpit of tracking down weird behaviors and whatnot. Here's a truly quick tip. If you have more info on editor syntax highlighting for Perl 6, leave a comment. <!--more-->
+
+If you're on StackOverflow and you want your code highlighted as Perl 6, use the HTML comment <code>&lt;!-- language-all: lang-perl6 --></code>. See <a href="http://stackoverflow.com/q/40814933/2766176">what Brad Gilbert did with one of my questions</a>. They use <A href="https://github.com/google/code-prettify">Google Prettify</a>, which does a job of the usual Google quality.
+
+David Farrell explains how to activate Perl 6 syntax in his Perltricks article <a href="https://perltricks.com/article/194/2015/9/22/Activating-Perl-6-syntax-highlighting-in-Vim/">Activating Perl 6 syntax highlighting in Vim</a>. And, he's also supporting the <A href="https://www.kickstarter.com/projects/1422827986/learning-perl-6">Kickstarter campaign</a> by offering two more backers the chance to sponsor a Perl 6 article on Perltricks.
+
+See the <a href="https://github.com/vim-perl/vim-perl">vim-perl</A> Github project, or the <a href="https://github.com/hinrik/perl6-mode">perl6-mode</a> Github project for emacs.
+
+The Atom editor <a href="https://atom.io/packages/language-perl6fe">supports Perl 6</a>. It doesn't seem that helpful though.
+
+The <a href="http://padre.perlide.org">Padre editor</A> does too. It even has a butterfly for its logo.
+
+I started a <a href="/2016/01/10/a-perl-6-bbedit-codeless-language-module/">BBEdit Codeless Language Module</a>, but it's so deficient it's hardly worth mentioning.
+
+One of Perl 6's goals for improvement over Perl 5 was a much easier way to parse the a program without being the language itself. There's an <A href="https://github.com/perl6/std">actual grammar</a>.
+
+If you know of more stuff, leave a comment.

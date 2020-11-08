@@ -1,0 +1,52 @@
+<!--
+title: Search the Perl 6 repos with Etsy's Hound
+link: http://www.learningraku.com/2017/01/03/search-the-perl-6-repos-with-etsys-hound/
+author: brian
+post_id: 270
+date: 2017-01-03 22:51:05
+post_name: search-the-perl-6-repos-with-etsys-hound
+status: publish
+type: post
+categories: stuff-im-playing-with writing-process
+tags: 
+-->
+
+
+<div class="image center">
+<div>
+<img src="https://c5.staticflickr.com/3/2135/2130638404_84c86b7421.jpg"
+ width="500" height="375" style="margin-left:auto;margin-right: auto;border=0;">
+<p><A href="https://www.flickr.com/photos/estro/2130638404/in/photolist-4fh5yU-4pLHQm-7twak7-4oxJAp-5h8irh-9oLE2R-7dQjxW-qjC7PD-4fd6Qk-4rnfnT-dFG2gm-4XwGbT-7X3gZx-nLrwqL-pqtnLg-5TN4uu-J7g8U-4szusX-9AoQfP-4RZQvi-qznvt2-8ikYRU-84dnnC-67u5aW-71XbMG-EGZvVg-4QSXQr-qpjiqS-3yTHwC-6AUnqD-7REW8b-49We4b-nugBMy-5j2Z3t-4u8LAj-88hh5t-mAn8bb-67u5Fh-bE8inF-bMQ27c-o4GKCN-9mkmaR-jwf4dB-9AmJYf-4rnd1k-ef42Vy-nAccQ2-qfNq8X-pjzKdR-Hr2Qwd">Hound photo</a> by <a href="https://www.flickr.com/photos/estro/">Jen on Flickr</a></p>
+</div>
+</div>
+
+I'm working on <a href="https://www.learningperl6.org">Learning Perl 6</a> and I spend a lot of my time going between repos to suss out various things. Etsy's <A href="https://github.com/etsy/hound">Hound</a> is a tool that makes that easier, and I've made a <a href="https://github.com/briandfoy/perl6-hound">GitHub project with my setup</a>.
+
+<!--more-->
+
+<a href="http://www.perl6.org">Perl 6</a> development is spread over several repositories. That's a consequence that there's no <i>a priori</i> preferred implementation, and that's on purpose.
+
+Anything that passes the <a href="https://github.com/perl6/roast">roast tests</a> is Perl 6. That has its own repo. <a href="https://github.com/rakudo/rakudo">Rakudo</a> is one such implementation. It has its own repo.
+
+But, Perl 6 is largely written in Perl 6. There's a smaller version of the language, <a href="https://github.com/perl6/nqp">NQP</a> for <b>N</b>ot <b>Q</b>uite <b>P</b>erl6, that targets the virtual machines. A smaller feature set makes it easier to implement new virtual targets and that should encourage more backends. NQP has its own repo.
+
+And the <A href="https://github.com/perl6/doc">docs</a> have their own directory too.
+
+That means it's not quite as simple as grepping (acking, whatever) a repository. These are separate projects that I'd have to keep separately updated.
+
+Etsy released a tool they call <a href="https://github.com/etsy/hound">hound</a>, written in <a href="https://golang.org">Go</a>. They have instructions, but here's a summary:
+
+<ul>
+<li><a href="https://golang.org/dl/">Install Go 1.3+</a>. I used a binary package.
+<li>Run <code>go get github.com/etsy/hound/cmds/...</code>
+<li>Create a directory for <i>houndd</i> to do its work
+<li>Create your <a href="https://github.com/briandfoy/perl6-hound/blob/master/config.json">config.json</a> to list the repos in that directory
+<li>Run <code>$GOPATH/bin/houndd</code> in that directory
+<li>Go to <a href="http://localhost:6080">http://localhost:6080</a>
+</ul>
+
+I've also built most of this into the <a href="https://github.com/briandfoy/perl6-hound/blob/master/Makefile">Makefile</a>. Use the *run* target to get it going:
+
+<pre class="brush:plain">
+$ make run
+</pre>

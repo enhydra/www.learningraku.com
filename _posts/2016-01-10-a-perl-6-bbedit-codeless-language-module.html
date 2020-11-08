@@ -1,0 +1,32 @@
+<!--
+title: A Perl 6 BBEdit Codeless Language Module
+link: http://www.learningraku.com/2016/01/10/a-perl-6-bbedit-codeless-language-module/
+author: brian
+post_id: 39
+date: 2016-01-10 15:49:32
+post_name: a-perl-6-bbedit-codeless-language-module
+status: publish
+type: post
+categories: editing
+tags: 
+-->
+
+
+Now I have rudimentary Perl 6 syntax coloring for BBEdit, my long-preferred editor on the Mac for years. I don't need anything fancy, so I did the minimum to color the stuff in the files I had open. BBEdit supports <a href="http://www.barebones.com/support/develop/clm.html">Codeless Language Modules</a> that specify various things about the language, including its file extensions, name, keywords, and so on. It's something a normal user can put into an XML or JSON file and drop into an <i>Application Support/BBEdit/Language Modules</i> directory for immediate use (with an application restart). It's not as clever as a compiled code module, but good enough for me at the moment. <!--more-->
+
+<div class="image center">
+<div>
+<img src="/images/perl6_clm.png" />
+</div>
+</div>
+
+I've put it in the <a href="https://github.com/briandfoy/Perl6_BBEdit_CLM">Perl6_BBEdit_CLM</A> project on GitHub for anyone who wants to improve it. For example, I've only listed the keywords I was actually using.
+
+You can get syntax coloring for other editors:
+
+<ul>
+<li><a href="http://perltricks.com/article/194/2015/9/22/Activating-Perl-6-syntax-highlighting-in-Vim">http://perltricks.com/article/194/2015/9/22/Activating-Perl-6-syntax-highlighting-in-Vim</a>
+<li><a href="https://github.com/hinrik/perl6-mode">emacs Perl6 mode</a>
+</ul>
+
+If you know of others, let me know.

@@ -1,0 +1,31 @@
+<!--
+title: indir() changes the directory just for its block
+link: http://www.learningraku.com/2016/12/30/indir-changes-the-directory-just-for-its-block/
+author: brian
+post_id: 261
+date: 2016-12-30 23:15:57
+post_name: indir-changes-the-directory-just-for-its-block
+status: publish
+type: post
+categories: files-directories
+tags: 
+-->
+
+
+<i>Update for April 2017: <code>indir</code> is now a <a href="https://docs.perl6.org/routine/indir">documented part of the language</a>.</i>
+
+How many times have I wanted to change the current working directory for just one block? It's usually such a pain because I have to remember to change it back. <!--more-->
+
+In Perl 6, the <code>indir</code> routine does this for me:
+
+<pre class="brush:plain">
+indir $some_dir, {
+    ...; # do stuff in that directory
+    }
+</pre>
+
+The current working directory is changed just for that block of code. When that block is done, the value is back to whatever it was before. That this is built into the language is quite pleasing to me (and the dependency-adverse contexts I tend to work in). There's no variable to mess with (in Perl 6 that would be <code>$*CWD</code>, which has some issues at the moment) and it reads nicely as a sentence.
+
+This isn't documented yet (it only shows up in <a href="https://raw.githubusercontent.com/perl6/specs/master/S16-io.pod">Synopsis 16</a>, last changed 10 years ago, and was <a href="https://github.com/rakudo/rakudo/blob/beec02a6fa69e3ac290b4dd24c07d87a9f248b13/docs/announce/2014.10.md">announced as part of 2014.10</a>), but it's in there and it mostly works. At the moment (Rakudo 2016.11) it only works when the target directory is readable <i>and</i> writeable, but I've filed <a href="https://rt.perl.org/Ticket/Display.html?id=130460">RT #130460</a> about that. And, I've filed <a href="https://github.com/perl6/doc/issues/1091">GitHub #1091</a> about the lack of documentation (which depends on someone declaring what it should actually do). Since it's untested and undocumented, that means it might change or disappear. Consider that before you get too excited. But, how can you not get excited about something that makes common things really easy?
+
+I feel a little bad that I'm not stopping to fully investigate these corner cases, but if I did that I'd never get any writing done for <i>Learning Perl 6</i>! Maybe someone else has the time to make this bit of Perl 6 tested and documented.

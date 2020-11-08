@@ -1,0 +1,31 @@
+<!--
+title: Topaz is still on SourceForge
+link: http://www.learningraku.com/2016/01/27/topaz-is-still-on-sourceforge/
+author: brian
+post_id: 46
+date: 2016-01-27 23:46:08
+post_name: topaz-is-still-on-sourceforge
+status: publish
+type: post
+categories: history
+tags: nqp sapphire topaz
+-->
+
+
+Topaz, which was almost the next version of Perl in 2000, is still in Sourceforge. Chip Salzenberg had a hunch that rewriting Perl's guts in C++ would be the thing to solve its maintenance issues. He codenamed his project <a href="http://topaz.sourceforge.net">Topaz</a> and went to work. <!--more-->
+
+He didn't get it working though, and Chip's the sort of guy that can get anything working. He took C++ to its limits. At the 1999 OSCON, he explained what he wanted to do and why he chose C++ in his talk <a href="//www.perl.com/pub/1999/09/topaz.html">Topaz: Perl for the 22nd Century</A>. It's old enough that there's a RealAudio version of the talk. Heck, the Topaz repo uses CVS. I tried compiling CVS but it doesn't like my <code>getline</code> (and I didn't try that hard).
+
+<div class="image center">
+<div>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/mauroescritor/8358129568/in/photolist-dJzAJd-5Cz8Dm-CnSZBx-Dj25nn-amh4Qk-6244vQ-8rPBN8-5vr5SF-q2Z6yZ-aNe4qv-cnJoxm-aGQPFr-k9toVP-psVtf7-pvntY3-p6VHk3-562LX-rucn81-73APpS-pot4gV-9M6kJZ-8Z3Ggf-fURCw6-7hkyqs-qk3fig-5JYbkP-qEMbPs-oRn87b-8QbWKt-pCrsRT-7e55Bp-mokQtZ-pChMar-bcMVye-5CuSVg-5CzaVj-5CzaUo-5CuSTk-5CuSSM-5Cz8L7-5CuQKi-5CuQGx-5Cz8EW-5CuQD6-C8i8qh-7VPKPA-rFZdSX-csk9DG-pEAXFo-kRFFj2" title="Blue topaz"><img src="https://farm9.staticflickr.com/8513/8358129568_d4e8916090.jpg" width="500" height="388" alt="Blue topaz"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</div>
+</div>
+
+A year later he had given up, for solid technical reasons, but also because the community pushed all in for Perl 6.  I recall a talk where Chip discussed very technical C++ things he discovered, but it seems to have disappeared from the world. We also might have been sitting around a table in the hallway listening to him talk about it too. For what it's worth, Simon Cozens tried a similar thing with <a href="//www.perl.com/pub/2000/09/sapphire.html">Sapphire</a> (and there's <a href="http://perl11.org">Perl 11</a> and <a href="http://rperl.org">RPerl</a> and ...).
+
+Much of the discussion around that time was about which language the next perl sources would use. The then current Perl 5 sources were in C and had macros on top of macros (on top of macros) as it bent over backward to not conflict with other C code it might be embedded next to. Today we have <a href="http://www.metacpan.org/module/DBI">DBI</a> as a generic database interface, but back in the day there were things like <b>oraperl</b>, an Oracle client with Perl embedded in it (or Perl with an Oracle client embedded in it).
+
+Other options were briefly considered, but a crazy idea stuck. Perl 6 would be written in Perl 6. That sounds a little weird, but if you unwind it a bit it works. 
+
+There's <a href="//github.com/perl6/nqp">NQP</a>, or "Not Quite Perl 6" which serves as a basic layer between a virtual machine and Perl 6. From that, NQP looks quite a bit like Perl 6 and can bootstrap Perl 6. As long as NQP can translate its part to the layer under it, Perl 6 can go anywhere NQP can go. That might be Parrot, a JVM, or <A href="//www.moarvm.org">MOAR</a> (MetaModel on a Runtime).

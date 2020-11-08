@@ -1,0 +1,118 @@
+<!--
+title: How you average numbers doesn't matter
+link: http://www.learningraku.com/2017/06/17/how-you-average-numbers-doesnt-matter/
+author: brian
+post_id: 383
+date: 2017-06-17 08:54:09
+post_name: how-you-average-numbers-doesnt-matter
+status: publish
+type: post
+categories: numbers
+tags: sinan
+-->
+
+
+Perl 6 averages "floating point" numbers correctly. That's an interesting statement because it seems like it should be obvious and expected. However, people around computers long enough are used to round-off error. Sinan Ünür wrote <A href="https://www.nu42.com/2015/03/how-you-average-numbers.html">How you average numbers matters</a> to show the curious compounding of small effects. He shows some Perl 5 code:
+
+<!--more-->
+
+<pre class="brush:perl">
+my @data = (1_000_000_000.1, 1.1) x 50_000;
+printf "Naive mean:                  %f\n", (sum @data) / @data;
+</pre>
+
+This outputs the wrong answer instead of 500,000,000.6:
+
+<pre class="brush:plain">
+Naive mean:                  500000000.600916
+</pre>
+
+I wanted to try this in Perl 6 and had been putting it off thinking I might have to do a work to see what's going on.
+
+<pre class="brush:perl">
+my @data = slip(1_000_000_000.1, 1.1) xx 50_000;
+printf "Naive mean: %f\n", ([+] @data) / @data.elems;
+</pre>
+
+But no, Perl 6 give the right answer:
+
+<pre class="brush:plain">
+Naive mean: 500000000.600000
+</pre>
+
+You can expand the example to show the identity of the first object in the list. The <code>.^name</code> meta method will tell you that:
+
+<pre class="brush:perl">
+my @data = slip(1_000_000_000.1, 1.1) xx 50_000;
+put @data[0].^name;
+printf "Naive mean: %f\n", ([+] @data) / @data.elems;
+</pre>
+
+You see that the first thing (and all the other things) is a <A href="https://doc.perl6.org/type/Rat">Rat</a>, Perl 6's builtin rational number type:
+
+<pre class="brush:plain">
+Rat
+Naive mean: 500000000.600000
+</pre>
+
+Perl 6 stored the number as a ratio instead of a floating point number. It stays as an exact value. You can add a <A href="https://doc.perl6.org/type/Rat">Rat</a> and another <A href="https://doc.perl6.org/type/Rat">Rat</a> and get another exact value in the resultant <A href="https://doc.perl6.org/type/Rat">Rat</a>. You can keep doing that almost as long as you like as long as Perl 6 can represent the numerator and denominator (and it reduces the fraction as it goes along). Beyond that there's a <A href="https://doc.perl6.org/type/FatRat">FatRat</a> that can take you even further.
+
+You can sort it ascending or descending, like Sinan did. In his examples, each order got a different answer in the end. You can try that in the Perl 6 version:
+
+<pre class="brush:plain">
+my @data = slip(1_000_000_000.1, 1.1) xx 5;
+printf "Naive mean: %f\n", ([+] @data) / @data.elems;
+
+my @asc  = @data.sort: &infix:«<=>»;
+printf "Naive mean: %f\n", ([+] @asc) / @asc.elems;
+
+my @desc = @asc.reverse;
+printf "Naive mean: %f\n", ([+] @desc) / @desc.elems;
+</pre>
+
+But, every mean gives the same answer:
+
+<pre class="brush:plain">
+Naive mean: 500000000.600000
+Naive mean: 500000000.600000
+Naive mean: 500000000.600000
+</pre>
+
+So, there's nothing to see here. At least it's off my to-do list. Many of the things Sinan sends me requires long reads and working out math by hand, but this was easy.
+
+You can still have some small effects in the final operation to turn the rational number into a floating point, but that's something unrelated to the averaging.
+
+<hr />
+
+There are a few other interesting things in the simple code which I'll cover quickly:
+
+The <a href="https://docs.perl6.org/routine/reduce">reduction operator</a>, <code>[+]</code> is a quick way to type that you want to apply that operation between every item in the list. You don't have to use the addition operator. You can put almost anything in there.
+
+<hr />
+
+The <code>xx</code> is the <a href="https://docs.perl6.org/routine/xx">list repetition operator</a>. But, I want each list to combine into a flatten larger list. The <Code><a href="https://docs.perl6.org/type/Slip#sub_slip">slip</a></code> causes an inner list to lose its list structure and become separate items in the larger list. Without the <code><a href="https://docs.perl6.org/type/Slip#sub_slip">slip</a></code> you'd get a list of 50,000 sublists. Try it with only five sublists:
+
+<pre class="brush:plain">
+my @data = (1_000_000_000.1, 1.1) xx 5;
+say @data;
+</pre>
+
+The <code>@data</code> array has five items, all of which are lists:
+
+<pre class="brush:plain">
+[(1000000000.1 1.1) (1000000000.1 1.1) (1000000000.1 1.1) (1000000000.1 1.1) (1000000000.1 1.1)]
+</pre>
+
+Now add the <code><a href="https://docs.perl6.org/type/Slip#sub_slip">slip</a></code>:
+
+<pre class="brush:plain">
+my @data = slip(1_000_000_000.1, 1.1) xx 5;
+say @data;
+</pre>
+
+The array now has is flat. The sublist inserted their items into the larger list without the structure:
+
+<pre class="brush:plain">
+[1000000000.1 1.1 1000000000.1 1.1 1000000000.1 1.1 1000000000.1 1.1 1000000000.1 1.1]
+</pre>
+

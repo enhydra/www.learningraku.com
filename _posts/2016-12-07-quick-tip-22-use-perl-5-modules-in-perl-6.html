@@ -1,0 +1,41 @@
+<!--
+title: Quick Tip #22: Use Perl 5 modules in Perl 6
+link: http://www.learningraku.com/2016/12/07/quick-tip-22-use-perl-5-modules-in-perl-6/
+author: brian
+post_id: 215
+date: 2016-12-07 17:37:20
+post_name: quick-tip-22-use-perl-5-modules-in-perl-6
+status: publish
+type: post
+categories: kickstarter-tips modules
+tags: 
+-->
+
+
+Perl 6 has always had a goal of interacting with other languages. When Larry Wall announced the project in 2000, he talked about <a href="http://www.perl.com/pub/2000/10/23/soto2000.html">translate with 95-percent accuracy 95 percent of the scripts</a>. He wanted a way to run Perl 5 from Perl 6. <!--more-->
+
+
+And, with <a href="https://github.com/niner/Inline-Perl5">Inline::Perl5</a>, you can do that. Most notably, you can load Perl 5 modules:
+
+<pre class="brush:plain">
+use v6;
+use Inline::Perl5;
+use Business::ISBN:from&lt;Perl5>;
+
+my $isbn = Business::ISBN.new( '9781491954324' );
+
+say $isbn.as_isbn10.as_string;
+</pre>
+
+In the authority section of the module, I specified <code>from&lt;Perl5&gt;</code>. To make this work, you need to compile <code>perl</code> as specified in the <a href="https://github.com/niner/Inline-Perl5/blob/master/README.md">Inline::Perl5 README.md</a>. You need a <code>perl</code> compiled with <code>-Duseshrplib</code>; I had to compile a new <code>perl</code> but that wasn't a big deal.
+
+If you are using a recent Rakudo and you've already installed <a href="https://github.com/niner/Inline-Perl5">Inline::Perl5</a>, that module loads implicitly:
+
+<pre class="brush:plain">
+use v6;
+use Business::ISBN:from&lt;Perl5>;
+
+my $isbn = Business::ISBN.new( '9781491954324' );
+
+say $isbn.as_isbn10.as_string;
+</pre>

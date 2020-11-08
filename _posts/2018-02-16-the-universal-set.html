@@ -1,0 +1,51 @@
+<!--
+title: The Universal Set
+link: http://www.learningraku.com/2018/02/16/the-universal-set/
+author: brian
+post_id: 561
+date: 2018-02-16 01:55:50
+post_name: the-universal-set
+status: publish
+type: post
+categories: sets
+tags: 
+-->
+
+
+Some people like to think you can't have a universal set. I say otherwise. The difference is what you can do about it.
+
+Perl 6 has the empty set, <code>∅</code> and nothing is a member of that set:
+
+<pre class="brush:plain">
+if $a ∈ ∅ { put 'Never executes!' } # always False
+</pre>
+
+This is easy to construct with a set of no elements:
+
+<pre class="brush:plain">
+if $a ∈ set() { put 'Never executes!' } # always False
+</pre>
+
+Perl 6 can construct sets from finite sequences but I wondered about infinite ones. The universal set, <code>𝕌</code>, contains everything (although that causes some problems the set theorists haven't figured out other than to say "Don't do that").
+
+But if I can figure out set membership without enumerating the members of the set I can make it work:
+
+<pre class="brush:plain">
+            # Double struck letters
+class 𝕌 {}; # Universal, U+1D54C but wordpress don't like that
+
+multi infix:<∈> ( Any:_ $c, 𝕌:U $ --> Bool ) { True }
+
+use Test;
+
+ok any(1,2) ∈ 𝕌, '(Junction) is part of the universal set';
+ok   Any    ∈ 𝕌, '(Any) is part of the universal set';
+ok   37     ∈ 𝕌, 'Int:D is part of the universal set';
+ok  '37'    ∈ 𝕌, 'Integer string is part of the universal set';
+ok   𝕌      ∈ 𝕌, 'Universal set contains itself? Not so sure...';
+ok   ∅      ∈ 𝕌, 'Universal set contains the empty set';
+
+done-testing();
+</pre>
+
+The trick is to figure out how to represent a set difference with a universal set. I know what the complement of that set so I need to flip around the operators. I'm still working out some other things (see <A href="https://stackoverflow.com/q/48819031/2766176">Where did my Perl 6 operator go after I defined a more specific multi?</a> for one hiccup) to make the set operators work, though.

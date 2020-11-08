@@ -1,0 +1,124 @@
+<!--
+title: Quick Tip #15: Phasers
+link: http://www.learningraku.com/2016/11/30/quick-tip-15-phasers/
+author: brian
+post_id: 160
+date: 2016-11-30 10:32:25
+post_name: quick-tip-15-phasers
+status: publish
+type: post
+categories: kickstarter-tips subroutines
+tags: phasers
+-->
+
+
+Perl 6 has phasers, which are subroutines that run at particular times despite their spatial placement inside the the program text. As a program moves from one thing to another, it might trigger a phaser. I wanted to use a cute title like "Phasers set to stun!", but <a href="https://perl6advent.wordpress.com/2012/12/15/day-15-phasers-set-to-stun/">Jonathan Worthington got there first in the 2012 Perl 6 Advent Calendar</a>. (And, tomorrow is the first day of the <a href="https://perl6advent.wordpress.com">2016 Perl 6 Advent Calendar</a>). <!--more-->
+
+For instance, there's a boundary once the compiler has compiled the program and when the main execution of the program is about to begin. Or, when the program enters or leaves a block.
+
+Here are the <code>NEXT</code> and <code>LAST</code> block phasers:
+
+<pre class="brush:plain">
+for 0 .. 3 -> $item {
+	put "$item: I'm the last statement in this block";
+	NEXT { say "NEXT: About to move onto next iteration" }
+	LAST { say "LAST: I'm not running this block again" }
+	}
+</pre>
+
+The output shows that the <code>put</code> outputs its message, then the <code>NEXT</code> does. After all the iterations, the <code>LAST</code> runs:
+
+<pre class="brush:plain">
+0: I'm the last statement in this block
+NEXT: About to move onto next iteration
+1: I'm the last statement in this block
+NEXT: About to move onto next iteration
+2: I'm the last statement in this block
+NEXT: About to move onto next iteration
+3: I'm the last statement in this block
+NEXT: About to move onto next iteration
+LAST: I'm not running this block again
+</pre>
+
+But, I can rearrange the statements and get the same output:
+
+<pre class="brush:plain">
+for 0 .. 3 -> $item {
+	LAST { say "LAST: I'm not running this block again" }
+	NEXT { say "NEXT: About to move onto next iteration" }
+	put "$item: I'm the last statement in this block";
+	}
+</pre>
+
+The phasers are attached to Perl 6's block handling and aren't really part of the statements inside the block even though that's where I declared them.
+
+But, since I declared the phasers inside the block, they can bind to variables in that scope. Here I can output a message after the last iteration:
+
+<pre class="brush:plain">
+for 0 .. 15 -> $item {
+	state $count = 0;
+	if $item.is-prime {
+		put "$item is prime";
+		$count++;
+		}
+	LAST { say "There were $count primes" }
+	}
+</pre>
+
+That's really cool! I like this much more than adding another, outer scope to handle the variable and the final message:
+
+<pre class="brush:plain">
+{
+my $count;
+for 0 .. 15 -> $item {
+	if $item.is-prime {
+		put "$item is prime";
+		$count++;
+		}
+	}
+say "There were $count primes";
+}
+</pre>
+
+Note that even though the phasers don't particularly care about their textual position, the compiler needs to have already seen anything you want the phaser to reference. This won't work because <code>$count</code> doesn't exist yet:
+
+<pre class="brush:plain">
+for 0 .. 15 -> $item {
+	LAST { say "There were $count primes" }  # $count not compiled yet
+	state $count = 0;
+	if $item.is-prime {
+		put "$item is prime";
+		$count++;
+		}
+	}
+</pre>
+
+
+Here's a program the shows many of the phasers:
+
+<pre class="brush:plain">
+use v6;
+
+# Program execution
+BEGIN  { put "BEGIN, at compile time as soon as possible" }
+CHECK  { put "CHECK, at compile time, as late as possible" }
+INIT   { put "INIT, during main execution, as soon as possible" }
+END    { put "END, during main execution, as late as possible" }
+
+for 0 .. 3 -> $item {
+	my Int $square = $item ** 2;
+
+	# Block phasers
+	ENTER { say "\tENTER block" }
+	LEAVE { say "\tLEAVE block" }
+	KEEP  { say "KEEP block: Got value $_"  } # not implemented?
+	UNDO  { say "\t\tUNDO block"  }
+	PRE   { say "PRE block ------"  } # before running block
+	POST  { say "POST block" }        # after running block, before leaving
+
+	# Loop phasers
+	FIRST { say "\tFIRST loop" } # first one when beginning looping
+	NEXT  { say "\tNEXT loop"  } # last one while looping
+	LAST  { say "\tLAST loop"; say "**** LOOP is done ****"  } # last one when done looping
+	}
+</pre>

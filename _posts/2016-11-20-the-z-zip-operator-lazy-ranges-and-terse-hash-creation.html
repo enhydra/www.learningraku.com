@@ -1,0 +1,69 @@
+<!--
+title: Quick Tip #5: The Z=> zip operator, lazy ranges, and terse hash creation.
+link: http://www.learningraku.com/2016/11/20/the-z-zip-operator-lazy-ranges-and-terse-hash-creation/
+author: brian
+post_id: 62
+date: 2016-11-20 03:10:48
+post_name: the-z-zip-operator-lazy-ranges-and-terse-hash-creation
+status: publish
+type: post
+categories: kickstarter-tips
+tags: 
+-->
+
+
+Perl 6 has some very sophisticated operators, and many of them naturally do the sorts of things that we do quite a bit unnaturally otherwise. The strength of these operators are the ugliness they hide from us. <!--more-->
+
+Consider how I might turn a Perl 5 array into a hash, perhaps so I can use <code>exists</code> to lookup an item:
+
+<pre class="brush:perl">
+#!perl5
+my @array = qw( a b c d );
+my %hash  = map { $_ => 1 } @array;
+</pre>
+
+It might seem a bit shorter to try a hash slice assignment, but I like to declare my variables. This is this a bit goofy looking:
+
+<pre>
+#!perl5
+my %hash;
+@hash{ @array } = (1) x @array;
+</pre>
+
+It's a bit harder if I want the hash value to be the array position:
+
+<pre class="brush:perl">
+#!perl5
+my @array = qw( a b c d );
+my %hash  = map { $array[$_] => $_ } 0 .. $#array;
+
+# ... or
+@hash{ @array } = 0 .. $#array;
+</pre>
+
+I can still do these things the hard way in Perl 6. The <A href="https://docs.perl6.org/language/operators#Sequencer_Precedence">feed operators</a> (<code>==></code>, also known as <i>sequencer</i>) makes short work of declaring a variable on one side of the expression, doing work in the middle, and having the result end up in a declared variable on the other end. It's like an <code>xargs</code> for programming languages where the result of the generating side because the final arguments of the receiving side:
+
+<pre class="brush:plain">
+#!perl6
+my @array = < a b c d >
+	==> map( { $_ => 1 } )
+	==> my %hash1;
+</pre>
+
+I know I'm going to abuse those feed operators.
+
+What if I want the array index to be the value. Or, is it? Perl 6 does quite a bit to make it easy to create lists. If you make it easy to create complex data structures, you're going to be a nice language.
+
+I can use the <a href="https://docs.perl6.org/language/operators#Zip_Operators">zip metaoperator</a>, <code>Z</code> to apply the <a href="https://docs.perl6.org/language/operators#Item_Assignment_Precedence">item assignment operator</a>, <code>=></code> to corresponding pairs:
+
+<pre class="brush:plain">
+my %hash2 = @array Z=> 0 .. @array.end;
+</pre>
+
+This takes the first item in <code>@array</code> and pairs it with the first item in the <code>0 .. @array.end</code>.
+
+But, I don't even need to know about the end of the array. The zip operator stops when it gets to the end of the shorter list. I don't need to type out the name of the array again:
+
+<pre class="brush:plain">
+my %hash2 = @array Z=> 0 .. *;
+</pre>

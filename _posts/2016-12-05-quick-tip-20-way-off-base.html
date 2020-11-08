@@ -1,0 +1,60 @@
+<!--
+title: Quick Tip #20: Way off base
+link: http://www.learningraku.com/2016/12/05/quick-tip-20-way-off-base/
+author: brian
+post_id: 192
+date: 2016-12-05 09:33:53
+post_name: quick-tip-20-way-off-base
+status: publish
+type: post
+categories: command-line-program kickstarter-tips numbers
+tags: 
+-->
+
+
+Want to use numbers that are represented in something other than base 10? That's no problem in Perl 6. Some languages throw you a bone with binary, octal, or hexadecimal conversions, but what if you want base 17? Or, better yet, base 36?  <!--more-->
+
+First, for <A href="https://docs.perl6.org/type/Real">Real numbers</A> (or, non-complex numbers), I have the <a href="https://docs.perl6.org/type/Real#method_base">base</a> command:
+
+<pre class="brush:plain">
+$ perl6
+> 137.base(2)
+10001001
+> 137.base(8)
+211
+> 137.base(16)
+89
+> 137.base(36)
+3T
+</pre>
+
+I can go up to base-36 because that's how many digits and Latin letters the method uses. Those convert number types to strings.
+
+I can go the other way too. The <code>:DIGIT(string)</code> syntax converts strings to numbers:
+
+<pre class="brush:plain">
+> :2('10001001')
+137
+> :8('211')
+137
+> :16('89')
+137
+</pre>
+
+These assume that the string is a number represented that the radix after the colon. These return a Perl 6 number, which you can display in any base that you like.
+
+From there I can make some one-liners to convert bases. <a href="http://stackoverflow.com/a/2842150/2766176">I've done this for Perl 5</a>, and now I have them for Perl 6:
+
+<pre class="brush:plain">
+alias o2b="perl6 -e 'say sprintf q/:2(%b)/, :8(@*ARGS.shift)'"
+alias o2d="perl6 -e 'say sprintf q/:10(%d)/, :8(@*ARGS.shift)'"
+alias o2h="perl6 -e 'say sprintf q/:16(%x)/, :8(@*ARGS.shift)'"
+
+alias d2b="perl6 -e 'say sprintf  q/:2(%b)/, @*ARGS.shift'"
+alias d2o="perl6 -e 'say sprintf  q/:8(%d)/, @*ARGS.shift'"
+alias d2h="perl6 -e 'say sprintf q/:16(%x)/, @*ARGS.shift'"
+
+alias h2b="perl6 -e 'say sprintf  q/:2(%b)/, :16(@*ARGS.shift)'"
+alias h2o="perl6 -e 'say sprintf  q/:8(%o)/, :16(@*ARGS.shift)'"
+alias h2d="perl6 -e 'say sprintf q/:10(%d)/, :16(@*ARGS.shift)'"
+</pre>

@@ -1,0 +1,56 @@
+<!--
+title: Quick Tip #6: Data dumping is built into Rakudo
+link: http://www.learningraku.com/2016/11/21/quick-tip-6-data-dumping-is-built-in/
+author: brian
+post_id: 98
+date: 2016-11-21 00:38:11
+post_name: quick-tip-6-data-dumping-is-built-in
+status: publish
+type: post
+categories: kickstarter-tips
+tags: rakudo
+-->
+
+
+I've often wished that Perl 5's <a href="http://www.metacpan.org/module/Data::Dumper">Data::Dumper</a> was built into the language. I often have statements like: <!--more-->
+
+<pre class="brush:perl">
+#!perl5
+Dumper( @array ); use Data::Dumper;
+</pre>
+
+Or, if I'm playing with <a href="http://www.metacpan.org/module/Mojolicious">Mojolicious</a>:
+
+<pre class="brush:perl">
+#!perl5
+use Mojo::Util qw(dumper);
+dumper( @array );
+</pre>
+
+Rakudo (one of the Perl 6 implementations) has this baked in as <a href="https://docs.perl6.org/routine/dd">dd</a>. This is something extra beyond the Perl 6 specification. Here I drop into the REPL:
+
+<pre class="brush:plain">
+$ perl6
+> my @array = 'a' .. 'g'
+[a b c d e f g]
+> dd @array
+Array @array = ["a", "b", "c", "d", "e", "f", "g"]
+</pre>
+
+There is also the gist and perl methods. The first gives you output designed for people and the second shows the actual Perl interpretation:
+
+<pre class="brush:plain">
+> @array.gist
+[a b c d e f g]
+> @array.perl
+["a", "b", "c", "d", "e", "f", "g"]
+</pre>
+
+If that's not enough for you, there's the <a href="https://modules.perl6.org/">Data::Dump</a> module that can do many other things, including colorizing the output.
+
+<div align="image center">
+<div>
+<img src="/images/data-dump-color-output.png" height="349" width="500" />
+<p class="caption"></p>
+</div>
+</div>

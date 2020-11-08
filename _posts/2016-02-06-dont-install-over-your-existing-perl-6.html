@@ -1,0 +1,57 @@
+<!--
+title: Don't install over your existing Perl 6
+link: http://www.learningraku.com/2016/02/06/dont-install-over-your-existing-perl-6/
+author: brian
+post_id: 49
+date: 2016-02-06 20:27:42
+post_name: dont-install-over-your-existing-perl-6
+status: publish
+type: post
+categories: horrors stuff-im-playing-with
+tags: 
+-->
+
+
+When you want to install a new Perl 6 (or any of its backend stuff), don't install over what you already have working. The language and the tools aren't stable or reliable enough for you to end up with something that still works. It's getting better (relative to Pugs, which could take days, or the situation five years ago), but it doesn't pass the <A href="//www.urbandictionary.com/define.php?term=Grandma+Test">grandma test</a> yet. <!--more-->
+
+I'm at the first meeting of the Perl 6 Study Group in NYC, which Jim Keenan has organized in the back of <a href="//www.yelp.com/biz/d-b-a-new-york-2">dba</a>. That's the same place the first ever Perl users group meeting took place. My goal today was to explore some installation strategies for Perl 6.
+
+First, you aren't merely installing Perl 6. There's a <b>backend</b> you'll need. Perl 6 can run on <a href="//www.moarvm.org">MoarVM</a>, JVM, and maybe a few others. You'll need to build that. Second, you need to bootstrap Perl 6 since it's written in Perl 6. <A href="//github.com/perl6/nqp">NQP</a> (Not Quite Perl 6) is the path to that bootstrapping. Third, there's the Perl 6 implementation. Most people will go for <a href="//rakudo.org/downloads/star/">Rakudo</a>, but one of the goals of Perl 6 is to get away from the single, canonical interpreter we have in Perl 5 Land.
+
+<div class="image center">
+<div>
+<img src="http://i0.kym-cdn.com/entries/icons/original/000/000/574/moar-cat.jpg" width="500" height="392">
+</div>
+</div>
+
+Most of this you won't have to worry about in most cases. The <A href="//github.com/tadzik/rakudobrew">rakudobrew</a> tool automates this. When you follow that link, you'll end up on a GitHub page. When you run rakudobrew, you'll pull from several GitHub projects:
+
+<pre class="brush:perl">
+my %git_repos = (
+    rakudo => "$GIT_PROTO://github.com/rakudo/rakudo.git",
+    MoarVM => "$GIT_PROTO://github.com/MoarVM/MoarVM.git",
+    nqp    => "$GIT_PROTO://github.com/perl6/nqp.git",
+    panda  => "$GIT_PROTO://github.com/tadzik/panda.git",
+    zef    => "$GIT_PROTO://github.com/ugexe/zef.git",
+);
+</pre>
+
+I strongly believe that the path to mastery includes understanding what a tool does even if it automates really annoying stuff that you don't want to think about. You see the rakudo, MoarVM, and NQP components there. Panda and zef are Perl 6 module tools.
+
+Pulling directly from repos, even if its from a  specific tag, seems fragile and makes me nervous. Some of this is technically unfounded but socially aware. Pulling from several repos each time I want to build Perl 6 also makes me nervous. I could download <A href="//rakudo.org/downloads/star/">Rakudo Star</a>, a tarball that includes the basics and a MoarVM and install it by hand.
+
+rakudobrew is more interesting because it should manage several installed versions at the same time. Pulling from the repositories works fine, but the various hand-offs to external programs and the shell are fragile. I talked to a tech from Amazon Web Services about setting up a shared Perl 6 machine, and sadly he ran into problems on a fresh install of everything. These aren't uncommon. It's also the first problem that people are going to run into and the quickest way that they are going to give up. We need more binary packages until the installation system is reliable to the point that we never think about it.
+
+For my task, I installed several by hand and these worked without a problem:
+
+<pre class="brush:plain">
+$ perl Configure.pl --prefix=/Users/brian/Dropbox/Perl6/20160205 --gen-moar --make-install
+$ perl Configure.pl --prefix=/Users/brian/Dropbox/Perl6/20160205.2 --gen-moar --make-install
+$ git checkout -b v6.c
+$ perl Configure.pl --prefix=/Users/brian/Dropbox/Perl6/6.c --gen-moar --make-install
+</pre>
+
+For some reason, the same session wouldn't build using rakudobrew. It would fail with the a similar mismatch in tools I reported in <A href="//github.com/MoarVM/MoarVM/issues/334">Issue 334 for MoarVM</a>. Basically, the installer chooses a set of tools and adds them to the Makefile as the command name, like  <code>AR=ar</code>. This leaves it up to the path to choose the first one it finds, not the one that goes with the compiler it chose.
+
+I recommend that you don't nuke your existing implementation when you want a different version of Perl 6. You might even up with something that doesn't work. I should be old enough to know not to install new software while I'm at an airport, but I tried to upgrade and spent the rest of the flight trying to fix the installation errors.
+

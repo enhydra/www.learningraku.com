@@ -1,0 +1,84 @@
+<!--
+title: Quick Tip #24: How long did that take?
+link: http://www.learningraku.com/2016/12/09/quick-tip-24-how-long-did-that-take/
+author: brian
+post_id: 223
+date: 2016-12-09 20:13:38
+post_name: quick-tip-24-how-long-did-that-take
+status: publish
+type: post
+categories: kickstarter-tips performance phasers
+tags: 
+-->
+
+
+I can use P6's <a href="/2016/11/30/quick-tip-15-phasers/">phasers</a> to track how my program moves from one phase to the next. In particular, I'm curious about how much time my program spends in the compile-phase. P6 might be a bit slow now, or at least slower than you think it should be, but that's okay. The core developers want to be correct first and fast second (but, also both). If you look at the <A href="https://github.com/rakudo/rakudo/blob/nom/docs/ChangeLog">Rakudo change logs</a>, you see lots of entries mentioning big speedups in things they got working first and are now optimizing. <!--more-->
+
+Here I use <code>BEGIN</code> and <code>INIT</code>, although I leave off their braces. In the first <code>put</code> I concatenate a result with its label. In the second <code>put</code>, I interpolate a result into a string by placing code in braces in the string:
+
+<pre class="brush:plain">
+put "Compile to run time: " ~ INIT now - BEGIN now;
+sleep 3;
+put "Run time to finish: { now - INIT now }";
+</pre>
+
+I see that the compile time isn't that bad (it's not humanly noticeable in this program):
+
+<pre class="brush:plain">
+Compile to run time: 0.03161371
+Run time to finish: 3.00564300
+</pre>
+
+You might think its weird that those numbers come out like that when it looks like some things happen earlier than the statement that creates them. I can expand the example to see that the phasers fire before the statements that contain them:
+
+<pre class="brush:plain">
+INIT { put "Starting run time at { now }" }
+END  { put "Ending at { now }" }
+
+put "Compile to run time: " ~
+	INIT { put "INIT in run time message { now }"; now } \ # unspace!
+		-
+	BEGIN { put "BEGIN in run time message { now }"; now }
+	;
+sleep 3;
+put "Run time to finish: {
+	now - INIT { put "INIT in finish message { now }"; now }
+	}";
+</pre>
+
+You can see that <code>now</code> creates an <a href="https://docs.perl6.org/type/Instant">Instant</a> object:
+
+<pre class="brush:plain">
+BEGIN in run time message Instant:1481307679.940645
+Starting run time at Instant:1481307679.995588
+INIT in run time message Instant:1481307679.996641
+INIT in finish message Instant:1481307679.998188
+Compile to run time: 0.0538441
+Run time to finish: 3.0023635
+Ending at Instant:1481307683.004673
+</pre>
+
+I wanted to check how much of a hit I take by <a href="/2016/12/07/quick-tip-22-use-perl-5-modules-in-perl-6/">loading a Perl 5 module</a>:
+
+<pre class="brush:plain">
+use Business::ISBN:from&lt;Perl5>;
+
+my $isbn = Business::ISBN.new( '9781491954324' );
+put "ISBN: ", $isbn.as_string;
+
+put "Compile to run time: " ~ INIT now - BEGIN now;
+sleep 3;
+put "Run time to finish: { now - INIT now }";
+</pre>
+
+The results are much better than I thought. Even loading a file from a foreign language is quick. It's not even noticeable:
+
+<pre class="brush:plain">
+ISBN: 978-1-4919-5432-4
+Compile to run time: 0.0359533
+Run time to finish: 3.0084209
+</pre>
+
+If I loaded a different, more complicated module these result may be different. But, I was interested if there was a penalty for loading any module. I don't see it.
+
+

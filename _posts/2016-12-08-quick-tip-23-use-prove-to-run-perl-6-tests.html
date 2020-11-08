@@ -1,0 +1,43 @@
+<!--
+title: Quick Tip #23: Use prove to run Perl 6 tests
+link: http://www.learningraku.com/2016/12/08/quick-tip-23-use-prove-to-run-perl-6-tests/
+author: brian
+post_id: 219
+date: 2016-12-08 17:59:23
+post_name: quick-tip-23-use-prove-to-run-perl-6-tests
+status: publish
+type: post
+categories: kickstarter-tips testing
+tags: prove
+-->
+
+
+You can run Perl 6 tests with <code><a href="http://www.metacpan.org/module/App::prove">prove</a></code>. Forget for a moment that <code>prove</code> is a Perl 5 tool. It's just some tool that's magically on your system. It's a <a href="https://testanything.org">Test Anywhere Protocol</a> consumer so anything that outputs TAP is fine with it. <!--more-->
+
+I can tell the tool which program to use when it executes the test files by specifying it with <code>--exec</code>:
+
+<pre class="brush:plain">
+prove --exec perl6 some_test_file.t6
+</pre>
+
+A <a href="https://docs.perl6.org/language/testing">P6 test file</a> looks much like the old <a href="http://www.metacpan.org/module/">Test::More</a> stuff that you already know. However, since we've started fresh, it's just <a href="https://github.com/rakudo/rakudo/blob/nom/lib/Test.pm6">Test</a>:
+
+<pre class="brush:plain">
+use v6;
+
+use Test;
+
+subtest 'is' => {
+	is( "4", 4, "How do the Str and Int do?" );
+	is( <4>, 4, "How do the IntStr and Int do?" );
+	}
+
+subtest 'isa' => {
+	isa-ok( <4>, IntStr );
+	isa-ok( <4>, Int );
+	isa-ok( <4>, Str );
+	isa-ok( <4>, Rat );  # !!!
+	}
+
+done-testing;
+</pre>

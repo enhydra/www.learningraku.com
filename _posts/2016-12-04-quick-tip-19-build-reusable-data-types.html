@@ -1,0 +1,53 @@
+<!--
+title: Quick Tip #19: Build reusable data types
+link: http://www.learningraku.com/2016/12/04/quick-tip-19-build-reusable-data-types/
+author: brian
+post_id: 184
+date: 2016-12-04 14:59:29
+post_name: quick-tip-19-build-reusable-data-types
+status: publish
+type: post
+categories: kickstarter-tips types
+tags: 
+-->
+
+
+Perl 6 lets you constrain variable values with types, but you don't have to limit yourself to the built-in types. Once defined, these act like the built-in types. Here are some subsets I've stolen from Brad Clawsie's <A href="https://github.com/bradclawsie/Subsets-Common">Subsets::Common</a> module: <!--more-->
+
+<pre class="brush:plain">
+my package EXPORT::DEFAULT {
+	...
+	subset Pos of Numeric where * > 0;
+	subset Neg of Numeric where * < 0;
+	subset Zero of Numeric where * == 0;
+	subset UNumeric of Numeric where * >= 0;
+
+	subset Even of Int where * % 2 == 0;
+	subset Odd  of Int where * % 2;
+
+	subset Time::Hour12 of PosInt where * ~~ 1 .. 12;
+	subset Time::Hour24 of Int    where * ~~ 0 .. 23;
+	subset Time::Minute of Int    where * ~~ 0 .. 59;
+	subset Time::Second of Int    where * ~~ 0 .. 59;
+	...
+}
+</pre>
+
+The <code>subset</code> started the declaration and is followed by the name you want for the new type. This is a subset because you base it on an existing type that you declare with <code>of</code>. After that, you can use a <code>where</code> clause to refine your new type.
+
+And, Brad put these in a package where he declared that everything is exported.
+
+Here's one that I created for my Perl 6 version of <A href="https://github.com/briandfoy/perl6-chemistry-elements">Chemistry::Elements</a>. Don't worry so much about what's in the code; think more about the ability to have any code you need to decide if the value fits the constraint that you like. Here's the type I defined to constrain an integer to a known atomic number (typically called Z from the German word <i>Zahl</i>, as in <i>Atomzahl</i>):
+
+<pre class="brush:plain">
+	subset ZInt of Cool is export where {
+		state ( $min, $max ) = %names.keys.sort( { $^a <=> $^b } ).[0,*-1];
+		( $_.truncate == $_ and $min <= $_ <= $max )
+			or
+		note "Expected a known atomic number between $min and $max, but got $_"
+			and
+		False;
+		};
+</pre>
+
+For my subset, I exported it by declaring it <code>is export</code> so other people using the module could use the type outside of my module. Most notably (heh), I can give a specific error message when the value doesn't match.

@@ -1,0 +1,37 @@
+<!--
+title: Use pre-built Rakudo packages on Appveyor
+link: http://www.learningraku.com/2018/03/15/use-pre-built-rakudo-packages-on-appveyor/
+author: brian
+post_id: 592
+date: 2018-03-15 03:07:48
+post_name: use-pre-built-rakudo-packages-on-appveyor
+status: publish
+type: post
+categories: coding-tools testing
+tags: appveyor continuous-integration
+-->
+
+
+I've been fooling around with <A href="/2018/03/15/use-pre-built-rakudo-packages-on-travis-ci/">pre-built Rakudo packages on Travis CI</a> so I figured that I should do the same on AppVeyor. Last night I had a <A href="https://ci.appveyor.com/project/briandfoy/venturi/build/1.0.12/job/ahmktqs4ynu5u7x2">Ubuntu build that ran out of memory</a> before it could finish compiling Rakudo and it gave up. <a href="https://www.appveyor.com/docs/getting-started-with-appveyor-for-linux/">AppVeyor is rolling out Linux support</a> and I suspect their initial machines are underpowered (especially the ones I get for free—completely reasonable) but I haven't investigated it. It's certainly easier than the Pugs installations which could take days although much of that was just GHC. <!--more-->
+
+The Windows side is easy because I use the <a href="/2017/05/01/rakudo-in-chocolatey-makes-appveyor-easier/">rakudo-star chocolatey package</a>.
+
+This configuration is mostly the same as <A href="/2018/03/15/use-pre-built-rakudo-packages-on-travis-ci/">what I am doing on Travis</A> but translated to a configuration that's handling Windows and Linux at the same time. Lines starting with <code>sh:</code> are run on Linux only; lines with no prefix are run on both systems.
+
+<pre class="brush:plain">
+environment:
+  TEMPDIR: /tmp
+  RAKUDO_PKG_URL: https://github.com/nxadm/rakudo-pkg/releases/download/v2018.02.1/rakudo-pkg-Ubuntu14.04_2018.02.1-01_amd64.deb
+
+install:
+  # Ubuntu install
+  - sh: cd ${TEMPDIR}
+  - sh: wget -O rakudo-pkg.deb ${RAKUDO_PKG_URL}
+  - sh: sudo dpkg -i rakudo-pkg.deb
+  - sh: export PATH=$PATH:~/.perl6/bin:/opt/rakudo-pkg/bin
+  - perl6 -v
+  # zef and dependencies
+  - sh: git clone https://github.com/ugexe/zef.git && cd zef && perl6 -Ilib bin/zef install .
+  - sh: cd ${APPVEYOR_BUILD_FOLDER}
+  - zef --debug --depsonly install .
+</pre>

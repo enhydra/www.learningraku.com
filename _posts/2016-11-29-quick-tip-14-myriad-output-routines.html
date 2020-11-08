@@ -1,0 +1,79 @@
+<!--
+title: Quick Tip #14: Myriad output routines
+link: http://www.learningraku.com/2016/11/29/quick-tip-14-myriad-output-routines/
+author: brian
+post_id: 149
+date: 2016-11-29 13:55:52
+post_name: quick-tip-14-myriad-output-routines
+status: publish
+type: post
+categories: kickstarter-tips output
+tags: 
+-->
+
+
+Perl 6 has many ways to output things. Here's a table of the various routines you may want, along with their subtle differences. <!--more-->
+
+<table cellpadding=10px cellspacing=10px>
+
+<tr>
+	<th style="bgcolor: yellow; padding-right: 5px:">routine&nbsp;&nbsp;</th>
+	<th>IO handle&nbsp;&nbsp;</th>
+	<th>Behavior&nbsp;&nbsp;</th>
+</tr>
+
+<tr>
+	<td><code><a href="https://docs.perl6.org/routine/print">print</a></code></td>
+	<td><code>$*OUT</code></td>
+	<td></td>
+</tr>
+
+<tr>
+	<td><code><a href="https://docs.perl6.org/routine/printf">printf</a></code></td>
+	<td>IO::Handle object</td>
+	<td>Call as a method on some <A href="https://docs.perl6.org/type/IO$COLON$COLONHandle#method_printf">IO::Handle</a> object.&nbsp;&nbsp;</td>
+</tr>
+
+<tr>
+	<td><code><a href="https://docs.perl6.org/routine/put">put</a></code></td>
+	<td><code>$*OUT</code></td>
+	<td>Outputs its arguments and adds the line-ending</td>
+</tr>
+
+<tr>
+	<td><code><a href="https://docs.perl6.org/routine/say">say</a></code></td>
+	<td><code>$*OUT</code></td>
+	<td>Adds newline, uses <code><a href="https://docs.perl6.org/routine/gist">.gist</a></code> on non-<code>Str</code> objects</td>
+</tr>
+
+<tr>
+	<td><code><a href="https://docs.perl6.org/routine/note">note</a></code></td>
+	<td><code>$*ERR</code></td>
+	<td>Adds newline, uses <code><a href="https://docs.perl6.org/routine/gist">.gist</a></code> on non-<code>Str</code> objects</td>
+</tr>
+
+<tr>
+	<td><code><a href="https://docs.perl6.org/routine/dd">dd</a></code></td>
+	<td><code>$*ERR</code></td>
+	<td>Rakudo extension for data dumping. It actually wraps <code><a href="https://docs.perl6.org/routine/note">warn</a></code>.</td>
+</tr>
+
+<tr>
+	<td><code><a href="https://docs.perl6.org/routine/prompt">prompt</a></code></td>
+	<td><code>$*OUT</code></td>
+	<td>Outputs arguments, then waits for a line of input. It returns the line without the newline.</td>
+</tr>
+
+<tr>
+	<td><code><a href="https://docs.perl6.org/routine/die">die</a></code></td>
+	<td><code>$*ERR</code></td>
+	<td>Throws an exception. The default handler prints a stacktrace to standard error.</td>
+</tr>
+
+<tr>
+	<td><code><a href="https://docs.perl6.org/routine/note">warn</a></code></td>
+	<td></td>
+	<td>Throws an exception. You properly might want <code><a href="https://docs.perl6.org/routine/note">note</a></code> instead.</td>
+</tr>
+
+</table>

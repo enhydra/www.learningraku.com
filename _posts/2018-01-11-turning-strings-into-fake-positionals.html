@@ -1,0 +1,54 @@
+<!--
+title: Turning strings into fake positionals
+link: http://www.learningraku.com/2018/01/11/turning-strings-into-fake-positionals/
+author: brian
+post_id: 397
+date: 2018-01-11 07:25:56
+post_name: turning-strings-into-fake-positionals
+status: publish
+type: post
+categories: strings
+tags: 
+-->
+
+
+While playing with some strings I realized that I really wanted strings to do the <a href="https://docs.perl6.org/type/Positional">Positional</a> role. When I'm inspecting or modifying strings I'm often doing things based on positions so the <code>Positional</code> interface seems interesting. Just for fun I can adapt the <code>[ ]</code> to be the interface to <code>substr</code>: <!--more-->
+
+<pre class="brush:plain">
+multi postcircumfix:<[ ]> ( Str:D $s, Int:D $n --> Str ) {
+	$s.substr: $n, 1
+	}
+multi postcircumfix:<[ ]> ( Str:D $s, Range:D $r --> Str ) {
+	$s.substr: $r.min, $r.max - $r.min + 1
+	}
+multi postcircumfix:<[ ]> ( Str:D $s, List:D $i --> List ) {
+	map( { $s.substr: $_, 1 }, @$i ).List
+	}
+
+my $string = 'The quick, purple butterfly';
+
+{ # Works
+my $single = $string[0];
+say $single;
+}
+
+{ # Works
+my $substring = $string[5..9];
+say $substring;
+}
+
+{ # Works
+my $substring = $string[1,3,5,7];
+say $substring;
+}
+</pre>
+
+This outputs:
+
+<pre class="brush:plain">
+T
+uick,
+(h   u c)
+</pre>
+
+I don't want to make a habit of this though even if it is interesting.

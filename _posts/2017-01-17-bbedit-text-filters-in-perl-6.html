@@ -1,0 +1,76 @@
+<!--
+title: BBEdit Text Filters in Perl 6
+link: http://www.learningraku.com/2017/01/17/bbedit-text-filters-in-perl-6/
+author: brian
+post_id: 305
+date: 2017-01-17 14:26:26
+post_name: bbedit-text-filters-in-perl-6
+status: publish
+type: post
+categories: coding-tools
+tags: 
+-->
+
+
+I've been writing BBEdit <q href="http://bbeditextras.org/wiki/index.php?title=Text_Filters">Text Filters</a> in Perl 6. This isn't revolutionary and I've made no great hack. It's not a hidden part of the BBEdit docs, and it's not a feature unique to my favorite editor. You don't even need to use Perl 6; any unix interpreter will do. Your editor can probably do the same thing, and maybe even with the same programs.
+
+<div class="image center">
+<div>
+<img src="/images/text_filters.png" height="430" width="500" style="border:0"/>
+</div>
+</div>
+
+
+<!--more-->
+
+In your <i>.../Application Support/BBEdit/Text Filters</i>, drop in any sort of Unix script you like (mine is actually in my Dropbox folder and thus shared across my network, a feature from <a href="http://www.barebones.com/products/bbedit/bbedit10.html">BBEdit 10</A>). It uses the shebang line to run the program just as it does if you run it from the command line. This text filter gets the text you selected in the editor. Whatever you print to standard output replaces the selected text.
+
+I wanted to turn a string into the codepoint numbers and names that represent their characters. Here's that in Perl 6:
+
+<pre class="brush:plain">
+#!/Applications/Rakudo/bin/perl6
+
+$*IN
+	.lines
+	.map: {
+		eager ($_.ords Z, $_.uninames).map: {
+			printf "%04x %s\n", $_.list
+			}
+		}
+</pre>
+
+This turns text such as "Hamadryas" into this:
+
+<pre class="brush:plain">
+0048 LATIN CAPITAL LETTER H
+0061 LATIN SMALL LETTER A
+006d LATIN SMALL LETTER M
+0061 LATIN SMALL LETTER A
+0064 LATIN SMALL LETTER D
+0072 LATIN SMALL LETTER R
+0079 LATIN SMALL LETTER Y
+0061 LATIN SMALL LETTER A
+0073 LATIN SMALL LETTER S
+</pre>
+
+There's another text filter I like. I use it to align <code>=</code> and <code>=&gt;</code> (or anything that starts with <code>=</code> in code:
+
+<pre class="brush:plain">
+my $longest = 0;
+my @lines;
+
+for $*IN.lines -> $line {
+	my @columns = $line.split( / \s+ '=' \S+ \s+ /, 2 );
+	$longest max= @columns.[0].chars;
+	push @lines, @columns;
+	}
+
+for @lines -> $line {
+	printf "%-{$longest}s => %s\n", $line.list;
+	}
+</pre>
+
+Notice that <code>max=</code>. That's a binary assignment with the <a href="https://docs.perl6.org/language/operators#infix_max">max</a> operator. That's like <code>$longest = $longest max @columns.[0].chars</code>.
+
+Now I need to figure out why BBEdit won't allow me to assign a keyboard shortcut to it.
+

@@ -1,0 +1,53 @@
+<!--
+title: Rakudo in Chocolatey makes AppVeyor easier
+link: http://www.learningraku.com/2017/05/01/rakudo-in-chocolatey-makes-appveyor-easier/
+author: brian
+post_id: 364
+date: 2017-05-01 23:59:04
+post_name: rakudo-in-chocolatey-makes-appveyor-easier
+status: publish
+type: post
+categories: coding-tools
+tags: appveyor chocolatey
+-->
+
+
+Rakudo is now easier to install on Windows. <a href="https://chocolatey.org/packages/rakudostar">Rakudo Star is now in Chocolatey</a> (with 2017.04 awaiting moderation as I write this). This makes it much easier to automatically deploy Rakudo Star in Windows environments.
+
+<div class="image center">
+<div>
+<img src="/images/chocolatey.png" height="216" width="500" />
+</div>
+</div>
+
+<!--more-->
+
+Earlier this month I spent too much time getting <A href="/2017/04/02/rakudo-star-on-appveyor/">Rakudo to install on AppVeyor</a>, and, having spent too much time on that, I spent a bunch more getting co-maintainer permissions on the chocolatey package. I updated the original package created by Jake Russo back in 2015, including all the new chocolatey requirements. I have all of that in GitHub as <a href="https://github.com/briandfoy/rakudo-star-chocolatey">rakudo-star-chocolatey</a>. After the semi-manual approval process, I have a fresh Rakudo available. Two days later 2017.04 came out. I've updated the package again and it's in moderation (should clear in a couple days).
+
+Using a package manager that other services already support makes it a cinch to deploy Rakudo there. For example, Windows 10 has <a href="https://github.com/OneGet/oneget/blob/master/readme.md">OneGet</a>, a manager of package managers. You can install several package manager and ask OneGet to install something. Somehow it figures out who can provide it and does the magic:
+
+<div class="image center">
+<div>
+<img src="/images/oneget-powershell.png" height="369" width="500" style="border:1" />
+</div>
+</div>
+
+That looks complicated, but it's really two commands with some confirmations:
+
+<pre class="brush:plain">
+PS C:\> Get-PackageProvider -name chocolatey
+
+PS C:\> Install-Package rakudostar
+</pre>
+
+You probably have to answer a couple of questions in this process. The rakudostar package isn't trusted, but the chocolatey package has the SHA256 of the MSI from <a href="http://rakudo.org/">rakudo.org</a>. But, chocolatey also trusts me to use the right URL. I could put anything in there. I'll have to work on the trusted part some other time (unless you want to figure it out).
+
+Now my AppVeyor config in the <a href="https://github.com/briandfoy/perl6_appveyor_test"> perl6_appveyor_test</a> test project is now much simpler. The Rakudo installation is a couple of lines instead of the tricky PowerShell I had before:
+
+<pre class="plain">
+  - if not exist "C:\Rakudo" cinst rakudostar
+  - SET PATH=C:\rakudo\bin;C:\rakudo\share\perl6\site\bin;%PATH%
+  - ps: refreshenv
+  - perl6 -v
+</pre>
+ 
