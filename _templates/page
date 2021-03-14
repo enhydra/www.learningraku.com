@@ -1,0 +1,13 @@
+<!--
+
+This is the the page template
+
+<%= dump_vars =%>
+
+-->
+
+<%= header() =%>
+
+<%= page_div() =%>
+
+<%= footer() =%>

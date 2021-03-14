@@ -2,14 +2,69 @@
 use v5.10;
 use strict;
 use warnings;
+
 use experimental qw(signatures);
 
+use File::FindLib 'lib';
+use File::Path qw(make_path);
+use Local::Template::Utils;
+use Mojo::Template::SandBox;
+
+use Carp qw(carp croak);
+use File::Spec::Functions;
+use Hash::AsObject;
+use Mojo::JSON qw(encode_json);
+use Mojo::Log;
 use Mojo::Template;
+use Mojo::Util qw(dumper);
+
+my $log    = get_logger();
+my $config = get_config();
 
 my @files = glob( "_posts/*.html" );
 
+my @items;
+END {
+	open my $fh, '>:raw', $config->{items_json} or do {
+		$log->error( "Could not open <$config->{items_json}> for writing: $!" );
+		exit 1;
+		};
+	print { $fh } encode_json( \@items );
+	close $fh;
+	}
+
 foreach my $file ( @files ) {
-	say "$file";
+	$log->info( "File: <$file>" );
+	Mojo::Template::SandBox::clear_vars();
+	my( $header, $content ) = split_doc( $file );
 
+	my $template_path = catfile( $config->{template_dir}, $config->{template} );
 
+	my $local_path = catfile( $config->{base_dir}, local_path( $file, $header ) );
+	my $vars = {
+		file               => $file,
+		processing_epoch   => time,
+		processing_datestr => scalar CORE::localtime,
+		post_epoch         => get_epoch_time( $header->{date} ),
+		local_path         => $local_path,
+		content            => $content,
+		web_path           => Mojo::URL->new( $header->{link} )->path,
+		config             => $config,
+		$header->%*,
+		};
+	Mojo::Template::SandBox::set_vars( $vars );
+
+	my $cooked = get_templater()->render_file( $template_path );
+
+	write_page( $local_path, $cooked );
+
+	push @items, do { my %h = $vars->%*; delete $h{content}; \%h };
+	}
+
+sub write_page ( $path, $content ) {
+	make_path( $path );
+
+	open my $fh, '>:encoding(UTF-8)', catfile( $path, 'index.html' );
+	say $fh $content;
+	close $fh;
 	}

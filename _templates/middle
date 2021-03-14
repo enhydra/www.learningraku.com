@@ -1,0 +1,7 @@
+<div id="middle">
+
+<%= sidebar =%>
+
+<%= article =%>
+
+</div> <!-- middle -->

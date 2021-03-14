@@ -1,0 +1,10 @@
+<html>
+
+<head>
+	<base href="../../../../">
+	<title><%= title %></title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="" />
+	<meta charset="UTF-8" />
+</head>
+

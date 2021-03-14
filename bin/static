@@ -1,0 +1,13 @@
+#!/usr/bin/env perl
+use Mojolicious::Lite;
+
+my $app = app;
+my $static = $app->static;
+push @{$static->paths}, ('docs');
+
+get '/' => sub {
+    my $self = shift;
+    #... do something for a homepage here ...
+};
+
+$app->start;

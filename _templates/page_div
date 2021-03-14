@@ -1,0 +1,11 @@
+<body>
+<div id="page">
+
+<%= menu =%>
+
+<%= middle =%>
+
+<%= bottom =%>
+
+</div> <!-- page_div -->
+</body>

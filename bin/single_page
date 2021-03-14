@@ -1,0 +1,33 @@
+#!perl
+use v5.20;
+use experimental qw(signatures);
+
+use File::FindLib qw(lib);
+
+use File::Spec::Functions;
+use Mojo::Template::SandBox;
+
+use Local::Template::Utils;
+
+my( $template, $output_path ) = @ARGV;
+$template    //= 'index.html';
+$output_path //= 'index.html';
+
+my $config    = get_config();
+my $items     = get_items();
+
+my $template_path = find_file( $template );
+
+Mojo::Template::SandBox::set_vars( {
+	items  => $items,
+	config => $config,
+	} );
+
+my $cooked = get_templater()->render_file( $template_path );
+
+open my $fh, '>:encoding(UTF-8)',
+	catfile( $config->{base_dir}, $output_path );
+print {$fh} $cooked;
+close $fh;
+
+

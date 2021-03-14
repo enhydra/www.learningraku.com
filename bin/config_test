@@ -1,0 +1,23 @@
+#!perl
+use v5.10;
+use strict;
+use warnings;
+
+use experimental qw(signatures);
+
+use File::FindLib 'lib';
+use File::Path qw(make_path);
+use Local::Template::Utils;
+use Mojo::Template::SandBox;
+
+use Carp qw(carp croak);
+use File::Spec::Functions;
+use Hash::AsObject;
+use Mojo::JSON qw(encode_json);
+use Mojo::Log;
+use Mojo::Template;
+use Mojo::Util qw(dumper);
+
+my $config = get_config();
+
+say dumper( $config );
