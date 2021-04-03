@@ -1,13 +1,48 @@
 #!/usr/bin/env perl
+use v5.26;
 use Mojolicious::Lite;
+use experimental qw(signatures);
 
-my $app = app;
-my $static = $app->static;
-push @{$static->paths}, ('docs');
+use lib qw(lib);
 
-get '/' => sub {
-    my $self = shift;
-    #... do something for a homepage here ...
-};
 
-$app->start;
+use File::Spec::Functions;
+
+use Local::Template::Utils;
+
+@ARGV = qw(daemon);
+
+use Cwd;
+my $subdir = get_config()->{'base_dir'};
+
+my $base_path = catfile( getcwd(), $subdir );
+say STDERR "Path is <$base_path>";
+app->static->paths->[0] = $base_path;
+
+any '/' => sub ( $c ) { $c->reply->static('index.html') };
+
+any '/*subpath' => { subpath => '' } => sub ( $c ) {
+	my $subpath = $c->param( 'subpath' );
+
+	say STDERR "Need to handle <$subpath>";
+	my $path = catfile( $base_path, $subpath );
+	say STDERR "file system path is <$path>";
+
+	LOOP: {
+		my $path = catfile( $base_path, $subpath );
+		if( -d $path ) {
+			$subpath = catfile( $subpath, 'index.html' );
+			redo;
+			}
+		elsif( -e $path ) {
+			say STDERR "Rendering <$path> <$subpath>";
+			$c->reply->static( $subpath ); # must be relative
+			}
+		else {
+			say STDERR "No handler for <$subpath>";
+			last;
+			}
+		}
+	};
+
+app->start;
