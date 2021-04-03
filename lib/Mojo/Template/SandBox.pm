@@ -34,25 +34,28 @@ sub include ( $file, $raw = 0 ) {
 	get_templater()->render( $contents );
 	}
 
+=head2 Manipulating variables
+
+=over 4
+
+=cut
+
+sub set_vars   ( $hash = {} )   { $vars = $hash }
+sub set_var    ( $key, $value ) { $vars->{$key} = $value }
+sub get_var    ( $key )         { $vars->{$key} }
+sub clear_vars ()               { $vars = {} }
+
+sub dump_vars  ()               { delete local $vars->{content}; dumper( $vars ) }
+
+=back
+
 =head2 Variable things
 
 =cut
 
-
-sub title   { $vars->{title}   // '' }
-sub content { $vars->{content} // '' }
-sub recent_articles ( $count = 5 ) {
-	my $json = get_items( $vars->{config}{items_json} );
-
-	my @posts =
-		reverse
-		sort by_post_epoch
-		grep { $_->{type} eq 'post' }
-		$json->@*;
-
-	@posts[0..$count-1];
-	}
 sub cname { $vars->{config}{cname} }
+
+sub content { $vars->{content} // '' }
 
 sub excerpt ( $post ) {
 	my $data = Mojo::File->new( $post->{local_path} )->slurp;
@@ -64,11 +67,18 @@ sub excerpt ( $post ) {
 	$excerpt . '';
 	}
 
-sub set_vars   ( $hash = {} )   { $vars = $hash }
-sub set_var    ( $key, $value ) { $vars->{$key} = $value }
-sub get_var    ( $key )         { $vars->{$key} }
-sub clear_vars ()               { $vars = {} }
+sub recent_articles ( $count = 5 ) {
+	my $json = get_items( $vars->{config}{items_json} );
 
-sub dump_vars  ()               { delete local $vars->{content}; dumper( $vars ) }
+	my @posts =
+		reverse
+		sort by_post_epoch
+		grep { $_->{type} eq 'post' }
+		$json->@*;
+
+	@posts[0..$count-1];
+	}
+
+sub title { $vars->{title}   // '' }
 
 1;
