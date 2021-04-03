@@ -4,6 +4,7 @@ use experimental qw(signatures);
 
 use Local::Template::Utils;
 
+use Cwd qw(getcwd);
 use Mojo::DOM;
 use Mojo::Util qw(dumper);
 
@@ -41,10 +42,13 @@ sub include ( $file, $raw = 0 ) {
 sub title   { $vars->{title}   // '' }
 sub content { $vars->{content} // '' }
 sub recent_articles ( $count = 5 ) {
+	my $json = get_items( $vars->{config}{items_json} );
+
 	my @posts =
+		reverse
 		sort by_post_epoch
-		grep { $_->{type} = 'post' }
-		$vars->{items}->@*;
+		grep { $_->{type} eq 'post' }
+		$json->@*;
 
 	@posts[0..$count-1];
 	}
