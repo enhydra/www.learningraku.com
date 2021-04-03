@@ -14,12 +14,12 @@
 <p><i>Many resources have not changed the name from Perl 6 to Raku, so these resources may use either.</i></p>
 <p><a href="https://design.raku.org">Raku Design Docs (dated)</a><br />
 <a href="http://docs.raku.org">Raku Docs</a><br />
-<a href="https://learnxinyminutes.com/docs/perl6/">Learn Perl 6 in Y Minutes</a><br />
+<a href="https://learnxinyminutes.com/docs/raku/">Learn Raku in Y Minutes</a><br />
 <a href="https://modules.raku.org">Raku modules</a><br />
-<a href="https://rosettacode.org/wiki/Category:Perl_6">Rosetta Code examples</a><br />
+<a href="https://rosettacode.org/wiki/Category:Raku">Rosetta Code examples</a><br />
 <a href="http://examples.perl6.org/categories/euler.html">Project Euler examples</a><br />
 <a href="http://examples.perl6.org">Perl 6 Examples</a><br />
-<a href="https://github.com/perl6/roast">Raku Roast (test suite examples)</a></p>
+<a href="https://github.com/Raku/roast">Raku Roast (test suite examples)</a></p>
 </div>
 
 </div> <!-- sidebar -->
