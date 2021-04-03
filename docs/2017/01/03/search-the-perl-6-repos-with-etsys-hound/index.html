@@ -1,0 +1,187 @@
+<!--
+
+{
+  "author" => "brian",
+  "categories" => "stuff-im-playing-with writing-process",
+  "config" => {
+    "base_dir" => "docs",
+    "default_test" => "abc",
+    "items_json" => "docs/items.json",
+    "last" => undef,
+    "recent_items" => 5,
+    "site_title" => "Learning Perl 6 (Raku)",
+    "template" => "default",
+    "template_dir" => "_templates"
+  },
+  "date" => "2017-01-03 22:51:05",
+  "file" => "_posts/2017-01-03-search-the-perl-6-repos-with-etsys-hound.html",
+  "link" => "http://www.learningraku.com/2017/01/03/search-the-perl-6-repos-with-etsys-hound/",
+  "local_path" => "docs/2017/01/03/search-the-perl-6-repos-with-etsys-hound/index.html",
+  "post_epoch" => 1483483865,
+  "post_id" => 270,
+  "post_name" => "search-the-perl-6-repos-with-etsys-hound",
+  "processing_datestr" => "Sat Apr  3 09:36:20 2021",
+  "processing_epoch" => 1617456980,
+  "status" => "publish",
+  "tags" => "",
+  "title" => "Search the Perl 6 repos with Etsy's Hound",
+  "type" => "post",
+  "web_path" => bless( {
+    "path" => "/2017/01/03/search-the-perl-6-repos-with-etsys-hound/"
+  }, 'Mojo::Path' )
+}
+
+-->
+
+<html>
+
+<head>
+	<base href="../../../../">
+	<title>Search the Perl 6 repos with Etsy's Hound</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="" />
+	<meta charset="UTF-8" />
+</head>
+
+<!--
+
+This is the the page template
+
+{
+  "author" => "brian",
+  "categories" => "stuff-im-playing-with writing-process",
+  "config" => {
+    "base_dir" => "docs",
+    "default_test" => "abc",
+    "items_json" => "docs/items.json",
+    "last" => undef,
+    "recent_items" => 5,
+    "site_title" => "Learning Perl 6 (Raku)",
+    "template" => "default",
+    "template_dir" => "_templates"
+  },
+  "date" => "2017-01-03 22:51:05",
+  "file" => "_posts/2017-01-03-search-the-perl-6-repos-with-etsys-hound.html",
+  "link" => "http://www.learningraku.com/2017/01/03/search-the-perl-6-repos-with-etsys-hound/",
+  "local_path" => "docs/2017/01/03/search-the-perl-6-repos-with-etsys-hound/index.html",
+  "post_epoch" => 1483483865,
+  "post_id" => 270,
+  "post_name" => "search-the-perl-6-repos-with-etsys-hound",
+  "processing_datestr" => "Sat Apr  3 09:36:20 2021",
+  "processing_epoch" => 1617456980,
+  "status" => "publish",
+  "tags" => "",
+  "title" => "Search the Perl 6 repos with Etsy's Hound",
+  "type" => "post",
+  "web_path" => bless( {
+    "path" => "/2017/01/03/search-the-perl-6-repos-with-etsys-hound/"
+  }, 'Mojo::Path' )
+}
+
+-->
+
+<html>
+
+<head>
+	<base href="../../../../">
+	<title>Search the Perl 6 repos with Etsy's Hound</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="" />
+	<meta charset="UTF-8" />
+</head>
+
+<body>
+<div id="page">
+
+<div id="top">
+<A href="/index/">Home</a> •
+<A href="/about/">About</a> •
+<a href="/book/">Book</a> •
+<a href="/downloads/">Downloads</a>
+</div>  <!-- top -->
+
+<div id="middle">
+
+<div id="sidebar">
+<img id="small_cover" src="images/cover.png" width="180" height="236" />
+
+<div id="sponsors">
+<p>Github sponsors</p>
+</div>
+
+<h2 class="sidebar">Links</h2>
+
+<div class="textwidget"><p><a href="https://www.oreilly.com/catalog/errata.csp?isbn=0636920062776">Book errata</a><br />
+<a href="https://goo.gl/EbA7gF">Google Books preview</a><br />
+<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a></p>
+<hr />
+<p><i>Many resources have not changed the name from Perl 6 to Raku, so these resources may use either.</i></p>
+<p><a href="https://design.raku.org">Raku Design Docs (dated)</a><br />
+<a href="http://docs.raku.org">Raku Docs</a><br />
+<a href="https://learnxinyminutes.com/docs/raku/">Learn Raku in Y Minutes</a><br />
+<a href="https://modules.raku.org">Raku modules</a><br />
+<a href="https://rosettacode.org/wiki/Category:Raku">Rosetta Code examples</a><br />
+<a href="http://examples.perl6.org/categories/euler.html">Project Euler examples</a><br />
+<a href="http://examples.perl6.org">Perl 6 Examples</a><br />
+<a href="https://github.com/Raku/roast">Raku Roast (test suite examples)</a></p>
+</div>
+
+</div> <!-- sidebar -->
+
+<div id="content">
+
+<div class="image center">
+<div>
+<img src="https://c5.staticflickr.com/3/2135/2130638404_84c86b7421.jpg"
+ width="500" height="375" style="margin-left:auto;margin-right: auto;border=0;">
+<p><A href="https://www.flickr.com/photos/estro/2130638404/in/photolist-4fh5yU-4pLHQm-7twak7-4oxJAp-5h8irh-9oLE2R-7dQjxW-qjC7PD-4fd6Qk-4rnfnT-dFG2gm-4XwGbT-7X3gZx-nLrwqL-pqtnLg-5TN4uu-J7g8U-4szusX-9AoQfP-4RZQvi-qznvt2-8ikYRU-84dnnC-67u5aW-71XbMG-EGZvVg-4QSXQr-qpjiqS-3yTHwC-6AUnqD-7REW8b-49We4b-nugBMy-5j2Z3t-4u8LAj-88hh5t-mAn8bb-67u5Fh-bE8inF-bMQ27c-o4GKCN-9mkmaR-jwf4dB-9AmJYf-4rnd1k-ef42Vy-nAccQ2-qfNq8X-pjzKdR-Hr2Qwd">Hound photo</a> by <a href="https://www.flickr.com/photos/estro/">Jen on Flickr</a></p>
+</div>
+</div>
+
+I'm working on <a href="https://www.learningperl6.org">Learning Perl 6</a> and I spend a lot of my time going between repos to suss out various things. Etsy's <A href="https://github.com/etsy/hound">Hound</a> is a tool that makes that easier, and I've made a <a href="https://github.com/briandfoy/perl6-hound">GitHub project with my setup</a>.
+
+<!--more-->
+
+<a href="http://www.perl6.org">Perl 6</a> development is spread over several repositories. That's a consequence that there's no <i>a priori</i> preferred implementation, and that's on purpose.
+
+Anything that passes the <a href="https://github.com/perl6/roast">roast tests</a> is Perl 6. That has its own repo. <a href="https://github.com/rakudo/rakudo">Rakudo</a> is one such implementation. It has its own repo.
+
+But, Perl 6 is largely written in Perl 6. There's a smaller version of the language, <a href="https://github.com/perl6/nqp">NQP</a> for <b>N</b>ot <b>Q</b>uite <b>P</b>erl6, that targets the virtual machines. A smaller feature set makes it easier to implement new virtual targets and that should encourage more backends. NQP has its own repo.
+
+And the <A href="https://github.com/perl6/doc">docs</a> have their own directory too.
+
+That means it's not quite as simple as grepping (acking, whatever) a repository. These are separate projects that I'd have to keep separately updated.
+
+Etsy released a tool they call <a href="https://github.com/etsy/hound">hound</a>, written in <a href="https://golang.org">Go</a>. They have instructions, but here's a summary:
+
+<ul>
+<li><a href="https://golang.org/dl/">Install Go 1.3+</a>. I used a binary package.
+<li>Run <code>go get github.com/etsy/hound/cmds/...</code>
+<li>Create a directory for <i>houndd</i> to do its work
+<li>Create your <a href="https://github.com/briandfoy/perl6-hound/blob/master/config.json">config.json</a> to list the repos in that directory
+<li>Run <code>$GOPATH/bin/houndd</code> in that directory
+<li>Go to <a href="http://localhost:6080">http://localhost:6080</a>
+</ul>
+
+I've also built most of this into the <a href="https://github.com/briandfoy/perl6-hound/blob/master/Makefile">Makefile</a>. Use the *run* target to get it going:
+
+<pre class="brush:plain">
+$ make run
+</pre>
+
+
+</div> <!-- content -->
+
+</div> <!-- middle -->
+
+<div id="bottom">
+This is the bottom stuff
+</div> <!-- bottom -->
+
+</div> <!-- page_div -->
+</body>
+
+</html>
+
+</html>
+

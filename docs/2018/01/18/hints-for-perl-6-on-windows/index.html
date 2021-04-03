@@ -1,0 +1,239 @@
+<!--
+
+{
+  "author" => "brian",
+  "categories" => "coding-tools",
+  "config" => {
+    "base_dir" => "docs",
+    "default_test" => "abc",
+    "items_json" => "docs/items.json",
+    "last" => undef,
+    "recent_items" => 5,
+    "site_title" => "Learning Perl 6 (Raku)",
+    "template" => "default",
+    "template_dir" => "_templates"
+  },
+  "date" => "2018-01-18 21:34:54",
+  "file" => "_posts/2018-01-18-hints-for-perl-6-on-windows.html",
+  "link" => "http://www.learningraku.com/2018/01/18/hints-for-perl-6-on-windows/",
+  "local_path" => "docs/2018/01/18/hints-for-perl-6-on-windows/index.html",
+  "post_epoch" => 1516311294,
+  "post_id" => 543,
+  "post_name" => "hints-for-perl-6-on-windows",
+  "processing_datestr" => "Sat Apr  3 09:36:21 2021",
+  "processing_epoch" => 1617456981,
+  "status" => "publish",
+  "tags" => "",
+  "title" => "Hints for Perl 6 on Windows",
+  "type" => "post",
+  "web_path" => bless( {
+    "path" => "/2018/01/18/hints-for-perl-6-on-windows/"
+  }, 'Mojo::Path' )
+}
+
+-->
+
+<html>
+
+<head>
+	<base href="../../../../">
+	<title>Hints for Perl 6 on Windows</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="" />
+	<meta charset="UTF-8" />
+</head>
+
+<!--
+
+This is the the page template
+
+{
+  "author" => "brian",
+  "categories" => "coding-tools",
+  "config" => {
+    "base_dir" => "docs",
+    "default_test" => "abc",
+    "items_json" => "docs/items.json",
+    "last" => undef,
+    "recent_items" => 5,
+    "site_title" => "Learning Perl 6 (Raku)",
+    "template" => "default",
+    "template_dir" => "_templates"
+  },
+  "date" => "2018-01-18 21:34:54",
+  "file" => "_posts/2018-01-18-hints-for-perl-6-on-windows.html",
+  "link" => "http://www.learningraku.com/2018/01/18/hints-for-perl-6-on-windows/",
+  "local_path" => "docs/2018/01/18/hints-for-perl-6-on-windows/index.html",
+  "post_epoch" => 1516311294,
+  "post_id" => 543,
+  "post_name" => "hints-for-perl-6-on-windows",
+  "processing_datestr" => "Sat Apr  3 09:36:21 2021",
+  "processing_epoch" => 1617456981,
+  "status" => "publish",
+  "tags" => "",
+  "title" => "Hints for Perl 6 on Windows",
+  "type" => "post",
+  "web_path" => bless( {
+    "path" => "/2018/01/18/hints-for-perl-6-on-windows/"
+  }, 'Mojo::Path' )
+}
+
+-->
+
+<html>
+
+<head>
+	<base href="../../../../">
+	<title>Hints for Perl 6 on Windows</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="" />
+	<meta charset="UTF-8" />
+</head>
+
+<body>
+<div id="page">
+
+<div id="top">
+<A href="/index/">Home</a> •
+<A href="/about/">About</a> •
+<a href="/book/">Book</a> •
+<a href="/downloads/">Downloads</a>
+</div>  <!-- top -->
+
+<div id="middle">
+
+<div id="sidebar">
+<img id="small_cover" src="images/cover.png" width="180" height="236" />
+
+<div id="sponsors">
+<p>Github sponsors</p>
+</div>
+
+<h2 class="sidebar">Links</h2>
+
+<div class="textwidget"><p><a href="https://www.oreilly.com/catalog/errata.csp?isbn=0636920062776">Book errata</a><br />
+<a href="https://goo.gl/EbA7gF">Google Books preview</a><br />
+<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a></p>
+<hr />
+<p><i>Many resources have not changed the name from Perl 6 to Raku, so these resources may use either.</i></p>
+<p><a href="https://design.raku.org">Raku Design Docs (dated)</a><br />
+<a href="http://docs.raku.org">Raku Docs</a><br />
+<a href="https://learnxinyminutes.com/docs/raku/">Learn Raku in Y Minutes</a><br />
+<a href="https://modules.raku.org">Raku modules</a><br />
+<a href="https://rosettacode.org/wiki/Category:Raku">Rosetta Code examples</a><br />
+<a href="http://examples.perl6.org/categories/euler.html">Project Euler examples</a><br />
+<a href="http://examples.perl6.org">Perl 6 Examples</a><br />
+<a href="https://github.com/Raku/roast">Raku Roast (test suite examples)</a></p>
+</div>
+
+</div> <!-- sidebar -->
+
+<div id="content">
+
+<style>
+img.post { border: 1px solid #000 }
+img.left { float: left; margin-right: 15px }
+img.right { float: right; margin-left: 15px }
+p.caption { font-style: italic }
+
+div.center div {
+        align: center;
+        display: block;
+	margin-top: 1em;
+	margin-bottom: 1em;
+        }
+
+div.image p {
+        font-style: italic;
+        text-align: center;
+        }
+
+div.image img {
+        border: 1px solid #000;
+        display:block;
+        margin: auto;
+        }
+
+div.right div {
+        float: right;
+        margin-left: 15px;
+        }
+
+div.left div {
+        float: left;
+        margin-right: 15px;
+        }
+</style>
+
+I'm not going to waste too much time in the book explaining any particular operating system. I want to save space and I know I'll probably want to keep updating those bits anyway. Here are some hints for Windows. While writing the book I test stuff with Windows 10 and a particular workflow that I liked well enough. You might like something different (and if you do you probably don't need these instructions). <!--more-->
+
+And I need these instructions because I'm not a regular Windows user. I've also written about this setup in <A href="https://www.windowsperl.com/2018/01/18/my_windows_environment/">my Windows Perl site</a> so I won't repeat most of it here. If you have a different setup that works for you let me know about it.
+
+
+<h2>The Chocolatey package manager</h2>
+
+I use the <a href="https://chocolatey.org">Chocolatey</a> package manager to get most of what I need; that includes <A href="https://chocolatey.org/packages/rakudostar">Rakudo Star</a>, and <a href="https://conemu.github.io">ConEmu</a> Follow its installation instructions to install that from a PowerShell administrator window:
+
+<pre class="brush:plain">
+PS C:\WINDOWS\system32> choco install rakudostar
+PS C:\WINDOWS\system32> choco install ConEmu
+PS C:\WINDOWS\system32> choco install notepadplusplus
+PS C:\WINDOWS\system32> choco install git
+PS C:\WINDOWS\system32> refreshenv
+</pre>
+
+<h2>Check your programs</h2>
+
+After you install Rakudo and refresh the environment try a simple invocation from the command line. You can check the version. You should get something like this:
+
+<pre class="brush:plain">
+C:\Users\hamadryas> perl6 -v
+This is Rakudo Star version 2017.10 built on MoarVM version 2017.10
+implementing Perl 6.c.
+</pre>
+
+<h2>Edit a file</h2>
+
+Somehow create and edit a file. If you installed NotePad++ you can run it from the command line:
+
+<pre class="brush:plain">
+C:\Users\hamadryas> notepad++ hello-perl6.p6
+</pre>
+
+Put in this text:
+
+<pre class="brush:plain">
+#!perl6
+put 'Hello Perl 6';
+</pre>
+
+<div class="image center">
+<div>
+<img src="/images/windows-setup/notepad-hello.png" style="border: 1px solid" />
+</div>
+</div>
+
+<h2>Run a file</h2>
+
+<pre class="brush:plain">
+C:\Users\hamadryas> perl6 hello-perl6.p6
+</pre>
+
+There are some Unicode test programs in the <a href="https://github.com/briandfoy/LearningPerl6_Downloads">Learning Perl 6 Downloads</a> repo.
+
+
+</div> <!-- content -->
+
+</div> <!-- middle -->
+
+<div id="bottom">
+This is the bottom stuff
+</div> <!-- bottom -->
+
+</div> <!-- page_div -->
+</body>
+
+</html>
+
+</html>
+

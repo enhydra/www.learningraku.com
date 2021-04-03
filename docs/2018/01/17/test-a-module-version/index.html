@@ -1,0 +1,179 @@
+<!--
+
+{
+  "author" => "brian",
+  "categories" => "modules testing",
+  "config" => {
+    "base_dir" => "docs",
+    "default_test" => "abc",
+    "items_json" => "docs/items.json",
+    "last" => undef,
+    "recent_items" => 5,
+    "site_title" => "Learning Perl 6 (Raku)",
+    "template" => "default",
+    "template_dir" => "_templates"
+  },
+  "date" => "2018-01-17 09:55:39",
+  "file" => "_posts/2018-01-17-test-a-module-version.html",
+  "link" => "http://www.learningraku.com/2018/01/17/test-a-module-version/",
+  "local_path" => "docs/2018/01/17/test-a-module-version/index.html",
+  "post_epoch" => 1516182939,
+  "post_id" => 443,
+  "post_name" => "test-a-module-version",
+  "processing_datestr" => "Sat Apr  3 09:36:21 2021",
+  "processing_epoch" => 1617456981,
+  "status" => "publish",
+  "tags" => "meta6-json",
+  "title" => "Test a module version",
+  "type" => "post",
+  "web_path" => bless( {
+    "path" => "/2018/01/17/test-a-module-version/"
+  }, 'Mojo::Path' )
+}
+
+-->
+
+<html>
+
+<head>
+	<base href="../../../../">
+	<title>Test a module version</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="" />
+	<meta charset="UTF-8" />
+</head>
+
+<!--
+
+This is the the page template
+
+{
+  "author" => "brian",
+  "categories" => "modules testing",
+  "config" => {
+    "base_dir" => "docs",
+    "default_test" => "abc",
+    "items_json" => "docs/items.json",
+    "last" => undef,
+    "recent_items" => 5,
+    "site_title" => "Learning Perl 6 (Raku)",
+    "template" => "default",
+    "template_dir" => "_templates"
+  },
+  "date" => "2018-01-17 09:55:39",
+  "file" => "_posts/2018-01-17-test-a-module-version.html",
+  "link" => "http://www.learningraku.com/2018/01/17/test-a-module-version/",
+  "local_path" => "docs/2018/01/17/test-a-module-version/index.html",
+  "post_epoch" => 1516182939,
+  "post_id" => 443,
+  "post_name" => "test-a-module-version",
+  "processing_datestr" => "Sat Apr  3 09:36:21 2021",
+  "processing_epoch" => 1617456981,
+  "status" => "publish",
+  "tags" => "meta6-json",
+  "title" => "Test a module version",
+  "type" => "post",
+  "web_path" => bless( {
+    "path" => "/2018/01/17/test-a-module-version/"
+  }, 'Mojo::Path' )
+}
+
+-->
+
+<html>
+
+<head>
+	<base href="../../../../">
+	<title>Test a module version</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="" />
+	<meta charset="UTF-8" />
+</head>
+
+<body>
+<div id="page">
+
+<div id="top">
+<A href="/index/">Home</a> •
+<A href="/about/">About</a> •
+<a href="/book/">Book</a> •
+<a href="/downloads/">Downloads</a>
+</div>  <!-- top -->
+
+<div id="middle">
+
+<div id="sidebar">
+<img id="small_cover" src="images/cover.png" width="180" height="236" />
+
+<div id="sponsors">
+<p>Github sponsors</p>
+</div>
+
+<h2 class="sidebar">Links</h2>
+
+<div class="textwidget"><p><a href="https://www.oreilly.com/catalog/errata.csp?isbn=0636920062776">Book errata</a><br />
+<a href="https://goo.gl/EbA7gF">Google Books preview</a><br />
+<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a></p>
+<hr />
+<p><i>Many resources have not changed the name from Perl 6 to Raku, so these resources may use either.</i></p>
+<p><a href="https://design.raku.org">Raku Design Docs (dated)</a><br />
+<a href="http://docs.raku.org">Raku Docs</a><br />
+<a href="https://learnxinyminutes.com/docs/raku/">Learn Raku in Y Minutes</a><br />
+<a href="https://modules.raku.org">Raku modules</a><br />
+<a href="https://rosettacode.org/wiki/Category:Raku">Rosetta Code examples</a><br />
+<a href="http://examples.perl6.org/categories/euler.html">Project Euler examples</a><br />
+<a href="http://examples.perl6.org">Perl 6 Examples</a><br />
+<a href="https://github.com/Raku/roast">Raku Roast (test suite examples)</a></p>
+</div>
+
+</div> <!-- sidebar -->
+
+<div id="content">
+
+The <i>META6.json</i> file has metadata for a Perl 6 module. But I like to also put things in the module file. I'd rather have some of that stuff with the code in case the metadata file goes missing as it might if you throw a <i>.pm</i> file in a directory rather than installing with <code>zef</code>. That means I forget to update one of them (it's usually the <i>META6.json</i>). <!--more-->
+
+I created a test file to check that the versions in <i>META6.json</i>. I'd been meaning to do this since I <a href="https://stackoverflow.com/q/44883887/2766176">asked about it on Stackoverflow</a> a long time ago:
+
+<pre class="brush:plain">
+use v6;
+
+use Test;
+use META6;
+
+use File::Find;
+constant package-name = 'File::Find';
+
+my $module-version = File::Find.^ver;
+ok $module-version.defined, 'Module specifies a version';
+diag "Module version is $module-version";
+
+my $meta-file = 'META6.json';
+my $meta = META6.new: file => $meta-file;
+
+my $meta-version = $meta.version;
+ok $meta-version.defined, 'META6 specifies a version';
+diag "META6 version is $meta-version";
+
+is $meta-version, $module-version, 'META6 version matches module version';
+
+done-testing();
+</pre>
+
+The obvious next step is to make a program to update <i>META6.json</i> for me but so far this way is a lot less work. I have no plans to make this a module but someone else can if they like. If you do, gfldex's <a href="https://gfldex.wordpress.com/2016/10/25/you-have-to-take-what-you-an-get/">You have to take what you can get</a> might be helpful.
+
+
+</div> <!-- content -->
+
+</div> <!-- middle -->
+
+<div id="bottom">
+This is the bottom stuff
+</div> <!-- bottom -->
+
+</div> <!-- page_div -->
+</body>
+
+</html>
+
+</html>
+

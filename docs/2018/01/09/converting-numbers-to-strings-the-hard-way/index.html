@@ -1,0 +1,323 @@
+<!--
+
+{
+  "author" => "brian",
+  "categories" => "asynchronous numbers strings",
+  "config" => {
+    "base_dir" => "docs",
+    "default_test" => "abc",
+    "items_json" => "docs/items.json",
+    "last" => undef,
+    "recent_items" => 5,
+    "site_title" => "Learning Perl 6 (Raku)",
+    "template" => "default",
+    "template_dir" => "_templates"
+  },
+  "date" => "2018-01-09 06:02:00",
+  "file" => "_posts/2018-01-09-converting-numbers-to-strings-the-hard-way.html",
+  "link" => "http://www.learningraku.com/2018/01/09/converting-numbers-to-strings-the-hard-way/",
+  "local_path" => "docs/2018/01/09/converting-numbers-to-strings-the-hard-way/index.html",
+  "post_epoch" => 1515477720,
+  "post_id" => 412,
+  "post_name" => "converting-numbers-to-strings-the-hard-way",
+  "processing_datestr" => "Sat Apr  3 09:36:20 2021",
+  "processing_epoch" => 1617456980,
+  "status" => "publish",
+  "tags" => "",
+  "title" => "Converting numbers to strings the hard way",
+  "type" => "post",
+  "web_path" => bless( {
+    "path" => "/2018/01/09/converting-numbers-to-strings-the-hard-way/"
+  }, 'Mojo::Path' )
+}
+
+-->
+
+<html>
+
+<head>
+	<base href="../../../../">
+	<title>Converting numbers to strings the hard way</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="" />
+	<meta charset="UTF-8" />
+</head>
+
+<!--
+
+This is the the page template
+
+{
+  "author" => "brian",
+  "categories" => "asynchronous numbers strings",
+  "config" => {
+    "base_dir" => "docs",
+    "default_test" => "abc",
+    "items_json" => "docs/items.json",
+    "last" => undef,
+    "recent_items" => 5,
+    "site_title" => "Learning Perl 6 (Raku)",
+    "template" => "default",
+    "template_dir" => "_templates"
+  },
+  "date" => "2018-01-09 06:02:00",
+  "file" => "_posts/2018-01-09-converting-numbers-to-strings-the-hard-way.html",
+  "link" => "http://www.learningraku.com/2018/01/09/converting-numbers-to-strings-the-hard-way/",
+  "local_path" => "docs/2018/01/09/converting-numbers-to-strings-the-hard-way/index.html",
+  "post_epoch" => 1515477720,
+  "post_id" => 412,
+  "post_name" => "converting-numbers-to-strings-the-hard-way",
+  "processing_datestr" => "Sat Apr  3 09:36:20 2021",
+  "processing_epoch" => 1617456980,
+  "status" => "publish",
+  "tags" => "",
+  "title" => "Converting numbers to strings the hard way",
+  "type" => "post",
+  "web_path" => bless( {
+    "path" => "/2018/01/09/converting-numbers-to-strings-the-hard-way/"
+  }, 'Mojo::Path' )
+}
+
+-->
+
+<html>
+
+<head>
+	<base href="../../../../">
+	<title>Converting numbers to strings the hard way</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="" />
+	<meta charset="UTF-8" />
+</head>
+
+<body>
+<div id="page">
+
+<div id="top">
+<A href="/index/">Home</a> •
+<A href="/about/">About</a> •
+<a href="/book/">Book</a> •
+<a href="/downloads/">Downloads</a>
+</div>  <!-- top -->
+
+<div id="middle">
+
+<div id="sidebar">
+<img id="small_cover" src="images/cover.png" width="180" height="236" />
+
+<div id="sponsors">
+<p>Github sponsors</p>
+</div>
+
+<h2 class="sidebar">Links</h2>
+
+<div class="textwidget"><p><a href="https://www.oreilly.com/catalog/errata.csp?isbn=0636920062776">Book errata</a><br />
+<a href="https://goo.gl/EbA7gF">Google Books preview</a><br />
+<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a></p>
+<hr />
+<p><i>Many resources have not changed the name from Perl 6 to Raku, so these resources may use either.</i></p>
+<p><a href="https://design.raku.org">Raku Design Docs (dated)</a><br />
+<a href="http://docs.raku.org">Raku Docs</a><br />
+<a href="https://learnxinyminutes.com/docs/raku/">Learn Raku in Y Minutes</a><br />
+<a href="https://modules.raku.org">Raku modules</a><br />
+<a href="https://rosettacode.org/wiki/Category:Raku">Rosetta Code examples</a><br />
+<a href="http://examples.perl6.org/categories/euler.html">Project Euler examples</a><br />
+<a href="http://examples.perl6.org">Perl 6 Examples</a><br />
+<a href="https://github.com/Raku/roast">Raku Roast (test suite examples)</a></p>
+</div>
+
+</div> <!-- sidebar -->
+
+<div id="content">
+
+Turning numbers into strings can be a big waste of time and money.  Paul Khuong wrote about this in <a href="//www.pvk.ca/Blog/2017/12/22/appnexus-common-framework-its-out-also-how-to-print-integers-faster/">How to Print Integers Really Fast (With Open Source AppNexus Code!)</a>. If you've bought into the JSON mania you're probably serializing numbers as strings quite a bit without even thinking about it. Much of his discussion is special to C or C++ where you (think) you directly control the hardware. Since this is also a typical interview problem I thought I'd work on it in Perl 6 with a few extras. <!--more-->
+
+The solutions I found convert everything to decimal numbers. There are probably some hexadecimal converters out there. That's not so interesting. How about a converter for arbitrary bases with arbitrary digits? And, I can't use any of the builtin stuff to make this work (and so far I haven't peeked to see how Rakudo does it).
+
+The solution is to decompose a number into parts and convert that  partto a string with a lookup table. Put together all your string parts to get the full number. Optimizing that lookup table is most of the problem but I don't worry about that right away.
+
+I create a factory that takes a single string where each character represents a digit; the number of digits is the base. I don't care which characters are in the string. Maybe they aren't in order of their codepoints, or they are repeated, or some other weird thing. Specify a stupid string and get stupid number serializations. If I don't specify a string I'll default to the decimal digits. From that I get the base that I'll use to decompose the number and I'll break up the string into characters in an array so I can use the numeric value as the index to map it onto its string value. I'll collect the string values then join them:
+
+<pre class="brush:plain">
+sub int-to-str-factory (
+		Str:D $digit-str = '0123456789'
+		--> Callable:D ) {
+	my Int:D $base  = $digit-str.chars;
+	my Str:D @table = $digit-str.comb;
+
+	sub ( Int:D $i is copy where * >= 0 --> Str:D ) {
+		my Str:D @temp = ();
+
+		return @table.[0] if $i == 0;
+
+		while $i > 0 {
+			my Int:D $digit = $i % $base;
+			$i div= $base;
+			@temp.unshift: @table.[ $digit ];
+			}
+
+		@temp.join: '';
+		}
+	}
+</pre>
+
+This doesn't convert numbers to strings. It creates code that converts numbers to strings and returns that anonymous subroutine. That's what a factory does. I've also limited this to zero and positive integers but handling sign is not a big deal if I need it.
+
+The <code>div</code> operator for integer division is quite a handy complement to the <code>%</code> modulus to get the remainder. I thought briefly about defining my own operator to return the remainder and reduce the starting number in one step, but maybe I'll come back to that in some other post.
+
+If I were doing this in C++ I'd care about that because the bits in physical storage probably care about them. The original posts were using binary-coded decimal that used four bits per digit. Add the same nybble to each of those and you get the ASCII character for that digit. Clever. Since Perl 6 doesn't let me look at the physical representation I can skip that part of the problem (although I could connect to external libraries). That also means that I don't have to allocate any memory for my final string. I don't get to make those choices although the C++ program thinks hard about that.
+
+Now I can create something to turn numbers into decimal strings:
+
+<pre class="brush:plain">
+my $decimal-stringifier = int-to-str-factory();
+put $decimal-stringifier.( 0xDEADBEEF );
+</pre>
+
+Remember that my use of a literal hexadecimal number there is a red herring. The parser converts that into an internal integer and doesn't care how it started. I'm converting internal numbers to strings.
+
+So let's make some fancy strings. I'll make a hash with labels for the representation as keys and their code as the value (<a href="//gist.github.com/briandfoy/b648b4c88580d18ecc789b3e3e966c61">it's all in a gist</a>), but that might diverge from the code in this article):
+
+<pre class="brush:plain">
+#`(
+Create a bunch of anonymous subroutines to create different representations of an integer. The label is the key of the 
+hash and the sub is the value.
+)
+my %representations = map { $_.[0] => int-to-str-factory( $_.[1] ) }, (
+	( 'Decimal','0123456789' ),
+	( 'Binary', '&#x1f44e;&#x1f44d;' ),
+	( 'Base3', '012' ),
+	( 'Octal', '01234567' ),
+	( 'Hex', '0123456789abcdef' ),
+	( 'Base36', '0123456789abcdefghijklmnopqrstuvwxyz' ),
+	( 'Braille', '⠁⠃⠉⠙⠑⠋⠛⠓⠊⠚' ),
+	( 'Arabic', @(
+		'ARABIC-INDIC DIGIT ZERO'.parse-names
+				..
+		'ARABIC-INDIC DIGIT NINE'.parse-names
+		).join: '' ),
+	);
+
+
+sub MAIN ( Int:D $n = 100_000_000.rand.Int ) {
+	put "number is $n";
+
+	for %representations.kv -> $label, $sub {
+		put "$label: ", $sub.( $n );
+		}
+	}
+</pre>
+
+Here's a run of that:
+
+<pre class="brush:plain">
+$ perl6 int-to-str.pl 137
+number is 137
+Base36: 3t
+Binary: &#x1f44d;&#x1f44e;&#x1f44e;&#x1f44e;&#x1f44d;&#x1f44e;&#x1f44e;&#x1f44d;
+Base3: 1202
+Decimal: 137
+Octal: 211
+Arabic: ١٣٧
+Braille: ⠃⠙⠓
+Hex: 89
+</pre>
+
+As I mentioned earlier I don't get to think as hard in Perl 6 as C++. I'm much farther away from the iron so choosing registers wisely and other things that hardware cares about. Andrei Alexandrescu writes about this in <a href="//www.facebook.com/notes/facebook-engineering/three-optimization-tips-for-c/10151361643253920">Three Optimization Tips for C++</a> where he solves the same problem.
+
+Part of these C++ solutions involve decomposing the number into larger chunks (powers of the base) and translating chunks with a longer lookup table. In C++ they wanted to minimize division operations, which probably makes less sense in a much higher level language like Perl 6. Instead of decomposing 8936 into 8, 9, 3, 6 I can decompose it into 89 and 36 and translate those numbers directly without more math. There's a trick; if I break up the number 1307 into 13 and 07, I can't translate 07 to 7. That zero needs to stay there.
+
+<pre class="brush:plain">
+sub int-to-str-factory (
+		Str:D $digit-str = '0123456789'
+		--> Callable:D ) {
+	my Int:D $base   = $digit-str.chars;
+	my Int:D $base2  = $base ** 2;
+
+	# expand lookup to all one digit strings. These don't
+	# have leading zeros
+	my Str:D @digits = $digit-str.comb;
+
+	# expand lookup to all two digit strings
+	# leading zeros matter!
+	my Str:D @digits2 = @digits X~ @digits;
+
+	sub ( Int:D $i is copy where * >= 0 --> Str:D ) {
+		my Str:D @temp = ();
+
+		return @digits.[0] if $i == 0;
+
+		while $i > 0 {
+			if $i >= $base2 {
+				my Int:D $digit = $i % $base2;
+				@temp.unshift: @digits2.[ $digit ];
+				$i div= $base2
+				}
+			else {
+				my Int:D $digit = $i % $base;
+				@temp.unshift: @digits.[ $digit ];
+				$i div= $base
+				}
+			}
+
+		return @temp.join: '';
+		}
+	}
+</pre>
+
+How big that lookup table is depends on many things including the typical size of your numbers. A smaller table requires you to do more divisions but a larger table might involve more searching. I used an array but I could have used a hash. No optimization is probably best for any situation. You have to know something about your numbers. If you always have numbers that take up all 256 bits (a SHA perhaps) you have a different optimization than numbers mostly under 100.
+
+But now here's another thing I can do. I can break up a really big number into much larger chunks and provide those smaller numbers as a sequence. I then format those separately (perhaps in parallel) by calling <code>.hyper</code> on that sequence. The <code>.hyper</code> allows parallelism (where available) and keeps everything in order (unlike <code>.race</code> which doesn't). I reässemble the chunks at the end.
+
+The <code>big-chunks-sequence</code> sequences makes the smaller numbers and I've moved the factories into a module to get them out of the way (<a href="//gist.github.com/briandfoy/bc5b47efb30af6d84135a91bd5c44b2e">gist</a>).
+
+<pre class="brush:plain">
+use lib <.>;
+use IntToStrFactories;
+
+# some commit id
+my $int = :16&gta86288ce3bb62879a0c7169ee4ea89ba77577be7>;
+say $int;
+say $int.fmt: '%x';
+
+my $chunk_size = 10 ** 8;
+
+my $digits    = '0123456789abcdef';
+my $formatter = int-to-str-factory-v2( $digits );
+my $sequence := big-chunks-sequence( $int, 8, $digits.chars );
+
+sub big-chunks-sequence (
+	Int:D $i is copy,
+	Int:D $order = 4,
+	Int:D $base = 10 ) {
+	state $divisor = $base**$order;
+	gather {
+		take 0 if $i == 0;
+
+		while $i > 0 {
+			take $i % $divisor;
+			$i div= $divisor;
+			}
+		}
+	}
+
+$sequence.hyper.map( { $formatter.( $_ ) } ).reverse.join( '|' ).say;
+</pre>
+
+
+
+</div> <!-- content -->
+
+</div> <!-- middle -->
+
+<div id="bottom">
+This is the bottom stuff
+</div> <!-- bottom -->
+
+</div> <!-- page_div -->
+</body>
+
+</html>
+
+</html>
+

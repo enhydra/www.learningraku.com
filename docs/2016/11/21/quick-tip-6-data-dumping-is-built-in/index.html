@@ -1,0 +1,191 @@
+<!--
+
+{
+  "author" => "brian",
+  "categories" => "kickstarter-tips",
+  "config" => {
+    "base_dir" => "docs",
+    "default_test" => "abc",
+    "items_json" => "docs/items.json",
+    "last" => undef,
+    "recent_items" => 5,
+    "site_title" => "Learning Perl 6 (Raku)",
+    "template" => "default",
+    "template_dir" => "_templates"
+  },
+  "date" => "2016-11-21 00:38:11",
+  "file" => "_posts/2016-11-21-quick-tip-6-data-dumping-is-built-in.html",
+  "link" => "http://www.learningraku.com/2016/11/21/quick-tip-6-data-dumping-is-built-in/",
+  "local_path" => "docs/2016/11/21/quick-tip-6-data-dumping-is-built-in/index.html",
+  "post_epoch" => 1479688691,
+  "post_id" => 98,
+  "post_name" => "quick-tip-6-data-dumping-is-built-in",
+  "processing_datestr" => "Sat Apr  3 09:36:19 2021",
+  "processing_epoch" => 1617456979,
+  "status" => "publish",
+  "tags" => "rakudo",
+  "title" => "Quick Tip #6: Data dumping is built into Rakudo",
+  "type" => "post",
+  "web_path" => bless( {
+    "path" => "/2016/11/21/quick-tip-6-data-dumping-is-built-in/"
+  }, 'Mojo::Path' )
+}
+
+-->
+
+<html>
+
+<head>
+	<base href="../../../../">
+	<title>Quick Tip #6: Data dumping is built into Rakudo</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="" />
+	<meta charset="UTF-8" />
+</head>
+
+<!--
+
+This is the the page template
+
+{
+  "author" => "brian",
+  "categories" => "kickstarter-tips",
+  "config" => {
+    "base_dir" => "docs",
+    "default_test" => "abc",
+    "items_json" => "docs/items.json",
+    "last" => undef,
+    "recent_items" => 5,
+    "site_title" => "Learning Perl 6 (Raku)",
+    "template" => "default",
+    "template_dir" => "_templates"
+  },
+  "date" => "2016-11-21 00:38:11",
+  "file" => "_posts/2016-11-21-quick-tip-6-data-dumping-is-built-in.html",
+  "link" => "http://www.learningraku.com/2016/11/21/quick-tip-6-data-dumping-is-built-in/",
+  "local_path" => "docs/2016/11/21/quick-tip-6-data-dumping-is-built-in/index.html",
+  "post_epoch" => 1479688691,
+  "post_id" => 98,
+  "post_name" => "quick-tip-6-data-dumping-is-built-in",
+  "processing_datestr" => "Sat Apr  3 09:36:19 2021",
+  "processing_epoch" => 1617456979,
+  "status" => "publish",
+  "tags" => "rakudo",
+  "title" => "Quick Tip #6: Data dumping is built into Rakudo",
+  "type" => "post",
+  "web_path" => bless( {
+    "path" => "/2016/11/21/quick-tip-6-data-dumping-is-built-in/"
+  }, 'Mojo::Path' )
+}
+
+-->
+
+<html>
+
+<head>
+	<base href="../../../../">
+	<title>Quick Tip #6: Data dumping is built into Rakudo</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="" />
+	<meta charset="UTF-8" />
+</head>
+
+<body>
+<div id="page">
+
+<div id="top">
+<A href="/index/">Home</a> •
+<A href="/about/">About</a> •
+<a href="/book/">Book</a> •
+<a href="/downloads/">Downloads</a>
+</div>  <!-- top -->
+
+<div id="middle">
+
+<div id="sidebar">
+<img id="small_cover" src="images/cover.png" width="180" height="236" />
+
+<div id="sponsors">
+<p>Github sponsors</p>
+</div>
+
+<h2 class="sidebar">Links</h2>
+
+<div class="textwidget"><p><a href="https://www.oreilly.com/catalog/errata.csp?isbn=0636920062776">Book errata</a><br />
+<a href="https://goo.gl/EbA7gF">Google Books preview</a><br />
+<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a></p>
+<hr />
+<p><i>Many resources have not changed the name from Perl 6 to Raku, so these resources may use either.</i></p>
+<p><a href="https://design.raku.org">Raku Design Docs (dated)</a><br />
+<a href="http://docs.raku.org">Raku Docs</a><br />
+<a href="https://learnxinyminutes.com/docs/raku/">Learn Raku in Y Minutes</a><br />
+<a href="https://modules.raku.org">Raku modules</a><br />
+<a href="https://rosettacode.org/wiki/Category:Raku">Rosetta Code examples</a><br />
+<a href="http://examples.perl6.org/categories/euler.html">Project Euler examples</a><br />
+<a href="http://examples.perl6.org">Perl 6 Examples</a><br />
+<a href="https://github.com/Raku/roast">Raku Roast (test suite examples)</a></p>
+</div>
+
+</div> <!-- sidebar -->
+
+<div id="content">
+
+I've often wished that Perl 5's <a href="http://www.metacpan.org/module/Data::Dumper">Data::Dumper</a> was built into the language. I often have statements like: <!--more-->
+
+<pre class="brush:perl">
+#!perl5
+Dumper( @array ); use Data::Dumper;
+</pre>
+
+Or, if I'm playing with <a href="http://www.metacpan.org/module/Mojolicious">Mojolicious</a>:
+
+<pre class="brush:perl">
+#!perl5
+use Mojo::Util qw(dumper);
+dumper( @array );
+</pre>
+
+Rakudo (one of the Perl 6 implementations) has this baked in as <a href="https://docs.perl6.org/routine/dd">dd</a>. This is something extra beyond the Perl 6 specification. Here I drop into the REPL:
+
+<pre class="brush:plain">
+$ perl6
+> my @array = 'a' .. 'g'
+[a b c d e f g]
+> dd @array
+Array @array = ["a", "b", "c", "d", "e", "f", "g"]
+</pre>
+
+There is also the gist and perl methods. The first gives you output designed for people and the second shows the actual Perl interpretation:
+
+<pre class="brush:plain">
+> @array.gist
+[a b c d e f g]
+> @array.perl
+["a", "b", "c", "d", "e", "f", "g"]
+</pre>
+
+If that's not enough for you, there's the <a href="https://modules.perl6.org/">Data::Dump</a> module that can do many other things, including colorizing the output.
+
+<div align="image center">
+<div>
+<img src="/images/data-dump-color-output.png" height="349" width="500" />
+<p class="caption"></p>
+</div>
+</div>
+
+
+</div> <!-- content -->
+
+</div> <!-- middle -->
+
+<div id="bottom">
+This is the bottom stuff
+</div> <!-- bottom -->
+
+</div> <!-- page_div -->
+</body>
+
+</html>
+
+</html>
+

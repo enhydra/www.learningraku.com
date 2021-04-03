@@ -1,0 +1,174 @@
+<!--
+
+{
+  "author" => "brian",
+  "categories" => "editing kickstarter-tips unicode",
+  "config" => {
+    "base_dir" => "docs",
+    "default_test" => "abc",
+    "items_json" => "docs/items.json",
+    "last" => undef,
+    "recent_items" => 5,
+    "site_title" => "Learning Perl 6 (Raku)",
+    "template" => "default",
+    "template_dir" => "_templates"
+  },
+  "date" => "2016-11-27 10:26:02",
+  "file" => "_posts/2016-11-27-quick-tip-12-unicode-helper-apps.html",
+  "link" => "http://www.learningraku.com/2016/11/27/quick-tip-12-unicode-helper-apps/",
+  "local_path" => "docs/2016/11/27/quick-tip-12-unicode-helper-apps/index.html",
+  "post_epoch" => 1480242362,
+  "post_id" => 124,
+  "post_name" => "quick-tip-12-unicode-helper-apps",
+  "processing_datestr" => "Sat Apr  3 09:36:19 2021",
+  "processing_epoch" => 1617456979,
+  "status" => "publish",
+  "tags" => "",
+  "title" => "Quick Tip #12: Unicode Helper Apps",
+  "type" => "post",
+  "web_path" => bless( {
+    "path" => "/2016/11/27/quick-tip-12-unicode-helper-apps/"
+  }, 'Mojo::Path' )
+}
+
+-->
+
+<html>
+
+<head>
+	<base href="../../../../">
+	<title>Quick Tip #12: Unicode Helper Apps</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="" />
+	<meta charset="UTF-8" />
+</head>
+
+<!--
+
+This is the the page template
+
+{
+  "author" => "brian",
+  "categories" => "editing kickstarter-tips unicode",
+  "config" => {
+    "base_dir" => "docs",
+    "default_test" => "abc",
+    "items_json" => "docs/items.json",
+    "last" => undef,
+    "recent_items" => 5,
+    "site_title" => "Learning Perl 6 (Raku)",
+    "template" => "default",
+    "template_dir" => "_templates"
+  },
+  "date" => "2016-11-27 10:26:02",
+  "file" => "_posts/2016-11-27-quick-tip-12-unicode-helper-apps.html",
+  "link" => "http://www.learningraku.com/2016/11/27/quick-tip-12-unicode-helper-apps/",
+  "local_path" => "docs/2016/11/27/quick-tip-12-unicode-helper-apps/index.html",
+  "post_epoch" => 1480242362,
+  "post_id" => 124,
+  "post_name" => "quick-tip-12-unicode-helper-apps",
+  "processing_datestr" => "Sat Apr  3 09:36:19 2021",
+  "processing_epoch" => 1617456979,
+  "status" => "publish",
+  "tags" => "",
+  "title" => "Quick Tip #12: Unicode Helper Apps",
+  "type" => "post",
+  "web_path" => bless( {
+    "path" => "/2016/11/27/quick-tip-12-unicode-helper-apps/"
+  }, 'Mojo::Path' )
+}
+
+-->
+
+<html>
+
+<head>
+	<base href="../../../../">
+	<title>Quick Tip #12: Unicode Helper Apps</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="" />
+	<meta charset="UTF-8" />
+</head>
+
+<body>
+<div id="page">
+
+<div id="top">
+<A href="/index/">Home</a> •
+<A href="/about/">About</a> •
+<a href="/book/">Book</a> •
+<a href="/downloads/">Downloads</a>
+</div>  <!-- top -->
+
+<div id="middle">
+
+<div id="sidebar">
+<img id="small_cover" src="images/cover.png" width="180" height="236" />
+
+<div id="sponsors">
+<p>Github sponsors</p>
+</div>
+
+<h2 class="sidebar">Links</h2>
+
+<div class="textwidget"><p><a href="https://www.oreilly.com/catalog/errata.csp?isbn=0636920062776">Book errata</a><br />
+<a href="https://goo.gl/EbA7gF">Google Books preview</a><br />
+<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a></p>
+<hr />
+<p><i>Many resources have not changed the name from Perl 6 to Raku, so these resources may use either.</i></p>
+<p><a href="https://design.raku.org">Raku Design Docs (dated)</a><br />
+<a href="http://docs.raku.org">Raku Docs</a><br />
+<a href="https://learnxinyminutes.com/docs/raku/">Learn Raku in Y Minutes</a><br />
+<a href="https://modules.raku.org">Raku modules</a><br />
+<a href="https://rosettacode.org/wiki/Category:Raku">Rosetta Code examples</a><br />
+<a href="http://examples.perl6.org/categories/euler.html">Project Euler examples</a><br />
+<a href="http://examples.perl6.org">Perl 6 Examples</a><br />
+<a href="https://github.com/Raku/roast">Raku Roast (test suite examples)</a></p>
+</div>
+
+</div> <!-- sidebar -->
+
+<div id="content">
+
+Perl 6 uses fancy Unicode characters to do some of its work, but those don't show up on most keyboards. I like the Mac program <a href="https://earthlingsoft.net/UnicodeChecker/">UnicodeChecker</a>. I can search by name, code point, or I can paste a character. I find the one that I want, copy it, and paste it into source. The Windows program <a href="http://www.babelstone.co.uk/Software/BabelMap.html">BabelStine</A> looks similar. Leave me suggestions if you know something for your distro. <!--more-->
+
+<div class="image align">
+<div>
+<img src="/images/unicode_checker.png" height="518" width="500" />
+<p class="caption"> UnicodeChecker </p>
+</div>
+</div>
+
+Or, you can write your own program. Here's one that takes codepoints and prints their characters (assuming that your terminal is already set up for UTF-8):
+
+<pre class="brush:plain">
+$ perl6 -e 'for @*ARGS { say chr(:16($_)) }' 2150 2153
+⅐
+⅓
+</pre>
+
+The <code>:16()</code> interprets its string argument as base 16. You can convert any base between 2 and 36 that way. 
+
+I can have some command-line aliases:
+
+<pre class="brush:plain">
+alias u2char='perl6 -e "for @*ARGS { say chr(:16(\$_)) }"'
+</pre>
+
+
+
+</div> <!-- content -->
+
+</div> <!-- middle -->
+
+<div id="bottom">
+This is the bottom stuff
+</div> <!-- bottom -->
+
+</div> <!-- page_div -->
+</body>
+
+</html>
+
+</html>
+
