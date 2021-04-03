@@ -11,6 +11,7 @@ build: clear static cook $(DOCS)/index.html ## build the entire website
 .PHONY: cook
 cook: ## process the templates
 	$(PERL) bin/cook
+	cp -r $(STATIC)/* $(DOCS)/.
 
 $(DOCS)/index.html: ## make the main index.html
 	$(PERL) bin/single_page index.html index.html
@@ -25,7 +26,7 @@ clear: ## remove all the previous files
 
 .PHONY: localserver
 localserver: ## run a Mojo server to see the local files
-	curl -s $(LOCAL_SITE) > /dev/null || $(PERL) bin/static daemon
+	$(PERL) bin/static daemon
 
 .PHONY: open
 open: localserver
