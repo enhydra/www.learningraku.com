@@ -60,7 +60,7 @@ sub get_templater () {
 	Mojo::Template
 		->new
 		->prepend(
-			'use Local::Template::Utils; use Mojo::Template::SandBox; our $vars;'
+			'use lib qw(lib); use Local::Template::Utils; use Mojo::Template::Sandbox; our $vars;'
 			);
 	}
 

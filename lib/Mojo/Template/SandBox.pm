@@ -1,4 +1,4 @@
-package Mojo::Template::SandBox;
+package Mojo::Template::Sandbox;
 use v5.20;
 use experimental qw(signatures);
 

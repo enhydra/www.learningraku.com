@@ -52,7 +52,7 @@ foreach my $file ( @files ) {
 		config             => $config,
 		$header->%*,
 		};
-	Mojo::Template::SandBox::set_vars( $vars );
+	Mojo::Template::Sandbox::set_vars( $vars );
 
 	my $cooked = get_templater()->render_file( $template_path );
 
