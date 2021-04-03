@@ -50,9 +50,13 @@ sub recent_articles ( $count = 5 ) {
 	}
 
 sub excerpt ( $post ) {
-	my $data = Mojo::File->new( catfile($post->{local_path},'index.html') )->slurp;
+	my $data = Mojo::File->new( $post->{local_path} )->slurp;
 	my $dom  = Mojo::DOM->new($data);
-	eval { $dom->at( 'div#content > span#excerpt' ) . '' } // '';
+	my $excerpt =
+		   eval { $dom->at( 'div#content > span#excerpt' )->content  }
+		// eval { $dom->at( 'div#content' )->content }
+	    // '';
+	$excerpt . '';
 	}
 
 sub set_vars   ( $hash = {} )   { $vars = $hash }
