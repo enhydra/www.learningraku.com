@@ -2,7 +2,7 @@
 
 This is the the page template
 
-<%= dump_vars =%>
+<%= dump_vars() =%>
 
 -->
 
