@@ -5,10 +5,11 @@ use warnings;
 
 use experimental qw(signatures);
 
+use File::Basename;
 use File::FindLib 'lib';
 use File::Path qw(make_path);
 use Local::Template::Utils;
-use Mojo::Template::SandBox;
+use Mojo::Template::Sandbox;
 
 use Carp qw(carp croak);
 use File::Spec::Functions;
@@ -21,10 +22,9 @@ use Mojo::Util qw(dumper);
 my $log    = get_logger();
 my $config = get_config();
 
-my @files = glob( "_posts/*.html" );
-
 my @items;
-END {
+
+sub make_json {
 	open my $fh, '>:raw', $config->{items_json} or do {
 		$log->error( "Could not open <$config->{items_json}> for writing: $!" );
 		exit 1;
@@ -33,14 +33,30 @@ END {
 	close $fh;
 	}
 
-foreach my $file ( @files ) {
+my @posts = glob( "_posts/*.html" );
+foreach my $file ( @posts ) {
+	my( $header, $content ) = split_doc( $file );
+	my $local_path = catfile(
+		$config->{base_dir}, local_path( $file, $header ), 'index.html'
+		);
+	my $template_path = catfile( $config->{template_dir}, $config->{template} );
+	process_file( $file, $local_path, $template_path );
+	}
+make_json();
+
+my @pages = glob( "_templates/*.html" );
+foreach my $file ( @pages ) {
+	my $local_path = catfile( $config->{base_dir}, $file =~ s|_templates/||r );
+	process_file( $file, $local_path, $file );
+	}
+
+sub process_file ( $file, $local_path, $template_path ) {
 	$log->info( "File: <$file>" );
-	Mojo::Template::SandBox::clear_vars();
+	$log->info( "Local: <$local_path>" );
+	$log->info( "Template: <$template_path>" );
+	Mojo::Template::Sandbox::clear_vars();
 	my( $header, $content ) = split_doc( $file );
 
-	my $template_path = catfile( $config->{template_dir}, $config->{template} );
-
-	my $local_path = catfile( $config->{base_dir}, local_path( $file, $header ) );
 	my $vars = {
 		file               => $file,
 		processing_epoch   => time,
@@ -61,10 +77,10 @@ foreach my $file ( @files ) {
 	push @items, do { my %h = $vars->%*; delete $h{content}; \%h };
 	}
 
-sub write_page ( $path, $content ) {
-	make_path( $path );
+sub write_page ( $local_path, $content ) {
+	make_path( dirname($local_path) );
 
-	open my $fh, '>:encoding(UTF-8)', catfile( $path, 'index.html' );
+	open my $fh, '>:encoding(UTF-8)', $local_path;
 	say $fh $content;
 	close $fh;
 	}
