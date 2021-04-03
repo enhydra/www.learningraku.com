@@ -45,8 +45,7 @@ sub get_config ( $file = 'config.json' ) {
 	\%config;
 	}
 
-
-sub get_items  ( $file = 'docs/items.json'  ) { get_json( $file, [] ) }
+sub get_items  ( $file = config_defaults()->{items_json} ) { get_json( $file, [] ) }
 
 sub get_json ( $file, $default = {} ) {
 	unless( -e $file ) {
@@ -59,6 +58,7 @@ sub get_json ( $file, $default = {} ) {
 sub get_templater () {
 	Mojo::Template
 		->new
+		->vars(1)
 		->prepend(
 			'use lib qw(lib); use Local::Template::Utils; use Mojo::Template::Sandbox; our $vars;'
 			);
@@ -88,7 +88,6 @@ sub parse_header ( $header ) {
 		}
 	return \%hash;
 	}
-
 
 sub default_paths () {
 	qw( _templates );
