@@ -3,5 +3,6 @@
 "recent_items": 5,
 "base_dir": "docs",
 "template_dir": "_templates",
-"last": null
+"last": null,
+"cname": "test.learningraku.com"
 }

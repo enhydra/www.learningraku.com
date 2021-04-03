@@ -42,6 +42,8 @@ foreach my $file ( @posts ) {
 	my $template_path = catfile( $config->{template_dir}, $config->{template} );
 	process_file( $file, $local_path, $template_path );
 	}
+
+add_cname();
 make_json();
 
 my @pages = glob( "_templates/*.html" );
@@ -50,10 +52,15 @@ foreach my $file ( @pages ) {
 	process_file( $file, $local_path, $file );
 	}
 
+sub add_cname () {
+	open my $fh, '>:encoding(UTF-8)', catfile( $config->{base_dir}, 'CNAME' );
+	say { $fh } $config->{cname};
+	}
+
 sub process_file ( $file, $local_path, $template_path ) {
-	$log->info( "File: <$file>" );
-	$log->info( "Local: <$local_path>" );
-	$log->info( "Template: <$template_path>" );
+	$log->debug( "File: <$file>" );
+	$log->debug( "Local: <$local_path>" );
+	$log->debug( "Template: <$template_path>" );
 	Mojo::Template::Sandbox::clear_vars();
 	my( $header, $content ) = split_doc( $file );
 

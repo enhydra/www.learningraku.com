@@ -52,6 +52,7 @@ sub recent_articles ( $count = 5 ) {
 
 	@posts[0..$count-1];
 	}
+sub cname { $vars->{config}{cname} }
 
 sub excerpt ( $post ) {
 	my $data = Mojo::File->new( $post->{local_path} )->slurp;

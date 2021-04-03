@@ -1,10 +1,10 @@
 <html>
 
 <head>
-	<base href="../../../../">
+	<base href="https://<%= cname() =%>/">
 	<title><%= title() %></title>
 	<link rel="stylesheet" href="/style.css">
-	<meta name="generator" content="" />
+	<meta name="generator" content="brian's site generator" />
 	<meta charset="UTF-8" />
 </head>
 
