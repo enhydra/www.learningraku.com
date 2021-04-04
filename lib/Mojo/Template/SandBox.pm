@@ -67,11 +67,12 @@ sub excerpt ( $post ) {
 	$excerpt . '';
 	}
 
-sub recent_articles ( $count = 5 ) {
-	my $json = get_items( $vars->{config}{items_json} );
+sub recent_posts ( $count = 5 ) {
+	state sub by_post_epoch { $b->{post_epoch} <=> $a->{post_epoch} }
 
+	my $json = get_items( $vars->{config}{items_json} );
+	say "There are " . $json->@* . " posts";
 	my @posts =
-		reverse
 		sort by_post_epoch
 		grep { $_->{type} eq 'post' }
 		$json->@*;

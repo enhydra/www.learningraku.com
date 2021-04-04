@@ -1,6 +1,6 @@
 <div id="content">
 
-<% foreach my $post ( recent_articles(5) ) { %>
+<% foreach my $post ( recent_posts(5) ) { %>
 <h2 class="post_title"><a href="<%= $post->{web_path} =%>"><%= $post->{title} =%></a></h2>
 <div class="excerpt">
 

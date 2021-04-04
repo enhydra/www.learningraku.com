@@ -14,8 +14,6 @@ use Time::Piece;
 
 my $log = get_logger();
 
-sub by_post_epoch { $b->{post_epoch} <=> $a->{post_epoch} }
-
 sub config_defaults () {
 	{
 	template     => 'default',
