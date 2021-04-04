@@ -1,6 +1,9 @@
+<!-- start top -->
 <div id="top">
-<A href="/index/">Home</a> •
-<A href="/about/">About</a> •
+<a href="/">Home</a> •
+<a href="/about/">About</a> •
 <a href="/book/">Book</a> •
-<a href="/downloads/">Downloads</a>
-</div>  <!-- top -->
+<a href="/downloads/">Downloads</a> •
+<a href="/feed/">Feed</a>
+</div>
+<!-- end top -->
