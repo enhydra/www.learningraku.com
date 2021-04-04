@@ -1,0 +1,7 @@
+#!perl
+
+use lib qw(lib);
+use Local::Template::Utils;
+
+binmode STDOUT;
+say_config_json()
