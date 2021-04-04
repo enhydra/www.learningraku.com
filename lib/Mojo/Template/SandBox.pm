@@ -18,6 +18,7 @@ BEGIN {
 my @templates = qw(
 	header footer styles sidebar menu page bottom middle article
 	post page_div page_div_main_page middle_main_page excerpt_list
+	items_div
 	);
 foreach my $template ( @templates ) {
 	no strict 'refs';
