@@ -6,7 +6,7 @@ use experimental qw(signatures);
 use Exporter   qw(import);
 use Encode     qw(decode);
 use File::Spec::Functions;
-use Mojo::JSON qw(decode_json);
+use Mojo::JSON qw(decode_json encode_json);
 use Mojo::Template;
 use Mojo::URL;
 use Mojo::Util qw(dumper);
@@ -19,6 +19,7 @@ sub config_defaults () {
 	template     => 'default',
 	base_dir     => 'docs',
 	template_dir => '_templates',
+	static_dir   => '_static',
 	default_test => 'abc',
 	items_json   => 'docs/items.json',
 	};
@@ -45,6 +46,14 @@ sub get_config ( $file = 'config.json' ) {
 	my %config = ( config_defaults()->%*, $hash->%* );
 
 	\%config;
+	}
+
+sub get_config_json ( $file = 'config.json' ) {
+	encode_json( get_config( $file ) );
+	}
+
+sub say_config_json ( $file = 'config.json' ) {
+	say get_config_json( $file )
 	}
 
 sub get_epoch_time ( $date ) {
