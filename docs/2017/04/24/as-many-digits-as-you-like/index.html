@@ -1,16 +1,21 @@
 <!--
 
+This is the post template
+
 {
   "author" => "brian",
   "categories" => "numbers",
   "config" => {
     "base_dir" => "docs",
+    "category_dir" => "category",
     "cname" => "test.learningraku.com",
     "default_test" => "abc",
     "items_json" => "docs/items.json",
     "last" => undef,
     "recent_items" => 5,
-    "site_title" => "Learning Perl 6 (Raku)",
+    "site_title" => "Learning Raku",
+    "static_dir" => "_static",
+    "tag_dir" => "tag",
     "template" => "default",
     "template_dir" => "_templates"
   },
@@ -21,8 +26,8 @@
   "post_epoch" => 1492996287,
   "post_id" => 333,
   "post_name" => "as-many-digits-as-you-like",
-  "processing_datestr" => "Sat Apr  3 10:40:12 2021",
-  "processing_epoch" => 1617460812,
+  "processing_datestr" => "Sun Apr  4 18:48:43 2021",
+  "processing_epoch" => 1617576523,
   "status" => "publish",
   "tags" => "",
   "title" => "As many digits as you like",
@@ -34,59 +39,13 @@
 
 -->
 
-<html>
-
-<head>
-	<base href="https://test.learningraku.com/">
-<title>As many digits as you like</title>
-	<link rel="stylesheet" href="/style.css">
-	<meta name="generator" content="brian's site generator" />
-	<meta charset="UTF-8" />
-</head>
-
-<!--
-
-This is the the page template
-
-{
-  "author" => "brian",
-  "categories" => "numbers",
-  "config" => {
-    "base_dir" => "docs",
-    "cname" => "test.learningraku.com",
-    "default_test" => "abc",
-    "items_json" => "docs/items.json",
-    "last" => undef,
-    "recent_items" => 5,
-    "site_title" => "Learning Perl 6 (Raku)",
-    "template" => "default",
-    "template_dir" => "_templates"
-  },
-  "date" => "2017-04-24 01:11:27",
-  "file" => "_posts/2017-04-24-as-many-digits-as-you-like.html",
-  "link" => "http://www.learningraku.com/2017/04/24/as-many-digits-as-you-like/",
-  "local_path" => "docs/2017/04/24/as-many-digits-as-you-like/index.html",
-  "post_epoch" => 1492996287,
-  "post_id" => 333,
-  "post_name" => "as-many-digits-as-you-like",
-  "processing_datestr" => "Sat Apr  3 10:40:12 2021",
-  "processing_epoch" => 1617460812,
-  "status" => "publish",
-  "tags" => "",
-  "title" => "As many digits as you like",
-  "type" => "post",
-  "web_path" => bless( {
-    "path" => "/2017/04/24/as-many-digits-as-you-like/"
-  }, 'Mojo::Path' )
-}
-
--->
+<!-- start post -->
 
 <html>
 
 <head>
 	<base href="https://test.learningraku.com/">
-<title>As many digits as you like</title>
+	<title>As many digits as you like</title>
 	<link rel="stylesheet" href="/style.css">
 	<meta name="generator" content="brian's site generator" />
 	<meta charset="UTF-8" />
@@ -270,12 +229,13 @@ sub MAIN ( $places = 15 ) { # could constrain further
 
 <div id="bottom">
 This is the bottom stuff
-</div> <!-- bottom -->
+</div>
+<!-- bottom -->
 
 </div> <!-- page_div -->
 </body>
 
 </html>
 
-</html>
+<!-- end post -->
 
