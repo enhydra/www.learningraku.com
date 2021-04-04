@@ -1,27 +1,32 @@
 PERL=perl
 
-DOCS=docs
-STATIC=_static
+BASE_DIR     = $(shell perl bin/config | jq -r .base_dir)
+STATIC_DIR   = $(shell perl bin/config | jq -r .static_dir)
+TEMPLATE_DIR = $(shell perl bin/config | jq -r .template_dir)
 
 LOCAL_SITE=http://127.0.0.1:3000/index.html
 
 .PHONY: build
-build: clear static cook $(DOCS)/index.html ## build the entire website
+build: | clear cook static $(BASE_DIR)/index.html $(BASE_DIR)/feed/index.xml ## build the entire website
 
 .PHONY: clear
 clear: ## remove all the previous files
-	rm -rf $(DOCS)/*
+	rm -rf $(BASE_DIR)/*
 
 .PHONY: cname
-cname: ## show the cname for this site
-	@ cat $(STATIC)/CNAME
+$(BASE_DIR)/CNAME: ## show the cname for this site
+	@ cat $(STATIC_DIR)/CNAME
 
 .PHONY: cook
 cook: ## process the templates
 	$(PERL) bin/cook
-	cp -r $(STATIC)/* $(DOCS)/.
 
-$(DOCS)/index.html: ## make the main index.html
+$(BASE_DIR)/feed/index.xml: $(BASE_DIR)/items.json
+	bin/make_feed $(BASE_DIR)/items.json > $@
+
+$(BASE_DIR)/items.json: cook ## create the JSON file
+
+$(BASE_DIR)/index.html: $(BASE_DIR)/items.json $(TEMPLATE_DIR)/index.html ## make the main index.html
 	$(PERL) bin/single_page index.html index.html
 
 .PHONY: localserver
@@ -33,15 +38,21 @@ open: localserver
 	open -a Safari $(LOCAL_SITE)
 
 .PHONY: publish
-publish: cook
+publish:
 	git add docs/.
 	git commit -m 'Re-generate site' docs
 	git push all master
 
+.PHONY: show_setup
+show_setup:
+	@ echo "BASE_DIR    " $(BASE_DIR)
+	@ echo "STATIC_DIR  " $(STATIC_DIR)
+	@ echo "TEMPLATE_DIR" $(TEMPLATE_DIR)
+
 .PHONY: static
 static: ## move the static files into place
-	cp -r $(STATIC)/* $(DOCS)/.
-
+	mkdir -p $(BASE_DIR)
+	rsync -a --exclude-from=_static/.rsync_exclude $(STATIC_DIR)/. $(BASE_DIR)
 
 ######################################################################
 # https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
