@@ -4,8 +4,12 @@
 
 -->
 
+<!-- start default -->
+
 <%= header() =%>
 
 <%= page() =%>
 
 <%= footer() =%>
+
+<!-- end default -->

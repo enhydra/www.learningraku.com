@@ -6,8 +6,12 @@ This is the the post template
 
 -->
 
+<!-- start post -->
+
 <%= header() =%>
 
 <%= page_div() =%>
 
 <%= footer() =%>
+
+<!-- end post -->

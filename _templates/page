@@ -6,8 +6,12 @@ This is the the page template
 
 -->
 
+<!-- start page -->
+
 <%= header() =%>
 
 <%= page_div() =%>
 
 <%= footer() =%>
+
+<!-- end page -->
