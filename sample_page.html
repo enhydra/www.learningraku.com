@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="profile" href="https://gmpg.org/xfn/11">
+<link rel="pingback" href="https://www.learningraku.com/xmlrpc.php">
+
+<title>Learning Raku (formerly Perl 6)</title>
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link rel="alternate" type="application/rss+xml" title="Learning Raku (formerly Perl 6) &raquo; Feed" href="https://www.learningraku.com/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Learning Raku (formerly Perl 6) &raquo; Comments Feed" href="https://www.learningraku.com/comments/feed/" />
+<link rel='stylesheet' id='wp-block-library-css'  href='https://www.learningraku.com/wp-includes/css/dist/block-library/style.min.css?ver=5.3' type='text/css' media='all' />
+<link rel='stylesheet' id='merlin-stylesheet-css'  href='https://www.learningraku.com/wp-content/themes/merlin/style.css?ver=1.2.3' type='text/css' media='all' />
+<style id='merlin-stylesheet-inline-css' type='text/css'>
+.site-description {
+	position: absolute;
+	clip: rect(1px, 1px, 1px, 1px);
+}
+</style>
+<link rel='stylesheet' id='genericons-css'  href='https://www.learningraku.com/wp-content/themes/merlin/css/genericons/genericons.css?ver=3.4.1' type='text/css' media='all' />
+<link rel='stylesheet' id='merlin-default-fonts-css'  href='//fonts.googleapis.com/css?family=Roboto%7CHammersmith+One&#038;subset=latin%2Clatin-ext' type='text/css' media='all' />
+<!--[if lt IE 9]>
+<script type='text/javascript' src='https://www.learningraku.com/wp-content/themes/merlin/js/html5shiv.min.js?ver=3.7.3'></script>
+<![endif]-->
+<script type="60af1eb7897b71c0646f1921-text/javascript" src='https://www.learningraku.com/wp-includes/js/jquery/jquery.js?ver=1.12.4-wp'></script>
+<script type="60af1eb7897b71c0646f1921-text/javascript" src='https://www.learningraku.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script>
+<script type="60af1eb7897b71c0646f1921-text/javascript" src='https://www.learningraku.com/wp-content/themes/merlin/js/navigation.js?ver=20160719'></script>
+<script type="60af1eb7897b71c0646f1921-text/javascript" src='https://www.learningraku.com/wp-content/themes/merlin/js/sidebar.js?ver=5.3'></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.learningraku.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://www.learningraku.com/wp-includes/wlwmanifest.xml" />
+<meta name="generator" content="WordPress 5.3" />
+	<link type="text/css" rel="stylesheet" href="/wp-content/plugins/syntax-highlighter-and-code-prettifier/styles/shCore.css" />
+	<link type="text/css" rel="stylesheet" href="/wp-content/plugins/syntax-highlighter-and-code-prettifier/styles/shThemeDefault.css" />
+	<script type="60af1eb7897b71c0646f1921-text/javascript" src="/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/shCore.js"></script>
+	<script async type="60af1eb7897b71c0646f1921-text/javascript" src="/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/shBrushBash.js"></script>
+	<script async type="60af1eb7897b71c0646f1921-text/javascript" src="/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/shBrushCpp.js"></script>
+	<script async type="60af1eb7897b71c0646f1921-text/javascript" src="/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/shBrushCSharp.js"></script>
+	<script async type="60af1eb7897b71c0646f1921-text/javascript" src="/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/shBrushCss.js"></script>
+	<script async type="60af1eb7897b71c0646f1921-text/javascript" src="/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/shBrushDelphi.js"></script>
+	<script async type="60af1eb7897b71c0646f1921-text/javascript" src="/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/shBrushDiff.js"></script>
+	<script async type="60af1eb7897b71c0646f1921-text/javascript" src="/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/shBrushGroovy.js"></script>
+	<script async type="60af1eb7897b71c0646f1921-text/javascript" src="/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/shBrushJava.js"></script>
+	<script async type="60af1eb7897b71c0646f1921-text/javascript" src="/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/shBrushJScript.js"></script>
+	<script async type="60af1eb7897b71c0646f1921-text/javascript" src="/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/shBrushPerl.js"></script>
+	<script async type="60af1eb7897b71c0646f1921-text/javascript" src="/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/shBrushPhp.js"></script>
+	<script async type="60af1eb7897b71c0646f1921-text/javascript" src="/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/shBrushPlain.js"></script>
+	<script async type="60af1eb7897b71c0646f1921-text/javascript" src="/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/shBrushPython.js"></script>
+	<script async type="60af1eb7897b71c0646f1921-text/javascript" src="/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/shBrushRuby.js"></script>
+	<script async type="60af1eb7897b71c0646f1921-text/javascript" src="/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/shBrushScala.js"></script>
+	<script async type="60af1eb7897b71c0646f1921-text/javascript" src="/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/shBrushSql.js"></script>
+	<script async type="60af1eb7897b71c0646f1921-text/javascript" src="/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/shBrushVb.js"></script>
+	<script async type="60af1eb7897b71c0646f1921-text/javascript" src="/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/shBrushXml.js"></script>
+	<script type="60af1eb7897b71c0646f1921-text/javascript">
+		SyntaxHighlighter.config.clipboardSwf = '/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/clipboard.swf';
+		SyntaxHighlighter.all();
+	</script>
+	</head>
+
+<body class="home blog">
+
+	<div id="page" class="hfeed site">
+
+		<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+
+		<header id="masthead" class="site-header clearfix" role="banner">
+
+			<div id="header-top" class="header-bar-wrap">
+
+
+	<div id="header-bar" class="header-bar clearfix">
+
+
+	</div>
+			</div>
+
+			<div class="header-main clearfix">
+
+				<div id="logo" class="site-branding clearfix">
+
+
+			<h1 class="site-title"><a href="https://www.learningraku.com/" rel="home">Learning Raku (formerly Perl 6)</a></h1>
+
+
+				</div><!-- .site-branding -->
+
+				<div class="header-widgets clearfix">
+
+
+				</div><!-- .header-widgets -->
+
+			</div><!-- .header-main -->
+
+			<nav id="main-navigation" class="primary-navigation navigation clearfix" role="navigation">
+				<ul id="menu-main-navigation" class="main-navigation-menu menu"><li class="page_item page-item-5"><a href="https://www.learningraku.com/about/">About</a></li>
+<li class="page_item page-item-17"><a href="https://www.learningraku.com/book/">Book</a></li>
+<li class="page_item page-item-246"><a href="https://www.learningraku.com/downloads/">Downloads</a></li>
+<li class="page_item page-item-15"><a href="https://www.learningraku.com/events/">Events</a></li>
+<li class="page_item page-item-12"><a href="https://www.learningraku.com/participate/">Participate</a></li>
+<li class="page_item page-item-7"><a href="https://www.learningraku.com/site/">Site</a></li>
+<li class="page_item page-item-250"><a href="https://www.learningraku.com/unresolved/">Unresolved</a></li>
+</ul>			</nav><!-- #main-navigation -->
+
+
+		</header><!-- #masthead -->
+
+		<div id="content" class="site-content container clearfix">
+
+	<section id="primary" class="content-area">
+
+		<div id="ad" align="center">
+			<A href="https://leanpub.com/mojo_web_clients"><img src="/images/ads/current_ad.png" width="550" height="100" /></a>
+		</div>
+
+		<main id="main" class="site-main" role="main">
+
+
+
+				<header class="page-header">
+
+					<h1 class="archive-title">Latest Posts</h1>
+
+				</header><!-- .page-header -->
+
+
+
+
+	<article id="post-642" class="post-642 post type-post status-publish format-standard hentry category-administrative-notes">
+
+
+			<a class="post-thumbnail-small" href="https://www.learningraku.com/2020/03/19/learning-raku-digital-cover-mock-up/" rel="bookmark">
+							</a>
+
+
+		<header class="entry-header">
+
+			<h2 class="entry-title"><a href="https://www.learningraku.com/2020/03/19/learning-raku-digital-cover-mock-up/" rel="bookmark">Learning Raku digital cover mock-up</a></h2>
+
+			<div class="entry-meta">
+
+			<span class="meta-date">Posted on <a href="https://www.learningraku.com/2020/03/19/learning-raku-digital-cover-mock-up/" title="10:02 pm" rel="bookmark"><time class="entry-date published updated" datetime="2020-03-19T22:02:00+00:00">March 19, 2020</time></a></span><span class="meta-author"> by <span class="author vcard"><a class="url fn n" href="https://www.learningraku.com/author/brian/" title="View all posts by brian d foy" rel="author">brian d foy</a></span></span>
+			</div>
+
+
+		</header><!-- .entry-header -->
+
+		<div class="entry-content clearfix">
+			<p>Learning Perl 6 won&#8217;t be renamed Learning Raku until at soonest the next major release cycle (maybe in a couple of years), although the latest cover for the reprint says [&hellip;]</p>
+
+			<a href="https://www.learningraku.com/2020/03/19/learning-raku-digital-cover-mock-up/" class="more-link">Read more</a>
+
+				</div><!-- .entry-content -->
+
+		<footer class="entry-footer">
+
+
+			<div class="entry-footer-meta">
+
+				<span class="meta-category">
+					<a href="https://www.learningraku.com/category/administrative-notes/" rel="category tag">Administrative notes</a>				</span>
+
+
+				<span class="meta-comments">
+					<a href="https://www.learningraku.com/2020/03/19/learning-raku-digital-cover-mock-up/#respond">Leave a comment</a>				</span>
+
+
+			</div>
+
+
+		</footer><!-- .entry-footer -->
+
+
+	</article>
+	<article id="post-638" class="post-638 post type-post status-publish format-standard hentry category-operators">
+
+
+			<a class="post-thumbnail-small" href="https://www.learningraku.com/2020/03/17/reducing-comparison-operators/" rel="bookmark">
+							</a>
+
+
+		<header class="entry-header">
+
+			<h2 class="entry-title"><a href="https://www.learningraku.com/2020/03/17/reducing-comparison-operators/" rel="bookmark">Reducing comparison operators</a></h2>
+
+			<div class="entry-meta">
+
+			<span class="meta-date">Posted on <a href="https://www.learningraku.com/2020/03/17/reducing-comparison-operators/" title="8:07 pm" rel="bookmark"><time class="entry-date published updated" datetime="2020-03-17T20:07:10+00:00">March 17, 2020</time></a></span><span class="meta-author"> by <span class="author vcard"><a class="url fn n" href="https://www.learningraku.com/author/brian/" title="View all posts by brian d foy" rel="author">brian d foy</a></span></span>
+			</div>
+
+
+		</header><!-- .entry-header -->
+
+		<div class="entry-content clearfix">
+			<p>Brad Gilbert saw my Effective Perl post about script runs (a stable feature in v5.32) and offered this Raku version on Twitter: # Perl 5: /(*script_run:(\d+))/ / \d+ &lt;?{ [eq] [&hellip;]</p>
+
+			<a href="https://www.learningraku.com/2020/03/17/reducing-comparison-operators/" class="more-link">Read more</a>
+
+				</div><!-- .entry-content -->
+
+		<footer class="entry-footer">
+
+
+			<div class="entry-footer-meta">
+
+				<span class="meta-category">
+					<a href="https://www.learningraku.com/category/operators/" rel="category tag">Operators</a>				</span>
+
+
+				<span class="meta-comments">
+					<a href="https://www.learningraku.com/2020/03/17/reducing-comparison-operators/#comments">One comment</a>				</span>
+
+
+			</div>
+
+
+		</footer><!-- .entry-footer -->
+
+
+	</article>
+	<article id="post-633" class="post-633 post type-post status-publish format-standard hentry category-administrative-notes">
+
+
+			<a class="post-thumbnail-small" href="https://www.learningraku.com/2019/12/01/long-live-raku/" rel="bookmark">
+							</a>
+
+
+		<header class="entry-header">
+
+			<h2 class="entry-title"><a href="https://www.learningraku.com/2019/12/01/long-live-raku/" rel="bookmark">Long Live Raku</a></h2>
+
+			<div class="entry-meta">
+
+			<span class="meta-date">Posted on <a href="https://www.learningraku.com/2019/12/01/long-live-raku/" title="8:22 am" rel="bookmark"><time class="entry-date published updated" datetime="2019-12-01T08:22:46+00:00">December 1, 2019</time></a></span><span class="meta-author"> by <span class="author vcard"><a class="url fn n" href="https://www.learningraku.com/author/brian/" title="View all posts by brian d foy" rel="author">brian d foy</a></span></span>
+			</div>
+
+
+		</header><!-- .entry-header -->
+
+		<div class="entry-content clearfix">
+			<p>In October 2019, Perl 6 changed its name to Raku. I think it&#8217;s a good move to let the language stand on its own two feet. I&#8217;ve updated the older [&hellip;]</p>
+
+			<a href="https://www.learningraku.com/2019/12/01/long-live-raku/" class="more-link">Read more</a>
+
+				</div><!-- .entry-content -->
+
+		<footer class="entry-footer">
+
+
+			<div class="entry-footer-meta">
+
+				<span class="meta-category">
+					<a href="https://www.learningraku.com/category/administrative-notes/" rel="category tag">Administrative notes</a>				</span>
+
+
+				<span class="meta-comments">
+					<a href="https://www.learningraku.com/2019/12/01/long-live-raku/#respond">Leave a comment</a>				</span>
+
+
+			</div>
+
+
+		</footer><!-- .entry-footer -->
+
+
+	</article>
+	<article id="post-630" class="post-630 post type-post status-publish format-standard hentry category-administrative-notes tag-commerce tag-translation">
+
+
+			<a class="post-thumbnail-small" href="https://www.learningraku.com/2019/06/12/taiwanese-editions-of-learning-perl-6/" rel="bookmark">
+							</a>
+
+
+		<header class="entry-header">
+
+			<h2 class="entry-title"><a href="https://www.learningraku.com/2019/06/12/taiwanese-editions-of-learning-perl-6/" rel="bookmark">Taiwanese editions of Learning Perl 6</a></h2>
+
+			<div class="entry-meta">
+
+			<span class="meta-date">Posted on <a href="https://www.learningraku.com/2019/06/12/taiwanese-editions-of-learning-perl-6/" title="2:35 am" rel="bookmark"><time class="entry-date published updated" datetime="2019-06-12T02:35:16+00:00">June 12, 2019</time></a></span><span class="meta-author"> by <span class="author vcard"><a class="url fn n" href="https://www.learningraku.com/author/brian/" title="View all posts by brian d foy" rel="author">brian d foy</a></span></span>
+			</div>
+
+
+		</header><!-- .entry-header -->
+
+		<div class="entry-content clearfix">
+			<p>Learning Perl 6 has its first translation. I know that the translators worked hard on it because I answered many questions for them. It is on sale now at KingStone [&hellip;]</p>
+
+			<a href="https://www.learningraku.com/2019/06/12/taiwanese-editions-of-learning-perl-6/" class="more-link">Read more</a>
+
+				</div><!-- .entry-content -->
+
+		<footer class="entry-footer">
+
+
+			<div class="entry-footer-meta">
+
+				<span class="meta-category">
+					<a href="https://www.learningraku.com/category/administrative-notes/" rel="category tag">Administrative notes</a>				</span>
+
+
+				<span class="meta-comments">
+					<a href="https://www.learningraku.com/2019/06/12/taiwanese-editions-of-learning-perl-6/#comments">2 comments</a>				</span>
+
+
+			</div>
+
+
+		</footer><!-- .entry-footer -->
+
+
+	</article>
+	<article id="post-627" class="post-627 post type-post status-publish format-standard hentry category-rakudo tag-chocolatey">
+
+
+			<a class="post-thumbnail-small" href="https://www.learningraku.com/2018/11/16/rakudo-star-2018-10-is-in-chocolatey/" rel="bookmark">
+							</a>
+
+
+		<header class="entry-header">
+
+			<h2 class="entry-title"><a href="https://www.learningraku.com/2018/11/16/rakudo-star-2018-10-is-in-chocolatey/" rel="bookmark">Rakudo Star 2018.10 is in Chocolatey</a></h2>
+
+			<div class="entry-meta">
+
+			<span class="meta-date">Posted on <a href="https://www.learningraku.com/2018/11/16/rakudo-star-2018-10-is-in-chocolatey/" title="5:16 am" rel="bookmark"><time class="entry-date published updated" datetime="2018-11-16T05:16:43+00:00">November 16, 2018</time></a></span><span class="meta-author"> by <span class="author vcard"><a class="url fn n" href="https://www.learningraku.com/author/brian/" title="View all posts by brian d foy" rel="author">brian d foy</a></span></span>
+			</div>
+
+
+		</header><!-- .entry-header -->
+
+		<div class="entry-content clearfix">
+			<p>Rakudo Star 2018.10 is now in Chocolatey as the rakudostar package. There&#8217;s something to note here: Steve Mynott has he&#8217;s not going to prepare another Rakudo Star release. That doesn&#8217;t [&hellip;]</p>
+
+			<a href="https://www.learningraku.com/2018/11/16/rakudo-star-2018-10-is-in-chocolatey/" class="more-link">Read more</a>
+
+				</div><!-- .entry-content -->
+
+		<footer class="entry-footer">
+
+
+			<div class="entry-footer-meta">
+
+				<span class="meta-category">
+					<a href="https://www.learningraku.com/category/rakudo/" rel="category tag">Rakudo</a>				</span>
+
+
+				<span class="meta-comments">
+					<a href="https://www.learningraku.com/2018/11/16/rakudo-star-2018-10-is-in-chocolatey/#respond">Leave a comment</a>				</span>
+
+
+			</div>
+
+
+		</footer><!-- .entry-footer -->
+
+
+	</article>
+	<article id="post-621" class="post-621 post type-post status-publish format-standard hentry category-administrative-notes tag-google-books">
+
+
+			<a class="post-thumbnail-small" href="https://www.learningraku.com/2018/09/03/preview-learning-perl-6-in-google-books/" rel="bookmark">
+							</a>
+
+
+		<header class="entry-header">
+
+			<h2 class="entry-title"><a href="https://www.learningraku.com/2018/09/03/preview-learning-perl-6-in-google-books/" rel="bookmark">Preview Learning Perl 6 in Google Books</a></h2>
+
+			<div class="entry-meta">
+
+			<span class="meta-date">Posted on <a href="https://www.learningraku.com/2018/09/03/preview-learning-perl-6-in-google-books/" title="4:06 pm" rel="bookmark"><time class="entry-date published updated" datetime="2018-09-03T16:06:39+00:00">September 3, 2018</time></a></span><span class="meta-author"> by <span class="author vcard"><a class="url fn n" href="https://www.learningraku.com/author/brian/" title="View all posts by brian d foy" rel="author">brian d foy</a></span></span>
+			</div>
+
+
+		</header><!-- .entry-header -->
+
+		<div class="entry-content clearfix">
+			<p>Most O&#8217;Reilly books have extensive previews on Google Books, and that&#8217;s true for the Learning Perl 6 preview too. You can check out the beginning of the book. If you [&hellip;]</p>
+
+			<a href="https://www.learningraku.com/2018/09/03/preview-learning-perl-6-in-google-books/" class="more-link">Read more</a>
+
+				</div><!-- .entry-content -->
+
+		<footer class="entry-footer">
+
+
+			<div class="entry-footer-meta">
+
+				<span class="meta-category">
+					<a href="https://www.learningraku.com/category/administrative-notes/" rel="category tag">Administrative notes</a>				</span>
+
+
+				<span class="meta-comments">
+					<a href="https://www.learningraku.com/2018/09/03/preview-learning-perl-6-in-google-books/#comments">2 comments</a>				</span>
+
+
+			</div>
+
+
+		</footer><!-- .entry-footer -->
+
+
+	</article>
+	<article id="post-614" class="post-614 post type-post status-publish format-standard hentry category-administrative-notes">
+
+
+			<a class="post-thumbnail-small" href="https://www.learningraku.com/2018/08/21/update-your-kickstarter-reward-survey/" rel="bookmark">
+							</a>
+
+
+		<header class="entry-header">
+
+			<h2 class="entry-title"><a href="https://www.learningraku.com/2018/08/21/update-your-kickstarter-reward-survey/" rel="bookmark">Update your Kickstarter reward survey</a></h2>
+
+			<div class="entry-meta">
+
+			<span class="meta-date">Posted on <a href="https://www.learningraku.com/2018/08/21/update-your-kickstarter-reward-survey/" title="12:19 am" rel="bookmark"><time class="entry-date published updated" datetime="2018-08-21T00:19:32+00:00">August 21, 2018</time></a></span><span class="meta-author"> by <span class="author vcard"><a class="url fn n" href="https://www.learningraku.com/author/brian/" title="View all posts by brian d foy" rel="author">brian d foy</a></span></span>
+			</div>
+
+
+		</header><!-- .entry-header -->
+
+		<div class="entry-content clearfix">
+			<p>The book is going to the printers so I&#8217;ll have the paper book rewards soon. It&#8217;s been awhile since the Kickstarter backers responded to the survey to supply their shipping [&hellip;]</p>
+
+			<a href="https://www.learningraku.com/2018/08/21/update-your-kickstarter-reward-survey/" class="more-link">Read more</a>
+
+				</div><!-- .entry-content -->
+
+		<footer class="entry-footer">
+
+
+			<div class="entry-footer-meta">
+
+				<span class="meta-category">
+					<a href="https://www.learningraku.com/category/administrative-notes/" rel="category tag">Administrative notes</a>				</span>
+
+
+				<span class="meta-comments">
+					<a href="https://www.learningraku.com/2018/08/21/update-your-kickstarter-reward-survey/#respond">Leave a comment</a>				</span>
+
+
+			</div>
+
+
+		</footer><!-- .entry-footer -->
+
+
+	</article>
+	<article id="post-610" class="post-610 post type-post status-publish format-standard hentry category-administrative-notes">
+
+
+			<a class="post-thumbnail-small" href="https://www.learningraku.com/2018/08/15/the-book-cover/" rel="bookmark">
+							</a>
+
+
+		<header class="entry-header">
+
+			<h2 class="entry-title"><a href="https://www.learningraku.com/2018/08/15/the-book-cover/" rel="bookmark">The book cover</a></h2>
+
+			<div class="entry-meta">
+
+			<span class="meta-date">Posted on <a href="https://www.learningraku.com/2018/08/15/the-book-cover/" title="10:50 pm" rel="bookmark"><time class="entry-date published updated" datetime="2018-08-15T22:50:12+00:00">August 15, 2018</time></a></span><span class="meta-author"> by <span class="author vcard"><a class="url fn n" href="https://www.learningraku.com/author/brian/" title="View all posts by brian d foy" rel="author">brian d foy</a></span></span>
+			</div>
+
+
+		</header><!-- .entry-header -->
+
+		<div class="entry-content clearfix">
+			<p>The book production is in its final phases. Now that we know how big the book is (a literal measurement), we know how wide the spine is (note the physical [&hellip;]</p>
+
+			<a href="https://www.learningraku.com/2018/08/15/the-book-cover/" class="more-link">Read more</a>
+
+				</div><!-- .entry-content -->
+
+		<footer class="entry-footer">
+
+
+			<div class="entry-footer-meta">
+
+				<span class="meta-category">
+					<a href="https://www.learningraku.com/category/administrative-notes/" rel="category tag">Administrative notes</a>				</span>
+
+
+				<span class="meta-comments">
+					<a href="https://www.learningraku.com/2018/08/15/the-book-cover/#respond">Leave a comment</a>				</span>
+
+
+			</div>
+
+
+		</footer><!-- .entry-footer -->
+
+
+	</article>
+	<article id="post-607" class="post-607 post type-post status-publish format-standard hentry category-administrative-notes">
+
+
+			<a class="post-thumbnail-small" href="https://www.learningraku.com/2018/08/14/table-of-contents/" rel="bookmark">
+							</a>
+
+
+		<header class="entry-header">
+
+			<h2 class="entry-title"><a href="https://www.learningraku.com/2018/08/14/table-of-contents/" rel="bookmark">Table of contents</a></h2>
+
+			<div class="entry-meta">
+
+			<span class="meta-date">Posted on <a href="https://www.learningraku.com/2018/08/14/table-of-contents/" title="9:41 pm" rel="bookmark"><time class="entry-date published updated" datetime="2018-08-14T21:41:13+00:00">August 14, 2018</time></a></span><span class="meta-author"> by <span class="author vcard"><a class="url fn n" href="https://www.learningraku.com/author/brian/" title="View all posts by brian d foy" rel="author">brian d foy</a></span></span>
+			</div>
+
+
+		</header><!-- .entry-header -->
+
+		<div class="entry-content clearfix">
+			<p>Now that the book is done I have the table of contents (PDF). That&#8217;s quite a feat considering I re-ordered some chapters only a couple of months ago! The end [&hellip;]</p>
+
+			<a href="https://www.learningraku.com/2018/08/14/table-of-contents/" class="more-link">Read more</a>
+
+				</div><!-- .entry-content -->
+
+		<footer class="entry-footer">
+
+
+			<div class="entry-footer-meta">
+
+				<span class="meta-category">
+					<a href="https://www.learningraku.com/category/administrative-notes/" rel="category tag">Administrative notes</a>				</span>
+
+
+				<span class="meta-comments">
+					<a href="https://www.learningraku.com/2018/08/14/table-of-contents/#respond">Leave a comment</a>				</span>
+
+
+			</div>
+
+
+		</footer><!-- .entry-footer -->
+
+
+	</article>
+	<article id="post-604" class="post-604 post type-post status-publish format-standard hentry category-administrative-notes">
+
+
+			<a class="post-thumbnail-small" href="https://www.learningraku.com/2018/06/19/pre-order-learning-perl-6/" rel="bookmark">
+							</a>
+
+
+		<header class="entry-header">
+
+			<h2 class="entry-title"><a href="https://www.learningraku.com/2018/06/19/pre-order-learning-perl-6/" rel="bookmark">Pre-order Learning Perl 6</a></h2>
+
+			<div class="entry-meta">
+
+			<span class="meta-date">Posted on <a href="https://www.learningraku.com/2018/06/19/pre-order-learning-perl-6/" title="5:55 pm" rel="bookmark"><time class="entry-date published updated" datetime="2018-06-19T17:55:49+00:00">June 19, 2018</time></a></span><span class="meta-author"> by <span class="author vcard"><a class="url fn n" href="https://www.learningraku.com/author/brian/" title="View all posts by brian d foy" rel="author">brian d foy</a></span></span>
+			</div>
+
+
+		</header><!-- .entry-header -->
+
+		<div class="entry-content clearfix">
+			<p>You can now pre-order Learning Perl 6 (Amazon US link). You&#8217;ve been able to do that for awhile but I didn&#8217;t want to say anything until I knew it was [&hellip;]</p>
+
+			<a href="https://www.learningraku.com/2018/06/19/pre-order-learning-perl-6/" class="more-link">Read more</a>
+
+				</div><!-- .entry-content -->
+
+		<footer class="entry-footer">
+
+
+			<div class="entry-footer-meta">
+
+				<span class="meta-category">
+					<a href="https://www.learningraku.com/category/administrative-notes/" rel="category tag">Administrative notes</a>				</span>
+
+
+				<span class="meta-comments">
+					<a href="https://www.learningraku.com/2018/06/19/pre-order-learning-perl-6/#respond">Leave a comment</a>				</span>
+
+
+			</div>
+
+
+		</footer><!-- .entry-footer -->
+
+
+	</article>
+				<div class="post-pagination clearfix">
+					<span aria-current="page" class="page-numbers current">1</span>
+<a class="page-numbers" href="https://www.learningraku.com/page/2/">2</a>
+<a class="page-numbers" href="https://www.learningraku.com/page/3/">3</a>
+<span class="page-numbers dots">&hellip;</span>
+<a class="page-numbers" href="https://www.learningraku.com/page/9/">9</a>
+<a class="next page-numbers" href="https://www.learningraku.com/page/2/">&raquo;</a>				</div>
+
+
+		</main><!-- #main -->
+	</section><!-- #primary -->
+
+		<section id="secondary" class="sidebar widget-area clearfix" role="complementary">
+
+		<aside id="text-4" class="widget widget_text clearfix"><div class="widget-header"><h3 class="widget-title">Raku or Perl 6?</h3></div>			<div class="textwidget"><p>Raku used to be called Perl 6, but <a href="https://news.perlfoundation.org/post/tpf-response-raku-rename">changed its name</a> in October 2019. You&#8217;ll see both names here, and I&#8217;m working on updating the title of the paper book.</p>
+</div>
+		</aside><aside id="search-2" class="widget widget_search clearfix">
+	<form role="search" method="get" class="search-form" action="https://www.learningraku.com/">
+		<label>
+			<span class="screen-reader-text">Search for:</span>
+			<input type="search" class="search-field" placeholder="Search &hellip;" value="" name="s">
+		</label>
+		<button type="submit" class="search-submit">
+			<span class="genericon-search"></span>
+		</button>
+	</form>
+
+</aside><aside id="text-3" class="widget widget_text clearfix">			<div class="textwidget"><div align="center"><a href="https://amzn.to/2xTdCbb"><img src="/images/cover.png" height="238" width="180" alt="Learning Perl 6" /></a></div>
+
+<br/>
+
+<div id="donate" align="center">
+
+<script async type="60af1eb7897b71c0646f1921-text/javascript" id='fbnufur'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//button.flattr.com/view/?uid=briandfoy&button=compact&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=20;f.width=110;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fbnufur');</script>
+
+<br/>
+
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick" />
+<input type="hidden" name="hosted_button_id" value="11077925" />
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" />
+<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+</form>
+</div>
+
+<br />
+</div>
+		</aside>		<aside id="recent-posts-2" class="widget widget_recent_entries clearfix">		<div class="widget-header"><h3 class="widget-title">Recent Posts</h3></div>		<ul>
+											<li>
+					<a href="https://www.learningraku.com/2020/03/19/learning-raku-digital-cover-mock-up/">Learning Raku digital cover mock-up</a>
+									</li>
+											<li>
+					<a href="https://www.learningraku.com/2020/03/17/reducing-comparison-operators/">Reducing comparison operators</a>
+									</li>
+											<li>
+					<a href="https://www.learningraku.com/2019/12/01/long-live-raku/">Long Live Raku</a>
+									</li>
+											<li>
+					<a href="https://www.learningraku.com/2019/06/12/taiwanese-editions-of-learning-perl-6/">Taiwanese editions of Learning Perl 6</a>
+									</li>
+											<li>
+					<a href="https://www.learningraku.com/2018/11/16/rakudo-star-2018-10-is-in-chocolatey/">Rakudo Star 2018.10 is in Chocolatey</a>
+									</li>
+					</ul>
+		</aside><aside id="archives-2" class="widget widget_archive clearfix"><div class="widget-header"><h3 class="widget-title">Archives</h3></div>		<label class="screen-reader-text" for="archives-dropdown-2">Archives</label>
+		<select id="archives-dropdown-2" name="archive-dropdown">
+
+			<option value="">Select Month</option>
+				<option value='https://www.learningraku.com/2020/03/'> March 2020 &nbsp;(2)</option>
+	<option value='https://www.learningraku.com/2019/12/'> December 2019 &nbsp;(1)</option>
+	<option value='https://www.learningraku.com/2019/06/'> June 2019 &nbsp;(1)</option>
+	<option value='https://www.learningraku.com/2018/11/'> November 2018 &nbsp;(1)</option>
+	<option value='https://www.learningraku.com/2018/09/'> September 2018 &nbsp;(1)</option>
+	<option value='https://www.learningraku.com/2018/08/'> August 2018 &nbsp;(3)</option>
+	<option value='https://www.learningraku.com/2018/06/'> June 2018 &nbsp;(1)</option>
+	<option value='https://www.learningraku.com/2018/03/'> March 2018 &nbsp;(5)</option>
+	<option value='https://www.learningraku.com/2018/02/'> February 2018 &nbsp;(1)</option>
+	<option value='https://www.learningraku.com/2018/01/'> January 2018 &nbsp;(7)</option>
+	<option value='https://www.learningraku.com/2017/12/'> December 2017 &nbsp;(1)</option>
+	<option value='https://www.learningraku.com/2017/07/'> July 2017 &nbsp;(1)</option>
+	<option value='https://www.learningraku.com/2017/06/'> June 2017 &nbsp;(1)</option>
+	<option value='https://www.learningraku.com/2017/05/'> May 2017 &nbsp;(2)</option>
+	<option value='https://www.learningraku.com/2017/04/'> April 2017 &nbsp;(5)</option>
+	<option value='https://www.learningraku.com/2017/03/'> March 2017 &nbsp;(1)</option>
+	<option value='https://www.learningraku.com/2017/02/'> February 2017 &nbsp;(1)</option>
+	<option value='https://www.learningraku.com/2017/01/'> January 2017 &nbsp;(8)</option>
+	<option value='https://www.learningraku.com/2016/12/'> December 2016 &nbsp;(21)</option>
+	<option value='https://www.learningraku.com/2016/11/'> November 2016 &nbsp;(15)</option>
+	<option value='https://www.learningraku.com/2016/10/'> October 2016 &nbsp;(1)</option>
+	<option value='https://www.learningraku.com/2016/02/'> February 2016 &nbsp;(3)</option>
+	<option value='https://www.learningraku.com/2016/01/'> January 2016 &nbsp;(4)</option>
+	<option value='https://www.learningraku.com/2015/12/'> December 2015 &nbsp;(1)</option>
+
+		</select>
+
+<script type="60af1eb7897b71c0646f1921-text/javascript">
+/* <![CDATA[ */
+(function() {
+	var dropdown = document.getElementById( "archives-dropdown-2" );
+	function onSelectChange() {
+		if ( dropdown.options[ dropdown.selectedIndex ].value !== '' ) {
+			document.location.href = this.options[ this.selectedIndex ].value;
+		}
+	}
+	dropdown.onchange = onSelectChange;
+})();
+/* ]]> */
+</script>
+
+		</aside><aside id="categories-2" class="widget widget_categories clearfix"><div class="widget-header"><h3 class="widget-title">Categories</h3></div><form action="https://www.learningraku.com" method="get"><label class="screen-reader-text" for="cat">Categories</label><select  name='cat' id='cat' class='postform' >
+	<option value='-1'>Select Category</option>
+	<option class="level-0" value="2">Administrative notes&nbsp;&nbsp;(10)</option>
+	<option class="level-0" value="60">Asynchronous&nbsp;&nbsp;(2)</option>
+	<option class="level-0" value="74">Avoid This Feature&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="46">Bugs &amp; Issues&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="54">Coding Tools&nbsp;&nbsp;(7)</option>
+	<option class="level-0" value="18">Command Line Program&nbsp;&nbsp;(3)</option>
+	<option class="level-0" value="24">Cross Operators&nbsp;&nbsp;(2)</option>
+	<option class="level-0" value="5">Editing&nbsp;&nbsp;(4)</option>
+	<option class="level-0" value="11">Examples&nbsp;&nbsp;(3)</option>
+	<option class="level-0" value="42">FAQ&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="44">Files &amp; Directories&nbsp;&nbsp;(2)</option>
+	<option class="level-0" value="55">Grammars&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="6">History&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="10">Horrors&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="15">Hyperoperators&nbsp;&nbsp;(2)</option>
+	<option class="level-0" value="34">Junctions&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="12">Kickstarter Tips&nbsp;&nbsp;(29)</option>
+	<option class="level-0" value="56">Lists&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="31">Modules&nbsp;&nbsp;(3)</option>
+	<option class="level-0" value="30">Numbers&nbsp;&nbsp;(7)</option>
+	<option class="level-0" value="70">Operators&nbsp;&nbsp;(2)</option>
+	<option class="level-0" value="50">Other Projects&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="22">Output&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="26">Performance&nbsp;&nbsp;(3)</option>
+	<option class="level-0" value="39">Phasers&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="51">Presentations&nbsp;&nbsp;(2)</option>
+	<option class="level-0" value="61">Quick Tricks&nbsp;&nbsp;(2)</option>
+	<option class="level-0" value="25">Rakudo&nbsp;&nbsp;(2)</option>
+	<option class="level-0" value="14">Ranges&nbsp;&nbsp;(2)</option>
+	<option class="level-0" value="13">Sequences&nbsp;&nbsp;(6)</option>
+	<option class="level-0" value="17">Sets&nbsp;&nbsp;(3)</option>
+	<option class="level-0" value="45">Social Media&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="35">Sorting&nbsp;&nbsp;(2)</option>
+	<option class="level-0" value="40">Strings&nbsp;&nbsp;(4)</option>
+	<option class="level-0" value="4">Stuff I&#8217;m playing with&nbsp;&nbsp;(8)</option>
+	<option class="level-0" value="3">Subroutines&nbsp;&nbsp;(5)</option>
+	<option class="level-1" value="75">&nbsp;&nbsp;&nbsp;Signatures&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="37">Testing&nbsp;&nbsp;(7)</option>
+	<option class="level-0" value="16">Types&nbsp;&nbsp;(3)</option>
+	<option class="level-0" value="1">Uncategorized&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="20">Unicode&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="71">Whatever&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="49">Writing Process&nbsp;&nbsp;(2)</option>
+	<option class="level-0" value="67">Zip operators&nbsp;&nbsp;(1)</option>
+</select>
+</form>
+<script type="60af1eb7897b71c0646f1921-text/javascript">
+/* <![CDATA[ */
+(function() {
+	var dropdown = document.getElementById( "cat" );
+	function onCatChange() {
+		if ( dropdown.options[ dropdown.selectedIndex ].value > 0 ) {
+			dropdown.parentNode.submit();
+		}
+	}
+	dropdown.onchange = onCatChange;
+})();
+/* ]]> */
+</script>
+
+			</aside><aside id="text-2" class="widget widget_text clearfix"><div class="widget-header"><h3 class="widget-title">Links</h3></div>			<div class="textwidget"><p><a href="https://www.oreilly.com/catalog/errata.csp?isbn=0636920062776">Book errata</a><br />
+<a href="https://goo.gl/EbA7gF">Google Books preview</a><br />
+<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a></p>
+<hr />
+<p><i>Many resources have not changed the name from Perl 6 to Raku, so these resources may use either.</i></p>
+<p><a href="https://design.raku.org">Raku Design Docs (dated)</a><br />
+<a href="http://docs.raku.org">Raku Docs</a><br />
+<a href="https://learnxinyminutes.com/docs/perl6/">Learn Perl 6 in Y Minutes</a><br />
+<a href="https://modules.raku.org">Raku modules</a><br />
+<a href="https://rosettacode.org/wiki/Category:Perl_6">Rosetta Code examples</a><br />
+<a href="http://examples.perl6.org/categories/euler.html">Project Euler examples</a><br />
+<a href="http://examples.perl6.org">Perl 6 Examples</a><br />
+<a href="https://github.com/perl6/roast">Raku Roast (test suite examples)</a></p>
+</div>
+		</aside>
+	</section><!-- #secondary -->
+
+	</div><!-- #content -->
+
+
+	<footer id="colophon" class="site-footer clearfix" role="contentinfo">
+
+
+    <div id="footer-text" class="site-info">
+
+	<span class="credit-link">
+		Powered by <a href="https://wordpress.org" title="WordPress">WordPress</a> and <a href="https://themezee.com/themes/merlin/" title="Merlin WordPress Theme">Merlin</a>.	</span>
+
+    </div><!-- .site-info -->
+
+	</footer><!-- #colophon -->
+
+</div><!-- #page -->
+
+<script type="60af1eb7897b71c0646f1921-text/javascript" src='https://www.learningraku.com/wp-includes/js/wp-embed.min.js?ver=5.3'></script>
+
+<script src="https://ajax.cloudflare.com/cdn-cgi/scripts/7089c43e/cloudflare-static/rocket-loader.min.js" data-cf-settings="60af1eb7897b71c0646f1921-|49" defer=""></script></body>
+</html>
+
