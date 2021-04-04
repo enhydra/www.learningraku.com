@@ -39,8 +39,7 @@ foreach my $file ( @posts ) {
 	my $local_path = catfile(
 		$config->{base_dir}, local_path( $file, $header ), 'index.html'
 		);
-	my $template_path = catfile( $config->{template_dir}, $config->{template} );
-	process_file( $file, $local_path, $template_path );
+	process_file( $file, $local_path );
 	}
 
 add_cname();
@@ -57,10 +56,10 @@ sub add_cname () {
 	say { $fh } $config->{cname};
 	}
 
-sub process_file ( $file, $local_path, $template_path ) {
+sub process_file ( $file, $local_path, $template_path = undef ) {
 	$log->debug( "File: <$file>" );
 	$log->debug( "Local: <$local_path>" );
-	$log->debug( "Template: <$template_path>" );
+	$log->debug( sprintf "Template: <%s>", $template_path // '' );
 	Mojo::Template::Sandbox::clear_vars();
 	my( $header, $content ) = split_doc( $file );
 
@@ -76,6 +75,19 @@ sub process_file ( $file, $local_path, $template_path ) {
 		$header->%*,
 		};
 	Mojo::Template::Sandbox::set_vars( $vars );
+
+	$template_path //= (
+		grep { -e }
+		map  { catfile( $config->{template_dir}, $_ ) }
+		( $header->{type}, $config->{template} )
+		)[0];
+
+	$log->debug( "Template path is <$template_path>" );
+
+	unless( defined $template_path ) {
+		$log->error( "No template for <$file>" );
+		return;
+		}
 
 	my $cooked = get_templater()->render_file( $template_path );
 
