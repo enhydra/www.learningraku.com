@@ -1,0 +1,17 @@
+<!--
+
+This is the categories template
+
+<%= dump_vars() =%>
+
+-->
+
+<!-- start page -->
+
+<%= header() =%>
+
+<%= items_div() =%>
+
+<%= footer() =%>
+
+<!-- end page -->

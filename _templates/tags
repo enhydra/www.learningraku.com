@@ -1,0 +1,17 @@
+<!--
+
+This is the tags template
+
+<%= dump_vars() =%>
+
+-->
+
+<!-- start tags -->
+
+<%= header() =%>
+
+<%= items_div() =%>
+
+<%= footer() =%>
+
+<!-- end tags -->
