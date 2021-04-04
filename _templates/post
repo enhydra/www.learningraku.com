@@ -1,6 +1,6 @@
 <!--
 
-This is the the post template
+This is the post template
 
 <%= dump_vars() =%>
 

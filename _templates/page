@@ -1,6 +1,6 @@
 <!--
 
-This is the the page template
+This is the page template
 
 <%= dump_vars() =%>
 
