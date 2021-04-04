@@ -4,5 +4,7 @@
 "base_dir": "docs",
 "template_dir": "_templates",
 "last": null,
-"cname": "test.learningraku.com"
+"cname": "test.learningraku.com",
+"category_dir": "category",
+"tag_dir": "tag"
 }
