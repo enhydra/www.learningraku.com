@@ -24,15 +24,6 @@ my $config = get_config();
 
 my @items;
 
-sub make_json {
-	open my $fh, '>:raw', $config->{items_json} or do {
-		$log->error( "Could not open <$config->{items_json}> for writing: $!" );
-		exit 1;
-		};
-	print { $fh } encode_json( \@items );
-	close $fh;
-	}
-
 my @posts = glob( "_posts/*.html" );
 foreach my $file ( @posts ) {
 	my( $header, $content ) = split_doc( $file );
@@ -43,7 +34,10 @@ foreach my $file ( @posts ) {
 	}
 
 add_cname();
-make_json();
+make_json( \@items );
+
+make_category_pages( \@items );
+make_tags_pages( \@items );
 
 my @pages = glob( "_templates/*.html" );
 foreach my $file ( @pages ) {
@@ -102,4 +96,74 @@ sub write_page ( $local_path, $content ) {
 	open my $fh, '>:encoding(UTF-8)', $local_path;
 	say $fh $content;
 	close $fh;
+	}
+
+sub make_category_pages ( $items ) {
+	make_labelled_pages( $items, 'categories', $config->{category_dir} );
+	}
+
+sub make_json ( $items ) {
+	open my $fh, '>:raw', $config->{items_json} or do {
+		$log->error( "Could not open <$config->{items_json}> for writing: $!" );
+		exit 1;
+		};
+	print { $fh } encode_json( $items );
+	close $fh;
+	}
+
+sub make_tags_pages ( $items ) {
+	make_labelled_pages( $items, 'tags', $config->{tag_dir} );
+	}
+
+sub make_labelled_pages ( $items, $key, $subdir ) {
+	my $inverted = invert_items( $items, $key );
+
+	my $title_label = $key;
+	$title_label =~ s/ies\z/y/;
+	$title_label =~ s/s\z//;
+	$title_label = ucfirst( $title_label );
+
+	foreach my $label ( keys $inverted->%* ) {
+		$log->debug( "label is <$label>" );
+		make_path catfile( $config->{base_dir}, $subdir, $label );
+
+		Mojo::Template::Sandbox::clear_vars();
+		my $vars = {
+			processing_epoch   => time,
+			processing_datestr => scalar CORE::localtime,
+			items => $inverted->{$label},
+			config => $config,
+			title  => "$title_label: $label",
+			};
+		Mojo::Template::Sandbox::set_vars( $vars );
+
+		my $template_path = catfile( $config->{template_dir}, $key );
+		$log->debug( "Template path is <$template_path>" );
+
+		unless( defined $template_path ) {
+			$log->error( "No template for <$key>" );
+			return;
+			}
+
+		my $local_path = catfile( $config->{base_dir}, $subdir, $label, 'index.html' );
+		my $cooked = get_templater()->render_file( $template_path );
+		write_page( $local_path, $cooked );
+		}
+
+	}
+
+
+sub invert_items ( $items, $key ) {
+	my $hash;
+
+	foreach my $item ( sort { $b->{post_epoch} <=> $a->{post_epoch} } @items ) {
+		next unless length $item->{$key};
+		$log->debug( "$key is <$item->{$key}>" );
+		foreach my $thing ( split /\s+/, $item->{$key} ) {
+			$log->debug( "thing is <$thing>" );
+			push $hash->{ $thing }->@*, $item;
+			}
+		}
+
+	$hash;
 	}
