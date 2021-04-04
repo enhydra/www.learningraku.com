@@ -66,6 +66,7 @@ sub process_file ( $file, $local_path, $template_path = undef ) {
 		content            => $content,
 		web_path           => Mojo::URL->new( $header->{link} )->path,
 		config             => $config,
+		source_file        => $file,
 		$header->%*,
 		};
 	Mojo::Template::Sandbox::set_vars( $vars );
