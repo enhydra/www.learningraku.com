@@ -7,6 +7,7 @@ use Local::Template::Utils;
 use Cwd qw(getcwd);
 use Mojo::DOM;
 use Mojo::Util qw(dumper);
+use Time::Moment;
 
 our $vars;
 
@@ -65,7 +66,12 @@ sub excerpt ( $post ) {
 		   eval { $dom->at( 'div#content > span#excerpt' )->content  }
 		// eval { $dom->at( 'div#content' )->content }
 	    // '';
-	$excerpt . '';
+
+	$excerpt = Mojo::DOM->new( $excerpt . '' );
+
+	eval { $excerpt->at('h1')->remove };
+
+	"$excerpt";
 	}
 
 sub recent_posts ( $count = 5 ) {
