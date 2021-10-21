@@ -1,13 +1,29 @@
 <div id="content">
 
-<% foreach my $post ( recent_posts(5) ) { %>
-<h2 class="post_title"><a href="<%= $post->{web_path} =%>"><%= $post->{title} =%></a></h2>
-<div class="excerpt">
+<% foreach my $post ( recent_posts(5) ) {
+	my $date = Time::Moment
+		->from_string( $post->{date} . '-0400', lenient => 1 )
+		->strftime( '%B %d, %Y' );
 
-<%= excerpt( $post ) =%>
 
 
-</div> <!-- excerpt -->
+%>
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="<%= $post->{web_path} =%>"><%= $post->{title} =%></a></h2>
+
+		<div class="byline">
+		<span class="author"><%= $post->{author} =%></span> • <span class="date"><%= $date =%></span>
+		</div>
+
+		<div class="excerpt">
+
+		<%= excerpt( $post ) =%>
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="<%= $post->{web_path} =%>">Read more...</a></span>
+	</div> <!-- post -->
 
 
 <% } %>

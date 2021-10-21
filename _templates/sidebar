@@ -2,14 +2,13 @@
 <img id="small_cover" src="images/cover.png" width="180" height="236" />
 
 <div id="sponsors">
-<p>Github sponsors</p>
+<iframe src="https://github.com/sponsors/briandfoy/button" title="Sponsor briandfoy" height="35" width="116" style="border: 0;"></iframe>
 </div>
-
-<h2 class="sidebar">Links</h2>
 
 <div class="textwidget"><p><a href="https://www.oreilly.com/catalog/errata.csp?isbn=0636920062776">Book errata</a><br />
 <a href="https://goo.gl/EbA7gF">Google Books preview</a><br />
-<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a></p>
+<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a><br />
+<a href="https://amzn.to/3E0JQxK">Amazon.com</a></p>
 <hr />
 <p><i>Many resources have not changed the name from Perl 6 to Raku, so these resources may use either.</i></p>
 <p><a href="https://design.raku.org">Raku Design Docs (dated)</a><br />

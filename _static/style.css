@@ -6,26 +6,57 @@ a {
 	text-decoration: none;
 	}
 
-div#page {
-	padding: 10px;
-	}
-
-div#top {
-	width: 100%;
-	background: #aaa;
-	margin-bottom: 15px;
-	padding: 10px;
+body {
+	font-family: Helvetica, Sans-Serif;
+	line-height: 1.5em;
 	}
 
 div#bottom {
-	width: 100%;
+	width: 90%;
 	background: #aaa;
+	margin: 0 auto;
+	margin-top: 15px;
+	padding: 10px;
+	padding-right: 25px;
+	border-radius: 15px;
+	font-size: 0.8em;
+	text-align: right;
+	}
+
+div#content {
+	margin-left: 15px;
+	padding-left: 15px;
+	flex-grow: 1 1 auto;
+	min-width: 80%;
+	}
+
+div#content {
+	font-family: Helvetica, Sans-Serif;
+	font-size: 1.2em;
+	line-height: 1.5em;
+	text-align: justify;
+	margin-right: 50px;
+	}
+
+div#menu {
+	width: 90%;
+	background: #aaa;
+	margin: 0 auto;
 	margin-bottom: 15px;
 	padding: 10px;
+	padding-right: 25px;
+	border-radius: 15px;
+	font-size: 1.2em;
+	font-weight: bold;
+	text-align: right;
 	}
 
 div#middle {
 	display: flex;
+	}
+
+div#page {
+	padding: 10px;
 	}
 
 div#sidebar {
@@ -33,11 +64,15 @@ div#sidebar {
 	max-width: var(--sidebar-width);
 	}
 
-div#content {
-	margin-left: 15px;
-	flex-grow: 1 1 auto;
-	min-width: 0;
+div#sidebar div {
+	margin-top: 25px;
 	}
+
+div#sidebar div#sponsors iframe {
+	display: block;
+	margin: 0 auto;
+	}
+
 
 img#small_cover {
 	border: 1;
@@ -59,16 +94,41 @@ span.booktitle { font-style: italic }
 
 .entry code{background:#fff;color:#000;font-family:monospace}
 
-img.post { border: 1px solid #000 }
-img.left { float: left; margin-right: 15px }
+img.post  { border: 1px solid #000 }
+img.left  { float: left; margin-right: 15px }
 img.right { float: right; margin-left: 15px }
 p.caption { font-style: italic }
+
+h2.post_title {
+	margin-bottom: 0.1em;
+	}
+
+h2.post_title.excerpt_page {
+	background: #ccc;
+	border-radius: 15px;
+	padding: 5px;
+	padding-left: 15px;
+	}
+
+div.byline {
+	margin-top: 0;
+	margin-left: 1em;
+	margin-bottom: 1em;
+	}
+
+div.byline span {
+	font-style: italic;
+	}
 
 div.center div {
 	align: center;
 	display: block;
 	margin-top: 1em;
 	margin-bottom: 1em;
+	}
+
+div.content p {
+	font-size: 14px;
 	}
 
 div.image p {
@@ -93,10 +153,23 @@ div.left div {
 	margin-right: 15px;
 	}
 
+div.byline {
+	margin-top: 0;
+	}
+
 img.screenshot {
 	border: 0;
 	}
 
 .overline {
 	border-top: 3px solid;
+	}
+
+pre {
+	margin-left: 2em;
+	}
+
+span.read_more {
+	margin-top: 1em;
+	font-style: italic;
 	}
