@@ -8,17 +8,27 @@ post_name: reducing-comparison-operators
 status: publish
 type: post
 categories: operators
-tags: 
+tags:
 -->
 
-
+<span id="excerpt">
+<p>
 Brad Gilbert say my Effective Perl post about script runs (a stable feature in v5.32) and <a href="  https://twitter.com/b2gills/status/1239987592197738506">offered this Raku version on Twitter</a>:
+</p>
+
 <pre class="brush:plain"># Perl 5:  /(*script_run:(\d+))/
 / \d+  &lt;?{ [eq] $/.Str.uniprops('script') }&gt; /
 </pre>
-Bascially, it matches <code>\d+</code> then immediately uses an assertion that looks that the thing it just matched, <code>$/</code>, has characters with all the same Unicode properties.
 
+<p>
+Basically, it matches <code>\d+</code> then immediately uses an assertion that looks that the thing it just matched, <code>$/</code>, has characters with all the same Unicode properties.
+</p>
+</span>
+
+<p>
 He then defines a new <code>regex</code> to wrap it all up:
+</p>
+
 <pre class="brush:plain">my regex script-run ($r) {
   $r
   &lt;?{ [eq] $/.Str.uniprops('script') }&gt;
@@ -26,9 +36,15 @@ He then defines a new <code>regex</code> to wrap it all up:
 
 / &lt;script-run( /\d+/ )&gt; /
 </pre>
-That's fine. The Raku grammars are really cool and amazingly flexible and is a language within the language (well, "slang").
 
+<p>
+That's fine. The Raku grammars are really cool and amazingly flexible and is a language within the language (well, "slang").
+</p>
+
+<p>
 The thing I find delightful about this Brad's use of the <a href="https://docs.raku.org/language/operators#Reduction_operators">reduction operator</a>, <code>[...]</code> with a comparison operator. So, I wrote this little program in Raku (<a href="https://repl.it/repls/CreepyGlossyTriangles">in repl.it</a>):
+</p>
+
 <pre class="brush:plain">my $n = 200.rand.Int;
 
 if [&lt;] 37, $n, 137 {
@@ -38,17 +54,36 @@ else {
     say "$n is not between 37 and 137";
     }
 </pre>
+
+<p>
 This works, and had I thought about it I might have expected it to work. Many (not all) of the math operators don't care about the order of operations, so <code>2 + 3 + 5</code> is <code>(2 + 3) + 5</code> is <code>2 + (3 + 5)</code>. Some operations do care, like exponentiation: <code>4**3**2</code> is <code>4**(3**2)</code> and is not <code>(4**3)**2</code>. The reduction operator isn't what you might expect from most examples; it doesn't just run the operation with the first two elements and replace them with a single value. It knows what operations to do first.
+</p>
 
+<p>
 But, what's the result of a comparison operator? What does the reduction operator do then?
+</p>
 
+<p>
 Raku has <a href="/2017/05/21/dont-use-in-programming/">"chained" comparisons</a>, but what you write is not what Raku is actually doing (like any good higher-level language):
+</p>
+
 <pre class="wp-block-preformatted">37 &lt; $n &lt; 137
 </pre>
+
+<p>
 which is the same as doing each comparison on its own and logically combining the results:
+</p>
+
 <pre class="wp-block-preformatted">37 &lt; $n and $n &lt; 137
 </pre>
+
+<p>
 Another way to write this is with the reduction operator:
+</p>
+
 <pre class="wp-block-preformatted">[&lt;] 37, $n, 137
 </pre>
+
+<p>
 And it all works out. No loops and short.
+</p>
