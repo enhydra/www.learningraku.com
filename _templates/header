@@ -1,7 +1,7 @@
 <html>
 
 <head>
-	<base href="http://localhost:3000/">
+	<base href="https://<%= cname() %>/">
 	<title><%= title() %></title>
 	<link rel="stylesheet" href="/style.css">
 	<meta name="generator" content="brian's site generator" />
