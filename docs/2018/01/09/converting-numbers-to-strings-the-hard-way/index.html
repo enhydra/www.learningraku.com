@@ -26,8 +26,8 @@ This is the post template
   "post_epoch" => 1515477720,
   "post_id" => 412,
   "post_name" => "converting-numbers-to-strings-the-hard-way",
-  "processing_datestr" => "Sun Apr  4 19:23:42 2021",
-  "processing_epoch" => 1617578622,
+  "processing_datestr" => "Thu Oct 21 18:18:56 2021",
+  "processing_epoch" => 1634854736,
   "source_file" => "_posts/2018-01-09-converting-numbers-to-strings-the-hard-way.html",
   "status" => "publish",
   "tags" => "",
@@ -45,7 +45,7 @@ This is the post template
 <html>
 
 <head>
-	<base href="https://test.learningraku.com/">
+	<base href="http://localhost:3000/">
 	<title>Converting numbers to strings the hard way</title>
 	<link rel="stylesheet" href="/style.css">
 	<meta name="generator" content="brian's site generator" />
@@ -56,7 +56,7 @@ This is the post template
 <div id="page">
 
 <!-- start top -->
-<div id="top">
+<div id="menu">
 <a href="/">Home</a> •
 <a href="/about/">About</a> •
 <a href="/book/">Book</a> •
@@ -71,14 +71,13 @@ This is the post template
 <img id="small_cover" src="images/cover.png" width="180" height="236" />
 
 <div id="sponsors">
-<p>Github sponsors</p>
+<iframe src="https://github.com/sponsors/briandfoy/button" title="Sponsor briandfoy" height="35" width="116" style="border: 0;"></iframe>
 </div>
-
-<h2 class="sidebar">Links</h2>
 
 <div class="textwidget"><p><a href="https://www.oreilly.com/catalog/errata.csp?isbn=0636920062776">Book errata</a><br />
 <a href="https://goo.gl/EbA7gF">Google Books preview</a><br />
-<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a></p>
+<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a><br />
+<a href="https://amzn.to/3E0JQxK">Amazon.com</a></p>
 <hr />
 <p><i>Many resources have not changed the name from Perl 6 to Raku, so these resources may use either.</i></p>
 <p><a href="https://design.raku.org">Raku Design Docs (dated)</a><br />
@@ -94,6 +93,8 @@ This is the post template
 </div> <!-- sidebar -->
 
 <div id="content">
+
+<h1>Converting numbers to strings the hard way</h1>
 
 Turning numbers into strings can be a big waste of time and money.  Paul Khuong wrote about this in <a href="//www.pvk.ca/Blog/2017/12/22/appnexus-common-framework-its-out-also-how-to-print-integers-faster/">How to Print Integers Really Fast (With Open Source AppNexus Code!)</a>. If you've bought into the JSON mania you're probably serializing numbers as strings quite a bit without even thinking about it. Much of his discussion is special to C or C++ where you (think) you directly control the hardware. Since this is also a typical interview problem I thought I'd work on it in Perl 6 with a few extras. <!--more-->
 

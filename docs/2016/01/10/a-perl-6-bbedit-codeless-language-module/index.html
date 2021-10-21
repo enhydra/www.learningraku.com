@@ -26,8 +26,8 @@ This is the post template
   "post_epoch" => 1452440972,
   "post_id" => 39,
   "post_name" => "a-perl-6-bbedit-codeless-language-module",
-  "processing_datestr" => "Sun Apr  4 19:23:42 2021",
-  "processing_epoch" => 1617578622,
+  "processing_datestr" => "Thu Oct 21 18:18:55 2021",
+  "processing_epoch" => 1634854735,
   "source_file" => "_posts/2016-01-10-a-perl-6-bbedit-codeless-language-module.html",
   "status" => "publish",
   "tags" => "",
@@ -45,7 +45,7 @@ This is the post template
 <html>
 
 <head>
-	<base href="https://test.learningraku.com/">
+	<base href="http://localhost:3000/">
 	<title>A Perl 6 BBEdit Codeless Language Module</title>
 	<link rel="stylesheet" href="/style.css">
 	<meta name="generator" content="brian's site generator" />
@@ -56,7 +56,7 @@ This is the post template
 <div id="page">
 
 <!-- start top -->
-<div id="top">
+<div id="menu">
 <a href="/">Home</a> •
 <a href="/about/">About</a> •
 <a href="/book/">Book</a> •
@@ -71,14 +71,13 @@ This is the post template
 <img id="small_cover" src="images/cover.png" width="180" height="236" />
 
 <div id="sponsors">
-<p>Github sponsors</p>
+<iframe src="https://github.com/sponsors/briandfoy/button" title="Sponsor briandfoy" height="35" width="116" style="border: 0;"></iframe>
 </div>
-
-<h2 class="sidebar">Links</h2>
 
 <div class="textwidget"><p><a href="https://www.oreilly.com/catalog/errata.csp?isbn=0636920062776">Book errata</a><br />
 <a href="https://goo.gl/EbA7gF">Google Books preview</a><br />
-<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a></p>
+<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a><br />
+<a href="https://amzn.to/3E0JQxK">Amazon.com</a></p>
 <hr />
 <p><i>Many resources have not changed the name from Perl 6 to Raku, so these resources may use either.</i></p>
 <p><a href="https://design.raku.org">Raku Design Docs (dated)</a><br />
@@ -94,6 +93,8 @@ This is the post template
 </div> <!-- sidebar -->
 
 <div id="content">
+
+<h1>A Perl 6 BBEdit Codeless Language Module</h1>
 
 Now I have rudimentary Perl 6 syntax coloring for BBEdit, my long-preferred editor on the Mac for years. I don't need anything fancy, so I did the minimum to color the stuff in the files I had open. BBEdit supports <a href="http://www.barebones.com/support/develop/clm.html">Codeless Language Modules</a> that specify various things about the language, including its file extensions, name, keywords, and so on. It's something a normal user can put into an XML or JSON file and drop into an <i>Application Support/BBEdit/Language Modules</i> directory for immediate use (with an application restart). It's not as clever as a compiled code module, but good enough for me at the moment. <!--more-->
 

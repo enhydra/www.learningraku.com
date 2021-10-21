@@ -26,8 +26,8 @@ This is the post template
   "post_epoch" => 1521083268,
   "post_id" => 592,
   "post_name" => "use-pre-built-rakudo-packages-on-appveyor",
-  "processing_datestr" => "Sun Apr  4 19:23:42 2021",
-  "processing_epoch" => 1617578622,
+  "processing_datestr" => "Thu Oct 21 18:18:56 2021",
+  "processing_epoch" => 1634854736,
   "source_file" => "_posts/2018-03-15-use-pre-built-rakudo-packages-on-appveyor.html",
   "status" => "publish",
   "tags" => "appveyor continuous-integration",
@@ -45,7 +45,7 @@ This is the post template
 <html>
 
 <head>
-	<base href="https://test.learningraku.com/">
+	<base href="http://localhost:3000/">
 	<title>Use pre-built Rakudo packages on Appveyor</title>
 	<link rel="stylesheet" href="/style.css">
 	<meta name="generator" content="brian's site generator" />
@@ -56,7 +56,7 @@ This is the post template
 <div id="page">
 
 <!-- start top -->
-<div id="top">
+<div id="menu">
 <a href="/">Home</a> •
 <a href="/about/">About</a> •
 <a href="/book/">Book</a> •
@@ -71,14 +71,13 @@ This is the post template
 <img id="small_cover" src="images/cover.png" width="180" height="236" />
 
 <div id="sponsors">
-<p>Github sponsors</p>
+<iframe src="https://github.com/sponsors/briandfoy/button" title="Sponsor briandfoy" height="35" width="116" style="border: 0;"></iframe>
 </div>
-
-<h2 class="sidebar">Links</h2>
 
 <div class="textwidget"><p><a href="https://www.oreilly.com/catalog/errata.csp?isbn=0636920062776">Book errata</a><br />
 <a href="https://goo.gl/EbA7gF">Google Books preview</a><br />
-<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a></p>
+<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a><br />
+<a href="https://amzn.to/3E0JQxK">Amazon.com</a></p>
 <hr />
 <p><i>Many resources have not changed the name from Perl 6 to Raku, so these resources may use either.</i></p>
 <p><a href="https://design.raku.org">Raku Design Docs (dated)</a><br />
@@ -94,6 +93,8 @@ This is the post template
 </div> <!-- sidebar -->
 
 <div id="content">
+
+<h1>Use pre-built Rakudo packages on Appveyor</h1>
 
 I've been fooling around with <A href="/2018/03/15/use-pre-built-rakudo-packages-on-travis-ci/">pre-built Rakudo packages on Travis CI</a> so I figured that I should do the same on AppVeyor. Last night I had a <A href="https://ci.appveyor.com/project/briandfoy/venturi/build/1.0.12/job/ahmktqs4ynu5u7x2">Ubuntu build that ran out of memory</a> before it could finish compiling Rakudo and it gave up. <a href="https://www.appveyor.com/docs/getting-started-with-appveyor-for-linux/">AppVeyor is rolling out Linux support</a> and I suspect their initial machines are underpowered (especially the ones I get for free—completely reasonable) but I haven't investigated it. It's certainly easier than the Pugs installations which could take days although much of that was just GHC. <!--more-->
 

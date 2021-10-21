@@ -26,8 +26,8 @@ This is the post template
   "post_epoch" => 1480151500,
   "post_id" => 121,
   "post_name" => "quick-tip-11-number-strings-and-numberstring-allomorphs",
-  "processing_datestr" => "Sun Apr  4 19:23:42 2021",
-  "processing_epoch" => 1617578622,
+  "processing_datestr" => "Thu Oct 21 18:18:55 2021",
+  "processing_epoch" => 1634854735,
   "source_file" => "_posts/2016-11-26-quick-tip-11-number-strings-and-numberstring-allomorphs.html",
   "status" => "publish",
   "tags" => "",
@@ -45,7 +45,7 @@ This is the post template
 <html>
 
 <head>
-	<base href="https://test.learningraku.com/">
+	<base href="http://localhost:3000/">
 	<title>Quick Tip #11: Number, Strings, and NumberString Allomorphs</title>
 	<link rel="stylesheet" href="/style.css">
 	<meta name="generator" content="brian's site generator" />
@@ -56,7 +56,7 @@ This is the post template
 <div id="page">
 
 <!-- start top -->
-<div id="top">
+<div id="menu">
 <a href="/">Home</a> •
 <a href="/about/">About</a> •
 <a href="/book/">Book</a> •
@@ -71,14 +71,13 @@ This is the post template
 <img id="small_cover" src="images/cover.png" width="180" height="236" />
 
 <div id="sponsors">
-<p>Github sponsors</p>
+<iframe src="https://github.com/sponsors/briandfoy/button" title="Sponsor briandfoy" height="35" width="116" style="border: 0;"></iframe>
 </div>
-
-<h2 class="sidebar">Links</h2>
 
 <div class="textwidget"><p><a href="https://www.oreilly.com/catalog/errata.csp?isbn=0636920062776">Book errata</a><br />
 <a href="https://goo.gl/EbA7gF">Google Books preview</a><br />
-<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a></p>
+<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a><br />
+<a href="https://amzn.to/3E0JQxK">Amazon.com</a></p>
 <hr />
 <p><i>Many resources have not changed the name from Perl 6 to Raku, so these resources may use either.</i></p>
 <p><a href="https://design.raku.org">Raku Design Docs (dated)</a><br />
@@ -94,6 +93,8 @@ This is the post template
 </div> <!-- sidebar -->
 
 <div id="content">
+
+<h1>Quick Tip #11: Number, Strings, and NumberString Allomorphs</h1>
 
 Perl 6 has a variety of ways to quote things (maybe too many), but they aren't all the same thing. The angle-bracket quote words, <code>&lt;...></code> isn't just <code>qw//</code> written with different characters. It tries to  guess what the words inside the brackets mean. That wasn't documented today, but <a href="https://github.com/perl6/doc/commit/fa0b8f643356a3db1e5e59fda4f153f48f90ee90">Zoffix has changed the docs</a> so now it does. <!--more-->
 
