@@ -1,0 +1,22 @@
+#!perl
+use v5.20;
+use experimental qw(signatures);
+
+use File::FindLib qw(lib);
+
+use File::Spec::Functions;
+use Mojo::Template::SandBox;
+
+use Local::Template::Utils;
+
+my( $template, $output_path ) = @ARGV;
+
+my $feed_dir = $config->{feed_dir} // 'feed';
+
+$template    //= 'index.xml';
+$output_path //= catfile( $feed_dir, 'index.xml' );
+
+make_path(
+	catfile( catfile( $config->{base_dir}, $feed_dir )
+	);
+
