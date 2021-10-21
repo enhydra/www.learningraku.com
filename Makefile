@@ -19,6 +19,7 @@ $(BASE_DIR)/CNAME: ## show the cname for this site
 
 .PHONY: cook
 cook: ## process the templates
+	- rm -rf $(BASE_DIR)
 	$(PERL) bin/cook
 
 $(BASE_DIR)/feed/index.xml: $(BASE_DIR)/items.json
