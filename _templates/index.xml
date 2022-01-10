@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Learning Raku (formerly Perl 6)</title>
+	<atom:link href="https://www.learningraku.com/feed.rss" rel="self" type="application/rss+xml" />
+	<link>https://www.learningraku.com</link>
+	<description></description>
+	<lastBuildDate><%=  $vars->{last_build_date}  %></lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>perl</generator>
+
+<% foreach my $post ( $vars->{posts}->@* ) { %>
+	<item>
+		<title><%= $post->{title} %></title>
+		<link><%= $post->{link} %></link>
+		<pubDate><%= $post->{rss_date} %></pubDate>
+		<dc:creator><![CDATA[<%= $post->{author} %>]]></dc:creator>
+		<% foreach my $category ( split /\s+/, $post->{cagetories} // '' ) { %>
+		<category><![CDATA[<%= $category %>]]></category><% } %>
+		<description><![CDATA[<%= excerpt( $post ) =~ s/\A\s+|\s+\z//gr; %>]]></description>
+		<content:encoded><![CDATA[<%= post_content( $post ) =~ s/\A\s+|\s+\z//gr; %>]]></content:encoded>
+	</item>
+<% } %>
+
+</channel>
+</rss>
