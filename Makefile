@@ -3,11 +3,12 @@ PERL=perl
 BASE_DIR     = $(shell perl bin/config | jq -r .base_dir)
 STATIC_DIR   = $(shell perl bin/config | jq -r .static_dir)
 TEMPLATE_DIR = $(shell perl bin/config | jq -r .template_dir)
+FEED_DIR     = $(shell perl bin/config | jq -r .feed_dir)
 
 LOCAL_SITE=http://127.0.0.1:3000/index.html
 
 .PHONY: build
-build: | clear cook static $(BASE_DIR)/index.html $(BASE_DIR)/feed/index.xml ## build the entire website
+build: | clear cook static $(BASE_DIR)/index.html $(BASE_DIR)/$(FEED_DIR)/index.xml ## build the entire website
 
 .PHONY: clear
 clear: ## remove all the previous files
@@ -23,8 +24,9 @@ cook: ## process the templates
 	$(PERL) bin/cook
 	cp $(BASE_DIR)/index.html $(BASE_DIR)/404.html
 
-$(BASE_DIR)/feed/index.xml: $(BASE_DIR)/items.json
-	bin/make_feed $(BASE_DIR)/items.json > $@
+$(BASE_DIR)/$(FEED_DIR)/index.xml: $(BASE_DIR)/items.json
+	mkdir -p $(BASE_DIR)/$(FEED_DIR)
+	$(PERL) bin/make_feed index.xml $@
 
 $(BASE_DIR)/items.json: cook ## create the JSON file
 
@@ -48,6 +50,7 @@ publish:
 .PHONY: show_setup
 show_setup:
 	@ echo "BASE_DIR    " $(BASE_DIR)
+	@ echo "FEED_DIR"     $(FEED_DIR)
 	@ echo "STATIC_DIR  " $(STATIC_DIR)
 	@ echo "TEMPLATE_DIR" $(TEMPLATE_DIR)
 

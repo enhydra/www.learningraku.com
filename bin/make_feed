@@ -4,19 +4,66 @@ use experimental qw(signatures);
 
 use File::FindLib qw(lib);
 
+use File::Path qw(make_path);
 use File::Spec::Functions;
-use Mojo::Template::SandBox;
+use Mojo::Template::Sandbox;
+use Time::Moment;
 
 use Local::Template::Utils;
 
 my( $template, $output_path ) = @ARGV;
 
-my $feed_dir = $config->{feed_dir} // 'feed';
+my $config = get_config();
 
-$template    //= 'index.xml';
-$output_path //= catfile( $feed_dir, 'index.xml' );
 
-make_path(
-	catfile( catfile( $config->{base_dir}, $feed_dir )
-	);
+# "date":"2016-12-04 14:59:29"
 
+# <lastBuildDate>Sat, 07 Nov 2020 03:26:28 +0000</lastBuildDate>
+# <pubDate>Thu, 19 Mar 2020 22:02:00 +0000</pubDate>
+
+my @posts =
+	map {
+		$_->{rss_date} = rss_date( $_->{date} );
+		$_;
+		}
+	sort { $b->{date} cmp $a->{date} }
+	get_items()->@*;
+
+$template    //= 'feeds';
+$output_path //= catfile( $config->{base_dir}, 'feed.rss' );
+
+my $config = get_config();
+my $items  = get_items();
+
+my $template_path = find_file( $template );
+die "Couldn't find path for template <$template>" unless $template_path;
+Mojo::Template::Sandbox::set_vars( {
+	posts           => \@posts,
+	config          => $config,
+	last_build_date => rss_date_now(),
+	} );
+
+my $cooked = get_templater()->render_file( $template_path );
+
+open my $fh, '>:encoding(UTF-8)', $output_path
+	or die "Could not open output <$output_path>: $!\n";
+print {$fh} $cooked;
+close $fh;
+
+say "Feed created at <$output_path>";
+
+sub rss_date_format () { '%a, %d %b %Y %H:%M:%S %z' }
+
+sub rss_date ( $date ) {
+	my $mdate = $date =~ s/\s+/T/r;
+	$mdate =~ s/:\d\d\z//;  # remove seconds
+	$mdate =~ s/://g;
+	$mdate =~ s/-//g;
+	$mdate .= Time::Moment->now->strftime( q(%z) );
+
+	Time::Moment->from_string( $mdate )->strftime( rss_date_format() )
+	}
+
+sub rss_date_now {
+	Time::Moment->now->strftime( rss_date_format() );
+	}

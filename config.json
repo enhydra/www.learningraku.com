@@ -6,5 +6,6 @@
 "last": null,
 "cname": "test.learningraku.com",
 "category_dir": "category",
-"tag_dir": "tag"
+"tag_dir": "tag",
+"feed_dir": "feeds"
 }
