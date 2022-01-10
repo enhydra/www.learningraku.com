@@ -11,16 +11,23 @@ categories: kickstarter-tips testing
 tags: prove
 -->
 
+<span id="excerpt">
+<p>
+You can run Perl 6 tests with <code><a href="http://www.metacpan.org/module/App::prove">prove</a></code>. Forget for a moment that <code>prove</code> is a Perl 5 tool. It's just some tool that's magically on your system. It's a <a href="https://testanything.org">Test Anywhere Protocol</a> consumer so anything that outputs TAP is fine with it.
+</p>
+</span>
 
-You can run Perl 6 tests with <code><a href="http://www.metacpan.org/module/App::prove">prove</a></code>. Forget for a moment that <code>prove</code> is a Perl 5 tool. It's just some tool that's magically on your system. It's a <a href="https://testanything.org">Test Anywhere Protocol</a> consumer so anything that outputs TAP is fine with it. <!--more-->
-
+<p>
 I can tell the tool which program to use when it executes the test files by specifying it with <code>--exec</code>:
+</p>
 
 <pre class="brush:plain">
-prove --exec perl6 some_test_file.t6
+$ prove --exec perl6 some_test_file.t6
 </pre>
 
+<p>
 A <a href="https://docs.perl6.org/language/testing">P6 test file</a> looks much like the old <a href="http://www.metacpan.org/module/">Test::More</a> stuff that you already know. However, since we've started fresh, it's just <a href="https://github.com/rakudo/rakudo/blob/nom/lib/Test.pm6">Test</a>:
+</p>
 
 <pre class="brush:plain">
 use v6;
@@ -29,14 +36,14 @@ use Test;
 
 subtest 'is' => {
 	is( "4", 4, "How do the Str and Int do?" );
-	is( <4>, 4, "How do the IntStr and Int do?" );
+	is( &lt;4>, 4, "How do the IntStr and Int do?" );
 	}
 
 subtest 'isa' => {
-	isa-ok( <4>, IntStr );
-	isa-ok( <4>, Int );
-	isa-ok( <4>, Str );
-	isa-ok( <4>, Rat );  # !!!
+	isa-ok( &lt;4>, IntStr );
+	isa-ok( &lt;4>, Int );
+	isa-ok( &lt;4>, Str );
+	isa-ok( &lt;4>, Rat );  # !!!
 	}
 
 done-testing;
