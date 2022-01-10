@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<feed xmlns="http://www.w3.org/2005/Atom">
-<title>brian d foy Perl 6 StackOverflow Atom Feed</title>
-<link href="http://www.stackexchange.com/" rel="related" />
-<link href="https://www.learningperl6.com/downloads/stackoverflow-questions.xml" rel="self" />
-<updated>2020-01-28T13:00:01Z</updated>
-<id>https://www.learningperl6.com/downloads/stackoverflow-questions.xml</id>
-</feed>
