@@ -39,7 +39,10 @@ make_json( \@items );
 make_category_pages( \@items );
 make_tags_pages( \@items );
 
-my @pages = glob( "_templates/*.html" );
+make_paginate_pages( scalar grep { $_->{type} eq 'post' } @items );
+make_years_pages( [ grep { $_->{type} eq 'post' } @items ] );
+
+my @pages = glob( "$config->{template_dir}/*.html" );
 foreach my $file ( @pages ) {
 	my $local_path = catfile( $config->{base_dir}, $file =~ s|_templates/||r );
 	process_file( $file, $local_path, $file );
@@ -112,9 +115,69 @@ sub make_json ( $items ) {
 	close $fh;
 	}
 
+sub make_paginate_pages ( $count ) {
+	my $template = <<~'HERE';
+		<!--
+		title: Index %%bin%%
+		link: http://www.learningraku.com/%%file%%
+		author: brian
+		date: %%date%%
+		post_name: main %%bin%%
+		status: publish
+		type: list
+		categories:
+		tags:
+		-->
+
+		<%= header =%>
+
+		<!-- Count: %%count%% Size: %%bin_size%% Bins: %%bins%% -->
+		<%= do {
+			set_var( 'start_post_n', %%start%% );
+			set_var( 'end_post_n',   %%end%%   );
+			()
+			}
+		=%>
+
+		<%= middle_main_page =%>
+
+		<%= footer =%>
+		HERE
+
+	unlink glob( catfile( $config->{template_dir}, "index*.html" ) );
+
+	my $bin_size = $config->{page_size} // 5;
+
+	my $bin_count = int( $count/$bin_size ) + ( $count % $bin_size ? 1 : 0 );
+
+	foreach my $bin ( 1 .. $bin_count ) {
+		my( $start, $end ) = ( 1+($bin-1)*($bin_size), $bin * $bin_size );
+
+		my $output = $template =~ s/%%args%%/ [ $bin, $bin_count ], $start, $end /r;
+		$output =~ s/%%count%%/$count/g;
+		$output =~ s/%%bin_size%%/$bin_size/g;
+		$output =~ s/%%bins%%/$bin_count/g;
+		$output =~ s/%%bin%%/$bin/g;
+		$output =~ s/%%start%%/$start/g;
+		$output =~ s/%%end%%/$end/g;
+
+		my @time = localtime;
+		my $date = sprintf("%4d-%02d-%02d", $time[5]+1900, $time[4]+1, $time[3]) . " " . join(":",@time[2,1,0]);
+		$output =~ s/%%date%%/$date/g;
+
+		my $filename = $bin == 1 ? 'index.html' : "index_$bin.html";
+		$output =~ s/%%file%%/$filename/g;
+		open my $out_fh, '>:encoding(UTF-8)', catfile( $config->{template_dir}, $filename );
+		print { $out_fh } $output;
+		close $out_fh;
+		}
+	}
+
 sub make_tags_pages ( $items ) {
 	make_labelled_pages( $items, 'tags', $config->{tag_dir} );
 	}
+
+sub make_years_pages { 1 }
 
 sub make_labelled_pages ( $items, $key, $subdir ) {
 	my $inverted = invert_items( $items, $key );
@@ -152,7 +215,6 @@ sub make_labelled_pages ( $items, $key, $subdir ) {
 		}
 
 	}
-
 
 sub invert_items ( $items, $key ) {
 	my $hash;
