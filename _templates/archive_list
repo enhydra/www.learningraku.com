@@ -1,0 +1,17 @@
+<div id="content">
+
+<% my $posts_by_year = all_posts_by_year(); foreach my $year ( sort { $b <=> $a } keys $posts_by_year->%* ) { %>
+    <!-- ----------------------------------------------------------- -->
+	<div class="year">
+		<h2 class="year archive_page"><%= $year =%></h2>
+
+		<ul>
+<% foreach my $post ( $posts_by_year->{$year}->@* ) { %>			<li><b><%= $post->{date} =~ s/\s.*//r =%></b> <a href="<%= $post->{web_path} =%>"><%= $post->{title} =%></a>
+<% } %>		</ul>
+	</div> <!-- year -->
+<% } %>
+
+
+
+</div> <!-- content -->
+

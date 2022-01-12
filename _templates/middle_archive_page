@@ -1,0 +1,7 @@
+<div id="middle">
+
+<%= sidebar =%>
+
+<%= archive_list =%>
+
+</div> <!-- middle -->
