@@ -1,12 +1,18 @@
+<!-- start excerpt_list -->
 <div id="content">
 
-<% foreach my $post ( recent_posts(5) ) {
-	my $date = Time::Moment
-		->from_string( $post->{date} . '-0400', lenient => 1 )
-		->strftime( '%B %d, %Y' );
+<%
+	my @posts = all_posts();
+	my $n = get_var('start_post_n') // 1;
+	my $m = get_var('end_post_n') // get_var( 'config' )->{page_size};
 
+	foreach ( $n .. $m ) {
+		my $post = $posts[$_];
+		next unless $post;
 
-
+		my $date = Time::Moment
+			->from_string( $post->{date} . '-0400', lenient => 1 )
+			->strftime( '%B %d, %Y' );
 %>
     <!-- ----------------------------------------------------------- -->
 	<div class="post">
@@ -30,5 +36,5 @@
 
 
 
-</div> <!-- content -->
-
+</div>
+<!-- end excerpt_list -->

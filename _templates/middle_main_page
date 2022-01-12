@@ -1,7 +1,9 @@
+<!-- start middle_main_page -->
 <div id="middle">
 
 <%= sidebar =%>
 
 <%= excerpt_list =%>
 
-</div> <!-- middle -->
+</div>
+<!-- end middle_main_page -->
