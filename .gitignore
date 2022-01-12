@@ -1,2 +1,3 @@
 *.icloud
 docs/
+_templates/index*.html
