@@ -1,0 +1,475 @@
+<!--
+title: Index 11
+link: http://www.learningraku.com/index_11.html
+author: brian
+date: 2022-04-20 19:46:44
+post_name: main 11
+status: publish
+type: list
+categories:
+tags:
+-->
+
+<html>
+
+<head>
+	<base href="https://test.learningraku.com/">
+	<title>Index 11</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="brian's site generator" />
+	<meta charset="UTF-8" />
+</head>
+
+
+<!-- start middle_main_page -->
+<div id="middle">
+
+<!-- start sidebar -->
+<div id="sidebar">
+	<img id="small_cover" src="images/cover.png" width="180" height="236" />
+
+	<div id="sponsors">
+		<iframe src="https://github.com/sponsors/briandfoy/button" title="Sponsor briandfoy" height="35" width="116" style="border: 0;"></iframe>
+	</div>
+
+	<div class="textwidget"><p><a href="https://www.oreilly.com/catalog/errata.csp?isbn=0636920062776">Book errata</a><br />
+		<a href="https://goo.gl/EbA7gF">Google Books preview</a><br />
+		<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a><br />
+		<a href="https://amzn.to/3E0JQxK">Amazon.com</a></p>
+		<hr />
+		<p><i>Many resources have not changed the name from Perl 6 to Raku, so these resources may use either.</i></p>
+		<p><a href="https://design.raku.org">Raku Design Docs (dated)</a><br />
+		<a href="http://docs.raku.org">Raku Docs</a><br />
+		<a href="https://learnxinyminutes.com/docs/raku/">Learn Raku in Y Minutes</a><br />
+		<a href="https://modules.raku.org">Raku modules</a><br />
+		<a href="https://rosettacode.org/wiki/Category:Raku">Rosetta Code examples</a><br />
+		<a href="http://examples.perl6.org/categories/euler.html">Project Euler examples</a><br />
+		<a href="http://examples.perl6.org">Perl 6 Examples</a><br />
+		<a href="https://github.com/Raku/roast">Raku Roast (test suite examples)</a></p>
+	</div>
+</div>
+<!-- end sidebar -->
+
+<!-- start excerpt_list -->
+<div id="content">
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/11/quick-tip-26-keep-just-the-good-parts/">Quick Tip #26: Keep just the good parts</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 11, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Ever wanted to break up a string based on the parts that you wanted to keep? You probably already know about <code><a href="https://docs.perl6.org/routine/split">split</a></code>; it uses a pattern to find the parts to discard. Perl 6&#39;s <code><a comb" docs.perl6.org hre"https: routine>comb</a></code> uses a pattern to find the parts of a string it keeps. <!--more-->
+
+Suppose you want to keep all the words, which for this example you consider that to mean groups of non-whitespace. The pattern you want to keep is <code>/ \S+ /</code> (remember that patterns have insignificant). Here&#39;s what that could look like in the REPL:
+
+<pre class="brush:plain">
+$ perl6
+To exit type &#39;exit&#39; or &#39;^D&#39;
+&gt; $_ = &#39;Hamadryas chloe&#39;
+Hamadryas chloe
+&gt; .comb( /\S+/ )  # operates on $_ by default
+(Hamadryas chloe)
+&gt; .comb( /\S+/ ).elems
+2
+</pre>
+
+That doesn&#39;t look much different than the string you started with even though it is now two elements. The REPL prints out what it considers to be a nicely formatted string, but sometimes that&#39;s confusing. You could look at it with <code>.perl</code> instead:
+
+<pre class="brush:plain">
+&gt; .comb( /\S+/ ).perl
+(&quot;Hamadryas&quot;, &quot;chloe&quot;).Seq
+</pre>
+
+Now you see the two elements. However, there&#39;s a more interesting way to do this. You can use the <code><a href="https://docs.perl6.org/routine/fmt">fmt</a></code> method on a list. It will apply its template to each item in the list. You can easily surround each word with braces, for example:
+
+<pre class="brush:plain">
+&gt; .comb( /\S+/ ).fmt( &#39;{%s}&#39; )
+{Hamadryas} {chloe}
+</pre>
+
+Now you can see which parts of the string belong to which element. This feature pleases me more and more each time I use it. Even though you could do this with a <code>map</code>, this is so much easier.
+
+Try it on this string to extract the species from these scientific names. The <code>&lt;?after ...</code> is a <a href="https://docs.perl6.org/language/regexes#Lookbehind_assertions">lookbehind assertion</a> that says that pattern has to come before the part the matches. But, it matches a condition at a particular point of the string instead of matching characters so that part is part of what <code>comb</code> keeps:
+
+<pre class="brush:plain">
+&gt; $_ = &#39;Hamadryas chloe, Hamadryas epinome, Hamadryas laodamia&#39;
+Hamadryas chloe, Hamadryas epinome, Hamadryas laodamia
+&gt; .comb( /&lt;?after Hamadryas \s+&gt; &lt;[a..z]&gt;+/ )
+(chloe epinome laodamia)
+&gt; .comb( /&lt;?after Hamadryas \s+&gt; &lt;[a..z]&gt;+/ ).fmt( &#39;{%s}&#39; )
+{chloe} {epinome} {laodamia}
+</pre>
+
+Here&#39;s something a bit more complicated (and contrived even). Make a pattern to grab the items out of a list separated by commas with a final <code>and</code>:
+
+<pre class="brush:plain">
+&gt; $_ = &#39;Daphnaeae, Epimeliades, Kissiae, and Meliae&#39;
+Daphnaeae, Epimeliades, Kissiae, and Meliae
+&gt; .comb( rx:i/ &lt;[a..z]&gt;+ &lt;?before [\, \s+ [and \s+]? | $ ]&gt; / )
+(Daphnaeae Epimeliades Kissiae Meliae)
+</pre>
+
+There&#39;s a lookahead assertion that looks for a &quot;comma whitespace with optional and&quot; or the end of string. I&#39;ll leave it as an exercise for the reader to work this out for styles that (mistakenly) eschew the Oxford comma.
+
+It&#39;s probably easier to split on the separators in this case, but you&#39;re playing with <code>comb</code> in this tip. You&#39;ll appreciate this more when the parts separating the good bits are more complicated to match than the other way around.
+
+And, for a final tip, <code>comb</code> with no pattern splits into characters:
+
+<pre class="brush:plain">
+&gt; .comb
+(D a p h n a e a e ,   E p i m e l i a d e s ,   K i s s i a e ,   a n d   M e l i a e)
+</pre>
+
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/11/quick-tip-26-keep-just-the-good-parts/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/10/quick-tip-25-very-literal-quoting/">Quick Tip #25: Very literal Quoting</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 10, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Perl 6 has a basic <a href="https://docs.perl6.org/language/quoting">quoting mechanism</a> that is as literal as it can be. It doesn&#39;t escape anything and doesn&#39;t interpolate anything. The <code>Q</code> does nothing special so you get a string as close to exactly what you see: <!--more-->
+
+<pre class="brush:plain">
+$ perl6
+&gt; Q/Single quote delimiter with \/; # no escaping
+Single quote delimiter with \
+&gt; Q/This is about $var./ # no interpolation
+This is about $var.
+&gt; Q&quot;This is still about $var.&quot; # still no interpolation
+This is still about $var.
+&gt; Q&quot;C:\\This\is\a\path&quot; # no \ proliferation!
+C:\\This\is\a\path
+</pre>
+
+It does have on interesting feature. It knows how to count balanced delimiters. If I use one of the paired characters, I can have the opening version in the literal string as long as the open and closing bits are balanced (so, every opener has a closer):
+
+<pre class="brush:plain">
+&gt; Q&lt; I have some &lt;&lt; inside &gt;&gt; &gt;
+ I have some &lt;&lt; inside &gt;&gt;
+</pre>
+
+If I don&#39;t have balanced thingys, I have a problem:
+
+<pre class="brush:plain">
+&gt; Q&lt; I have some &lt;&lt; inside  &gt;
+===SORRY!=== Error while compiling:
+Couldn&#39;t find terminator &gt; (corresponding &lt; was at line 1)
+at line 2
+------&gt; &lt;BOL&gt;⏏&lt;I EOL&gt;
+    expecting any of:
+        &gt;
+</pre>
+
+I wouldn&#39;t recommend this, though, because I can choose many other delimiters:
+
+<pre class="brush:plain">
+&gt; Q🐱I have some &gt;&gt; inside🐱
+I have some &gt;&gt; inside
+</pre>
+
+I can&#39;t use anything I like as a delimiter, though, and some of the exclusions may surprise you:
+
+<table>
+<tr>
+	<th>Prohibited</th>
+	<th>Reason</th>
+</tr>
+
+<tr>
+	<td><code>#</code></td>
+	<td>start of a comment</td>
+</tr>
+<tr>
+	<td><code>(</code></td>
+	<td>Looks like a function call</td>
+</tr>
+<tr>
+	<td><code>:</code></td>
+	<td>Starts an adverb</td>
+</tr>
+<tr>
+	<td><code>&#39;</code></td>
+	<td>Identifier character</td>
+</tr>
+<tr>
+	<td><code>-</code></td>
+	<td>Identifier character</td>
+</tr>
+<tr>
+	<td>word characters</td>
+	<td>Because that&#39;s crazy</td>
+</tr>
+</table>
+
+The rest of the quoting mechanisms build up from there. Other quoting forms have their own operators, such as <code>q//</code> for single quoting with limited escaping and qq// for double quoting with interpolation. The <code>Q</code> can handle them will an adverb:
+
+<pre class="brush:plain">
+q/This has a backslash \n/
+Q:q//This has a backslash \n/
+qq/This and a newline \n/
+Q:qq/This and a newline \n/
+</pre>
+
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/10/quick-tip-25-very-literal-quoting/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/09/quick-tip-24-how-long-did-that-take/">Quick Tip #24: How long did that take?</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 09, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+I can use P6&#39;s <a href="/2016/11/30/quick-tip-15-phasers/">phasers</a> to track how my program moves from one phase to the next. In particular, I&#39;m curious about how much time my program spends in the compile-phase. P6 might be a bit slow now, or at least slower than you think it should be, but that&#39;s okay. The core developers want to be correct first and fast second (but, also both). If you look at the <a href="https://github.com/rakudo/rakudo/blob/nom/docs/ChangeLog">Rakudo change logs</a>, you see lots of entries mentioning big speedups in things they got working first and are now optimizing. <!--more-->
+
+Here I use <code>BEGIN</code> and <code>INIT</code>, although I leave off their braces. In the first <code>put</code> I concatenate a result with its label. In the second <code>put</code>, I interpolate a result into a string by placing code in braces in the string:
+
+<pre class="brush:plain">
+put &quot;Compile to run time: &quot; ~ INIT now - BEGIN now;
+sleep 3;
+put &quot;Run time to finish: { now - INIT now }&quot;;
+</pre>
+
+I see that the compile time isn&#39;t that bad (it&#39;s not humanly noticeable in this program):
+
+<pre class="brush:plain">
+Compile to run time: 0.03161371
+Run time to finish: 3.00564300
+</pre>
+
+You might think its weird that those numbers come out like that when it looks like some things happen earlier than the statement that creates them. I can expand the example to see that the phasers fire before the statements that contain them:
+
+<pre class="brush:plain">
+INIT { put &quot;Starting run time at { now }&quot; }
+END  { put &quot;Ending at { now }&quot; }
+
+put &quot;Compile to run time: &quot; ~
+	INIT { put &quot;INIT in run time message { now }&quot;; now } \ # unspace!
+		-
+	BEGIN { put &quot;BEGIN in run time message { now }&quot;; now }
+	;
+sleep 3;
+put &quot;Run time to finish: {
+	now - INIT { put &quot;INIT in finish message { now }&quot;; now }
+	}&quot;;
+</pre>
+
+You can see that <code>now</code> creates an <a href="https://docs.perl6.org/type/Instant">Instant</a> object:
+
+<pre class="brush:plain">
+BEGIN in run time message Instant:1481307679.940645
+Starting run time at Instant:1481307679.995588
+INIT in run time message Instant:1481307679.996641
+INIT in finish message Instant:1481307679.998188
+Compile to run time: 0.0538441
+Run time to finish: 3.0023635
+Ending at Instant:1481307683.004673
+</pre>
+
+I wanted to check how much of a hit I take by <a href="/2016/12/07/quick-tip-22-use-perl-5-modules-in-perl-6/">loading a Perl 5 module</a>:
+
+<pre class="brush:plain">
+use Business::ISBN:from&lt;Perl5&gt;;
+
+my $isbn = Business::ISBN.new( &#39;9781491954324&#39; );
+put &quot;ISBN: &quot;, $isbn.as_string;
+
+put &quot;Compile to run time: &quot; ~ INIT now - BEGIN now;
+sleep 3;
+put &quot;Run time to finish: { now - INIT now }&quot;;
+</pre>
+
+The results are much better than I thought. Even loading a file from a foreign language is quick. It&#39;s not even noticeable:
+
+<pre class="brush:plain">
+ISBN: 978-1-4919-5432-4
+Compile to run time: 0.0359533
+Run time to finish: 3.0084209
+</pre>
+
+If I loaded a different, more complicated module these result may be different. But, I was interested if there was a penalty for loading any module. I don&#39;t see it.
+
+
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/09/quick-tip-24-how-long-did-that-take/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/09/6-things-about-6-at-ny-pm/">6 Things About 6, at NY.pm</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 09, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+I gave a short talk to the <a href="https://www.meetup.com/The-New-York-Perl-Meetup-Group/">New York Perl mongers</a> about six things I like at Perl 6. I wouldn&#39;t label these as the most groundbreaking, novel, or exciting features. They are just six things I picked out from what I was thinking about this week. Sometimes it&#39;s the little touches that matter. <!--more-->
+
+<div class="image center">
+<div>
+<a href="http://www.slideshare.net/brian_d_foy/6-things-about-perl-6"><img height="366" src="/images/6things.png" style="border:0" width="482"></a>
+</div>
+</div>
+
+If you&#39;d like me to give a presentation to your group, let me know (brian.d.foy@gmail.com). I&#39;d like to do a bunch more of these talks to get a feel for the Perl 6 audience and how I can incorporate that into the book.
+
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/09/6-things-about-6-at-ny-pm/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/08/quick-tip-23-use-prove-to-run-perl-6-tests/">Quick Tip #23: Use prove to run Perl 6 tests</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 08, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+<p>
+You can run Perl 6 tests with <code><a href="http://www.metacpan.org/module/App::prove">prove</a></code>. Forget for a moment that <code>prove</code> is a Perl 5 tool. It&#39;s just some tool that&#39;s magically on your system. It&#39;s a <a href="https://testanything.org">Test Anywhere Protocol</a> consumer so anything that outputs TAP is fine with it.
+</p>
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/08/quick-tip-23-use-prove-to-run-perl-6-tests/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+
+Unterminated <> operator at template line 11.
+Context:
+  6: 	my $n = get_var('start_post_n') // 1;
+  7: 	my $m = get_var('end_post_n') // get_var( 'config' )->{page_size};
+  8: 
+  9: 	foreach ( $n .. $m ) {
+  10: 		my $post = $posts[$_];
+  11: 		next unless $post;
+  12: 
+  13: 		my $date = Time::Moment
+  14: 			->from_string( $post->{date} . '-0400', lenient => 1 )
+  15: 			->strftime( '%B %d, %Y' );
+  16: %>
+Traceback (most recent call first):
+  File "template", line 11, in "main"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 148, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 163, in "Mojo::Template"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::Sandbox"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox"
+  File "template", line 37, in "Mojo::Template::Sandbox"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 163, in "Mojo::Template"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::Sandbox"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox"
+  File "template", line 6, in "Mojo::Template::Sandbox"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 163, in "Mojo::Template"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::Sandbox"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox"
+  File "_templates/index_11.html", line 25, in "Mojo::Template::Sandbox"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 163, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 173, in "Mojo::Template"
+  File "bin/cook", line 90, in "main"
+  File "bin/cook", line 48, in "main"
+Context:
+  6: my $bin  = get_var('bin');
+  7: %>
+  8: 
+  9: 
+  10: foreach my $n ( 1 .. $bins ) {
+  11: %><a class="pag_link<%= $n == $bin ? ' pag_current'  : '' =%>" href="index<%= $n == 1 ? '' : "_$n" =%>.html"><%= $n =%></a>
+  12: <% } %>
+  13: </div>
+  14: <!-- end paginate -->
+Traceback (most recent call first):
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 163, in "Mojo::Template"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::Sandbox"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox"
+  File "template", line 37, in "Mojo::Template::Sandbox"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 163, in "Mojo::Template"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::Sandbox"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox"
+  File "template", line 6, in "Mojo::Template::Sandbox"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 163, in "Mojo::Template"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::Sandbox"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox"
+  File "_templates/index_11.html", line 25, in "Mojo::Template::Sandbox"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 163, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 173, in "Mojo::Template"
+  File "bin/cook", line 90, in "main"
+  File "bin/cook", line 48, in "main"
+
+</div>
+<!-- end excerpt_list -->
+
+</div>
+<!-- end middle_main_page -->
+
+</html>
+

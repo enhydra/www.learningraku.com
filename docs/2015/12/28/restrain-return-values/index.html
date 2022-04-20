@@ -1,0 +1,314 @@
+<!--
+
+This is the post template
+
+{
+  "author" => "brian",
+  "categories" => "subroutines",
+  "config" => {
+    "base_dir" => "docs",
+    "category_dir" => "category",
+    "cname" => "test.learningraku.com",
+    "default_test" => "abc",
+    "feed_dir" => "feeds",
+    "items_json" => "docs/items.json",
+    "last" => undef,
+    "page_size" => 5,
+    "site_title" => "Learning Raku",
+    "static_dir" => "_static",
+    "tag_dir" => "tag",
+    "template" => "default",
+    "template_dir" => "_templates"
+  },
+  "date" => "2015-12-28 23:45:01",
+  "file" => "_posts/2015-12-28-restrain-return-values.html",
+  "link" => "http://www.learningraku.com/2015/12/28/restrain-return-values/",
+  "local_path" => "docs/2015/12/28/restrain-return-values/index.html",
+  "post_epoch" => 1451346301,
+  "post_id" => 21,
+  "post_name" => "restrain-return-values",
+  "processing_datestr" => "Wed Apr 20 19:46:42 2022",
+  "processing_epoch" => 1650498402,
+  "source_file" => "_posts/2015-12-28-restrain-return-values.html",
+  "status" => "publish",
+  "tags" => "",
+  "title" => "Restrain return values",
+  "type" => "post",
+  "web_path" => bless( {
+    "path" => "/2015/12/28/restrain-return-values/"
+  }, 'Mojo::Path' )
+}
+
+-->
+
+<!-- start post -->
+
+<html>
+
+<head>
+	<base href="https://test.learningraku.com/">
+	<title>Restrain return values</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="brian's site generator" />
+	<meta charset="UTF-8" />
+</head>
+
+<body>
+<div id="page">
+
+<!-- start top -->
+<div id="menu">
+<a href="/">Home</a> •
+<a href="/about/">About</a> •
+<a href="/book/">Book</a> •
+<a href="/downloads/">Downloads</a> •
+<a href="/feed/">Feed</a>
+</div>
+<!-- end top -->
+
+<div id="middle">
+
+<!-- start sidebar -->
+<div id="sidebar">
+	<img id="small_cover" src="images/cover.png" width="180" height="236" />
+
+	<div id="sponsors">
+		<iframe src="https://github.com/sponsors/briandfoy/button" title="Sponsor briandfoy" height="35" width="116" style="border: 0;"></iframe>
+	</div>
+
+	<div class="textwidget"><p><a href="https://www.oreilly.com/catalog/errata.csp?isbn=0636920062776">Book errata</a><br />
+		<a href="https://goo.gl/EbA7gF">Google Books preview</a><br />
+		<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a><br />
+		<a href="https://amzn.to/3E0JQxK">Amazon.com</a></p>
+		<hr />
+		<p><i>Many resources have not changed the name from Perl 6 to Raku, so these resources may use either.</i></p>
+		<p><a href="https://design.raku.org">Raku Design Docs (dated)</a><br />
+		<a href="http://docs.raku.org">Raku Docs</a><br />
+		<a href="https://learnxinyminutes.com/docs/raku/">Learn Raku in Y Minutes</a><br />
+		<a href="https://modules.raku.org">Raku modules</a><br />
+		<a href="https://rosettacode.org/wiki/Category:Raku">Rosetta Code examples</a><br />
+		<a href="http://examples.perl6.org/categories/euler.html">Project Euler examples</a><br />
+		<a href="http://examples.perl6.org">Perl 6 Examples</a><br />
+		<a href="https://github.com/Raku/roast">Raku Roast (test suite examples)</a></p>
+	</div>
+</div>
+<!-- end sidebar -->
+
+<div id="content">
+
+<h1>Restrain return values</h1>
+
+<span id="excerpt">
+<p>
+The utility of Perl 6 (or any language) is something that I can't already do. When people ask me if they should use Perl 6 (or even
+regular Perl), I ask them if they are having trouble getting what they want out of their current tools.
+</p>
+</span>
+
+Looking forward to Perl 6, I see many features that I've wished for in other languages, or that other languages have but Perl doesn't. That's always the problem. Perl has most of the stuff I want, but some other language has a feature I want. Moving to that other language usually means I lose the stuff Perl had.
+
+Here's an interesting bit from Perl 6, which has subroutine signatures (and, <a href="http://www.effectiveperlprogramming.com/2015/04/use-v5-20-subroutine-signatures/">so does Perl 5 now</a>). That's fine. But Perl 6 can also enforce return values.
+
+Consider this subroutine that returns different values based on the even-ness of the number I pass it:
+
+<pre class="brush:plain">
+sub is-even(Int $number) {
+	return 0 if $number % 2;
+	return 1;
+	}
+
+say is-even( 137 );
+say is-even( 2 );
+</pre>
+
+I get back what I've been told—and what I've told others—is true or false:
+
+<pre class="brush:plain">
+$ perl6 is_excellent.p6
+0
+1
+</pre>
+
+Clearly, I've been programming Perl 5 for a long time because I use the <i>definite</i> values <code>1</code> and <code>0</code> to represent true and false.
+
+But Perl 6 has the <a href="http://doc.perl6.org/type/Bool">Bool class</a> (well, enum) with <code>True</code> and <code>False</code>, so I should use those. One of the main benefits of object-oriented programming is object identity where the thingy knows what it is. A Bool knows that it's a Boolean thingy, but we have to have magical knowledge to know what a plain <code>0</code> or <code>1</code>. This isn't special to Perl 6; many other fine languages have it.
+
+I fix up my Perl 5-ish code to look a little more Perl 6-y (but not all the way just yet):
+
+<pre class="brush:plain">
+sub is-even(Int $number) {
+	return False if $number % 2;
+	return 1;
+	}
+
+say is-even( 137 );
+say is-even( 2 );
+</pre>
+
+Now I can get a Bool value back in one case:
+
+<pre class="brush:plain">
+$ perl6 is_excellent.p6
+False
+1
+</pre>
+
+I don't get a Bool in the second case. I meant to fix up that case, but I made an incomplete patch. That might be rare in the universe of computer programming, but it does happen.
+
+But Perl 6 can enforce a return value type, although at runtime. I add to the subroutine signature:
+
+<pre class="brush:plain">
+sub is-even(Int $number) returns Bool {
+	return False if $number % 2;
+	return 1;
+	}
+
+say is-even( 137 );
+say is-even( 2 );
+</pre>
+
+Now when I run this, I get an error for the case I didn't fix:
+
+<pre class="brush:plain">
+False
+Type check failed for return value; expected Bool but got Int
+</pre>
+
+There are many ways to fix this and I'll try a wrong one before I get to the right one. First, I can turn that <code>1</code> into a Bool with a <a href="http://doc.perl6.org/type/Bool#prefix_%3F"><code>?</code>operator</a>:
+
+<pre class="brush:plain">
+sub is-even(Int $number) returns Bool {
+	return False if $number % 2;
+	return ?1;
+	}
+</pre>
+
+
+That's a <a href="http://doc.perl6.org/language/operators#Operator_classification">prefix operator</a>, meaning it comes before the single value it operates on. It turns any sort of thing into either <code>True</code> or <code>False</code>. Now my code runs without an error.
+
+<pre class="brush:plain">
+$ perl6 is-even.p6
+False
+True
+</pre>
+
+But, I still have some problems. I may think I'm forced to return a Boolean value, but I'm not. I can return a <code>Bool</code> type instead:
+
+<pre class="brush:plain">
+sub is-even(Int $number) returns Bool {
+	return False if $number % 2;
+	return Bool;
+	}
+
+say is-even( 137 );
+say is-even( 2 );
+</pre>
+
+I don't get an error, but I don't get the right answer either. I correctly get <code>False</code> for the first case, but I incorrectly get back a type for the second case <i>with no error</i>:
+
+<pre class="brush:plain">
+$ perl6 is_excellent.p6
+False
+(Bool)
+</pre>
+
+I'm sure we're going to have fun with a dynamic language that passes types around, but not here. I need a better constraint on the return value.
+
+By specifying <code>returns Bool</code>, I allow <code>is-even</code> to return <i>definite</i> and <i>undefined</i> values as long as they are from Bool. Curious! I can have object identity without a concrete value! The type object by itself has the right type even though it doesn't have a defined value. See <a href="https://perl6advent.wordpress.com/2013/12/02/day-02-the-humble-type-object/">Day 02 – The humble type object</a> in the 2013 Perl 6 Advent Calendar.
+
+To force my subroutine to return a defined value, I can add a modifier to the return constraint. The <code>:D</code> (I hope your viewer doesn't turn colon-D into an emoji) marks a definite value:
+
+<pre class="brush:plain">
+sub is-even(Int $number) returns Bool:D {
+	return False if $number % 2;
+	return Bool;
+	}
+
+say is-even( 137 );
+say is-even( 2 );
+</pre>
+
+Now it fails, but with a cryptic error message that say it got what it expected:
+
+<pre class="brush:plain">
+$ perl6 is_excellent.p6
+False
+Type check failed for return value; expected Bool but got Bool
+</pre>
+
+I need to return definite values in each case:
+
+<pre class="brush:plain">
+sub is-even(Int $number) returns Bool:D {
+	return False if $number % 2;
+	return True;
+	}
+
+say is-even( 137 );
+say is-even( 2 );
+</pre>
+
+This isn't the only way to specify the contraint, athough I think I like that one best. I can also use the arrow notation in the signature:
+
+<pre class="brush:plain">
+sub is-even(Int $number --> Bool:D) {
+	return False if $number % 2;
+	return True;
+	}
+</pre>
+
+Lastly, even though I'm writing about return values, I can use the same modifier to fix up my problem with the parameter. I specify that I expect an <code>Int</code>, but that can be definite or indefinite as well:
+
+<pre class="brush:plain">
+sub is-even(Int $number --> Bool:D) {
+	return False if $number % 2;
+	return True;
+	}
+
+say is-even( 137 );
+say is-even( Int );
+</pre>
+
+If I try the modulus operator <code>%</code> with an indefinite value, my code blows up:
+
+<pre class="brush:plain">
+False
+Invocant requires an instance of type Int, but a type object was passed.  Did you forget a .new?
+</pre>
+
+I fix that by specifying that I want a definite value for the argument:
+
+<pre class="brush:plain">
+sub is-even(Int:D $number --> Bool:D) {
+	return False if $number % 2;
+	return True;
+	}
+
+say is-even( 137 );
+say is-even( Int );
+</pre>
+
+Now I get an error that relates to the argument I pass. Notice what a nice error message it is:
+
+<pre class="brush:plain">
+False
+Parameter '$number' requires an instance of type Int, but a type object was passed.  Did you forget a .new?
+</pre>
+
+
+</div> <!-- content -->
+
+</div> <!-- middle -->
+
+<div id="bottom">
+This is the bottom stuff
+</div>
+<!-- bottom -->
+
+</div> <!-- page_div -->
+</body>
+
+</html>
+
+<!-- end post -->
+

@@ -1,0 +1,173 @@
+<!--
+
+This is the post template
+
+{
+  "author" => "brian",
+  "categories" => "quick-tricks testing",
+  "config" => {
+    "base_dir" => "docs",
+    "category_dir" => "category",
+    "cname" => "test.learningraku.com",
+    "default_test" => "abc",
+    "feed_dir" => "feeds",
+    "items_json" => "docs/items.json",
+    "last" => undef,
+    "page_size" => 5,
+    "site_title" => "Learning Raku",
+    "static_dir" => "_static",
+    "tag_dir" => "tag",
+    "template" => "default",
+    "template_dir" => "_templates"
+  },
+  "date" => "2018-01-10 11:17:32",
+  "file" => "_posts/2018-01-10-quick-trick-catching-a-perl-6-warning.html",
+  "link" => "http://www.learningraku.com/2018/01/10/quick-trick-catching-a-perl-6-warning/",
+  "local_path" => "docs/2018/01/10/quick-trick-catching-a-perl-6-warning/index.html",
+  "post_epoch" => 1515583052,
+  "post_id" => 419,
+  "post_name" => "quick-trick-catching-a-perl-6-warning",
+  "processing_datestr" => "Wed Apr 20 19:46:43 2022",
+  "processing_epoch" => 1650498403,
+  "source_file" => "_posts/2018-01-10-quick-trick-catching-a-perl-6-warning.html",
+  "status" => "publish",
+  "tags" => "",
+  "title" => "Quick Trick: Catching a Perl 6 warning",
+  "type" => "post",
+  "web_path" => bless( {
+    "path" => "/2018/01/10/quick-trick-catching-a-perl-6-warning/"
+  }, 'Mojo::Path' )
+}
+
+-->
+
+<!-- start post -->
+
+<html>
+
+<head>
+	<base href="https://test.learningraku.com/">
+	<title>Quick Trick: Catching a Perl 6 warning</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="brian's site generator" />
+	<meta charset="UTF-8" />
+</head>
+
+<body>
+<div id="page">
+
+<!-- start top -->
+<div id="menu">
+<a href="/">Home</a> •
+<a href="/about/">About</a> •
+<a href="/book/">Book</a> •
+<a href="/downloads/">Downloads</a> •
+<a href="/feed/">Feed</a>
+</div>
+<!-- end top -->
+
+<div id="middle">
+
+<!-- start sidebar -->
+<div id="sidebar">
+	<img id="small_cover" src="images/cover.png" width="180" height="236" />
+
+	<div id="sponsors">
+		<iframe src="https://github.com/sponsors/briandfoy/button" title="Sponsor briandfoy" height="35" width="116" style="border: 0;"></iframe>
+	</div>
+
+	<div class="textwidget"><p><a href="https://www.oreilly.com/catalog/errata.csp?isbn=0636920062776">Book errata</a><br />
+		<a href="https://goo.gl/EbA7gF">Google Books preview</a><br />
+		<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a><br />
+		<a href="https://amzn.to/3E0JQxK">Amazon.com</a></p>
+		<hr />
+		<p><i>Many resources have not changed the name from Perl 6 to Raku, so these resources may use either.</i></p>
+		<p><a href="https://design.raku.org">Raku Design Docs (dated)</a><br />
+		<a href="http://docs.raku.org">Raku Docs</a><br />
+		<a href="https://learnxinyminutes.com/docs/raku/">Learn Raku in Y Minutes</a><br />
+		<a href="https://modules.raku.org">Raku modules</a><br />
+		<a href="https://rosettacode.org/wiki/Category:Raku">Rosetta Code examples</a><br />
+		<a href="http://examples.perl6.org/categories/euler.html">Project Euler examples</a><br />
+		<a href="http://examples.perl6.org">Perl 6 Examples</a><br />
+		<a href="https://github.com/Raku/roast">Raku Roast (test suite examples)</a></p>
+	</div>
+</div>
+<!-- end sidebar -->
+
+<div id="content">
+
+<h1>Quick Trick: Catching a Perl 6 warning</h1>
+
+While testing <A href="https://github.com/briandfoy/perl6-file-find">a module</a> I wanted to check that a deprecation warning shows up. <A href="https://docs.perl6.org/routine/warn">Warnings are a special sort of exception</a> that you can catch in a <code>CONTROL</code> block. <!--more-->
+
+<div class="image center">
+<div>
+<a data-flickr-embed="true"  href="https://www.flickr.com/photos/melystu/37292580974/in/photolist-YPqe53-nUC4oD-evv5mJ-Htsmd-H6opx-pyKgLb-aA77Ex-7FGuyD-5a1w8K-NZQ4C-RovuiA-6Pf16K-BDnfpU-qiwpvR-4WCtFb-dJ5pDe-b1Ejyk-TCH4WL-7mupFc-2T7pK-aNbbmk-vZbnP-9xsTYB-4SpkrJ-AWPMt-sAAcT-rdRWP5-a2p3MT-ouoRCq-qkS83i-6mZr18-aXtfkT-Two3N9-a2p41c-jJzAYb-71pDf-HFx1uf-Krr1E-cisdqw-9fH8E1-jWWBuX-8HrBUk-oGUeeR-SYSxjh-VV8NrT-8hGBuL-6qxFCb-eys5Ps-neD4M6-YBaPJK" title="Warning!"><img src="https://farm5.staticflickr.com/4483/37292580974_e11f1d4b14.jpg" width="500" height="347" alt="Warning!"></a>
+</div>
+</div>
+
+In my test file I add a <A href="https://docs.perl6.org/language/phasers#CONTROL">CONTROL phaser</a>. This catches the action of block exiting things including <code>return</code>, <code>fail</code>, <code>redo</code>, <code>next</code>, <code>last</code>, <code>take</code>, and in this case, <code>warn</code>:
+
+<pre class="brush:plain">
+{ # with forced find to Not work recursive
+CONTROL {
+	my $label = ':recursive warns about deprecation';
+	when CX::Warn { like $_.message, /deprecated/, $label; }
+	default       { fail( $label ); }
+	}
+my $res = find(:dir&lt;t/dir1>, :name&lt;file.bar>, recursive => False);
+is $res.elems, 1, 'name with a string';
+}
+</pre>
+
+You won't catch these in a normal <code>CATCH</code> block:
+
+<pre class="brush:plain">
+sub foow { warn "This is a warning" }
+sub food { die  "This is a death" }
+
+{
+CONTROL {
+	when CX::Warn { put "Caught warning in CONTROL" }
+	}
+foow();
+}
+
+
+try {
+CATCH {
+	when CX::Warn  { put "Caught warning in CATCH" }
+	when  X::AdHoc { put "Caught death in CATCH" }
+	default { put "Caught {$_.^name} with {$_.message}" }
+	}
+foow();
+food();
+}
+</pre>
+
+The output shows that the <code>CONTROL</code> caught the warning from the first call but the <code>CATCH</code> let it pass through in the second:
+
+<pre class="brush:plain">
+Caught warning in CONTROL
+Caught death in CATCH
+This is a warning
+  in sub foow at /Users/brian/Desktop/test.p6 line 5
+</pre>
+
+
+</div> <!-- content -->
+
+</div> <!-- middle -->
+
+<div id="bottom">
+This is the bottom stuff
+</div>
+<!-- bottom -->
+
+</div> <!-- page_div -->
+</body>
+
+</html>
+
+<!-- end post -->
+

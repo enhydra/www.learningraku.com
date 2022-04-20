@@ -1,0 +1,147 @@
+<!--
+
+This is the post template
+
+{
+  "author" => "brian",
+  "categories" => "kickstarter-tips performance sorting",
+  "config" => {
+    "base_dir" => "docs",
+    "category_dir" => "category",
+    "cname" => "test.learningraku.com",
+    "default_test" => "abc",
+    "feed_dir" => "feeds",
+    "items_json" => "docs/items.json",
+    "last" => undef,
+    "page_size" => 5,
+    "site_title" => "Learning Raku",
+    "static_dir" => "_static",
+    "tag_dir" => "tag",
+    "template" => "default",
+    "template_dir" => "_templates"
+  },
+  "date" => "2016-12-13 15:50:00",
+  "file" => "_posts/2016-12-13-quick-tip-28-perl-6s-schwartzian-transform.html",
+  "link" => "http://www.learningraku.com/2016/12/13/quick-tip-28-perl-6s-schwartzian-transform/",
+  "local_path" => "docs/2016/12/13/quick-tip-28-perl-6s-schwartzian-transform/index.html",
+  "post_epoch" => 1481644200,
+  "post_id" => 205,
+  "post_name" => "quick-tip-28-perl-6s-schwartzian-transform",
+  "processing_datestr" => "Wed Apr 20 19:46:43 2022",
+  "processing_epoch" => 1650498403,
+  "source_file" => "_posts/2016-12-13-quick-tip-28-perl-6s-schwartzian-transform.html",
+  "status" => "publish",
+  "tags" => "schwartzian-transform",
+  "title" => "Quick Tip #28: Perl 6's Schwartzian Transform",
+  "type" => "post",
+  "web_path" => bless( {
+    "path" => "/2016/12/13/quick-tip-28-perl-6s-schwartzian-transform/"
+  }, 'Mojo::Path' )
+}
+
+-->
+
+<!-- start post -->
+
+<html>
+
+<head>
+	<base href="https://test.learningraku.com/">
+	<title>Quick Tip #28: Perl 6's Schwartzian Transform</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="brian's site generator" />
+	<meta charset="UTF-8" />
+</head>
+
+<body>
+<div id="page">
+
+<!-- start top -->
+<div id="menu">
+<a href="/">Home</a> •
+<a href="/about/">About</a> •
+<a href="/book/">Book</a> •
+<a href="/downloads/">Downloads</a> •
+<a href="/feed/">Feed</a>
+</div>
+<!-- end top -->
+
+<div id="middle">
+
+<!-- start sidebar -->
+<div id="sidebar">
+	<img id="small_cover" src="images/cover.png" width="180" height="236" />
+
+	<div id="sponsors">
+		<iframe src="https://github.com/sponsors/briandfoy/button" title="Sponsor briandfoy" height="35" width="116" style="border: 0;"></iframe>
+	</div>
+
+	<div class="textwidget"><p><a href="https://www.oreilly.com/catalog/errata.csp?isbn=0636920062776">Book errata</a><br />
+		<a href="https://goo.gl/EbA7gF">Google Books preview</a><br />
+		<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a><br />
+		<a href="https://amzn.to/3E0JQxK">Amazon.com</a></p>
+		<hr />
+		<p><i>Many resources have not changed the name from Perl 6 to Raku, so these resources may use either.</i></p>
+		<p><a href="https://design.raku.org">Raku Design Docs (dated)</a><br />
+		<a href="http://docs.raku.org">Raku Docs</a><br />
+		<a href="https://learnxinyminutes.com/docs/raku/">Learn Raku in Y Minutes</a><br />
+		<a href="https://modules.raku.org">Raku modules</a><br />
+		<a href="https://rosettacode.org/wiki/Category:Raku">Rosetta Code examples</a><br />
+		<a href="http://examples.perl6.org/categories/euler.html">Project Euler examples</a><br />
+		<a href="http://examples.perl6.org">Perl 6 Examples</a><br />
+		<a href="https://github.com/Raku/roast">Raku Roast (test suite examples)</a></p>
+	</div>
+</div>
+<!-- end sidebar -->
+
+<div id="content">
+
+<h1>Quick Tip #28: Perl 6's Schwartzian Transform</h1>
+
+This is a really <a href="https://www.learningperl6.com/category/kickstarter-tips/">Quick Tip</a>. It's about the Schwartzian Transform, which makes things quicker. <!--more-->
+
+You may have seen my presentation from the <a href="http://act.yapc.eu/alpineperl2016/">Alpine Perl Workshop 2016</a>. I talked abou the <a href="http://www.slideshare.net/brian_d_foy/the-surprisingly-tense-history-of-the-schwartzian-transform">surprisingly tense history of the Schwartzian Transform</a>. I also <A href="http://perltricks.com/article/the-history-of-the-schwartzian-transform/">wrote about it for PerlTricks</a>.
+
+In short, Randal didn't invent it but he made it popular. The popularity wasn't immediate though.
+
+In Perl 5 that looks like this map-sort-map:
+
+<pre class="brush:plain">
+print
+  map { $_->[0] }
+  sort { $a->[1] <=> $b->[1] }
+  map { [$_, lc] }
+  &lt;>;
+</pre>
+
+The trick is to reduce the number of time you call <code>lc</code>. There's no need to call it over and over on the same string.
+
+How would you do the same thing in Perl 6?
+
+First, Perl 6 has a unary version of <code><a href="https://docs.perl6.org/routine/sort#(Any)_method_sort">sort</a></code>. I tell it how to make a value then it does that for each pair of elements to compare:
+
+<pre class="brush:plain">
+my @sorted_words = sort { .lc }, @words;
+</pre>
+
+It takes two elements from the list, lowercases both of them, and compares them with string equality (cmp). You don't have to type out the <code>.lc</code> twice. This doesn't transform the elements, so the output list isn't necessarily all lowercase. It's the original list but possibly re-ordered.
+
+Not only that, sort caches the result of the operation so it doesn't have to redo it. That is, Perl 6 already does what the Schwartzian Transform was doing!
+
+
+</div> <!-- content -->
+
+</div> <!-- middle -->
+
+<div id="bottom">
+This is the bottom stuff
+</div>
+<!-- bottom -->
+
+</div> <!-- page_div -->
+</body>
+
+</html>
+
+<!-- end post -->
+

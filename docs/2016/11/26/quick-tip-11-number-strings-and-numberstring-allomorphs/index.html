@@ -1,0 +1,300 @@
+<!--
+
+This is the post template
+
+{
+  "author" => "brian",
+  "categories" => "kickstarter-tips",
+  "config" => {
+    "base_dir" => "docs",
+    "category_dir" => "category",
+    "cname" => "test.learningraku.com",
+    "default_test" => "abc",
+    "feed_dir" => "feeds",
+    "items_json" => "docs/items.json",
+    "last" => undef,
+    "page_size" => 5,
+    "site_title" => "Learning Raku",
+    "static_dir" => "_static",
+    "tag_dir" => "tag",
+    "template" => "default",
+    "template_dir" => "_templates"
+  },
+  "date" => "2016-11-26 09:11:40",
+  "file" => "_posts/2016-11-26-quick-tip-11-number-strings-and-numberstring-allomorphs.html",
+  "link" => "http://www.learningraku.com/2016/11/26/quick-tip-11-number-strings-and-numberstring-allomorphs/",
+  "local_path" => "docs/2016/11/26/quick-tip-11-number-strings-and-numberstring-allomorphs/index.html",
+  "post_epoch" => 1480151500,
+  "post_id" => 121,
+  "post_name" => "quick-tip-11-number-strings-and-numberstring-allomorphs",
+  "processing_datestr" => "Wed Apr 20 19:46:42 2022",
+  "processing_epoch" => 1650498402,
+  "source_file" => "_posts/2016-11-26-quick-tip-11-number-strings-and-numberstring-allomorphs.html",
+  "status" => "publish",
+  "tags" => "",
+  "title" => "Quick Tip #11: Number, Strings, and NumberString Allomorphs",
+  "type" => "post",
+  "web_path" => bless( {
+    "path" => "/2016/11/26/quick-tip-11-number-strings-and-numberstring-allomorphs/"
+  }, 'Mojo::Path' )
+}
+
+-->
+
+<!-- start post -->
+
+<html>
+
+<head>
+	<base href="https://test.learningraku.com/">
+	<title>Quick Tip #11: Number, Strings, and NumberString Allomorphs</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="brian's site generator" />
+	<meta charset="UTF-8" />
+</head>
+
+<body>
+<div id="page">
+
+<!-- start top -->
+<div id="menu">
+<a href="/">Home</a> •
+<a href="/about/">About</a> •
+<a href="/book/">Book</a> •
+<a href="/downloads/">Downloads</a> •
+<a href="/feed/">Feed</a>
+</div>
+<!-- end top -->
+
+<div id="middle">
+
+<!-- start sidebar -->
+<div id="sidebar">
+	<img id="small_cover" src="images/cover.png" width="180" height="236" />
+
+	<div id="sponsors">
+		<iframe src="https://github.com/sponsors/briandfoy/button" title="Sponsor briandfoy" height="35" width="116" style="border: 0;"></iframe>
+	</div>
+
+	<div class="textwidget"><p><a href="https://www.oreilly.com/catalog/errata.csp?isbn=0636920062776">Book errata</a><br />
+		<a href="https://goo.gl/EbA7gF">Google Books preview</a><br />
+		<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a><br />
+		<a href="https://amzn.to/3E0JQxK">Amazon.com</a></p>
+		<hr />
+		<p><i>Many resources have not changed the name from Perl 6 to Raku, so these resources may use either.</i></p>
+		<p><a href="https://design.raku.org">Raku Design Docs (dated)</a><br />
+		<a href="http://docs.raku.org">Raku Docs</a><br />
+		<a href="https://learnxinyminutes.com/docs/raku/">Learn Raku in Y Minutes</a><br />
+		<a href="https://modules.raku.org">Raku modules</a><br />
+		<a href="https://rosettacode.org/wiki/Category:Raku">Rosetta Code examples</a><br />
+		<a href="http://examples.perl6.org/categories/euler.html">Project Euler examples</a><br />
+		<a href="http://examples.perl6.org">Perl 6 Examples</a><br />
+		<a href="https://github.com/Raku/roast">Raku Roast (test suite examples)</a></p>
+	</div>
+</div>
+<!-- end sidebar -->
+
+<div id="content">
+
+<h1>Quick Tip #11: Number, Strings, and NumberString Allomorphs</h1>
+
+Perl 6 has a variety of ways to quote things (maybe too many), but they aren't all the same thing. The angle-bracket quote words, <code>&lt;...></code> isn't just <code>qw//</code> written with different characters. It tries to  guess what the words inside the brackets mean. That wasn't documented today, but <a href="https://github.com/perl6/doc/commit/fa0b8f643356a3db1e5e59fda4f153f48f90ee90">Zoffix has changed the docs</a> so now it does. <!--more-->
+
+Start with <code>qw//</code>, the basic quotewords operators. It  grabs groups of non-whitespace characters and produces a list of those strings:
+
+<pre class="brush:plain">
+$ perl6
+> qw{ a b c}.perl
+("a", "b", "c")
+> qw{ a b c}.WHAT
+(List)
+</pre>
+
+This form doesn't care what the strings are. Every item comes out a string:
+
+<pre class="brush:plain">
+> qw{ a b 137}.perl
+("a", "b", "137")
+> qw{ a b 137}.WHAT
+(List)
+> qw{ a b 137}.[*-1].perl
+"137"
+> qw{ a b 137}.[*-1].WHAT
+(Str)
+</pre>
+
+There's also a more general quote operator, <code>Q</code>, that can take a <code>:w</code> adverb to do the same thing:
+
+<pre class="brush:plain">
+> Q:w{ a b 137}.perl
+("a", "b", "137")
+</pre>
+
+This is mostly what I expect. Everything in the quote words operators come out as the same sort of thing. But note, just because I expect something doesn't mean it's reality. You'll be much happier with Perl 6 if you don't expect it to act like some other language named Perl.
+
+<h3>The angle bracket quote words</h3>
+
+The angle bracket form, however, tries to guess what the strings mean. It uses <a href="https://docs.perl6.org/routine/val">val</a> to turn strings that look like numbers into an <i>allomorph</i>. That's something that can look different but retains its meaning. The idea of the digit 1 is the same as the string "1" and the string "one", even if Perl 6 decides to represent them as different classes.
+
+<table>
+
+<th>
+<tr><td><a href="https://docs.perl6.org/type/IntStr">IntStr</a></td><td>"137"</td><td>Whole numbers</td></tr>
+<tr><td><a href="https://docs.perl6.org/type/NumStr">NumStr</a></td><td>"1.37e2"</td><td></td></tr>
+<tr><td><a href="https://docs.perl6.org/type/RatStr">RatStr</a></td><td>"1/137"</td><td>Rational numbers</td></tr>
+<tr><td><a href="https://docs.perl6.org/type/ComplexStr">ComplexStr</a></td><td>"137+0i"</td><td>Complex numbers</td></tr>
+<tr><td><a href="https://docs.perl6.org/type/xStr">Str</a></td><td>"abc"</td><td>Everything else</td></tr>
+</th>
+
+First, look at some values in the Perl 6 REPL. I use <a href="https://docs.perl6.org/routine/val">val</a> on a bunch of strings and then call <code>WHAT</code> to see what <a href="https://docs.perl6.org/routine/val">val</a> produced:
+
+<pre class="brush:plain">
+$ perl6
+> val( "137" ).WHAT
+(IntStr)
+> val( "1e37" ).WHAT
+(NumStr)
+> val( "1/137" ).WHAT
+(RatStr)
+> val( "137+4i" ).WHAT
+(ComplexStr)
+> val( "abc" ).WHAT
+(Str)
+</pre>
+
+Previously, the quote words didn't guess like this for us, but we can add the <code>:v</code> adverb (if you can find this in the docs, let me know so I can link to it):
+
+<pre class="brush:plain">
+$ perl6
+> qw:v{ 137 1.37e2 137+0i 1/137 }.perl
+(IntStr.new(137, "137"), NumStr.new(137e0, "1.37e2"), ComplexStr.new(<137+0i>, "137+0i"), RatStr.new(<1/137>, "1/137"))
+</pre>
+
+This is what the angle-bracket form of word quoting does ("documented" in <a href="https://design.perl6.org/S02.html#Allomorphic_value_semantics">S02: Allomorphic value semantics</A>:
+
+<pre class="brush:plain">
+> < 137 1.37e2 137+0i 1/137 >.perl
+(IntStr.new(137, "137"), NumStr.new(137e0, "1.37e2"), ComplexStr.new(<137+0i>, "137+0i"), RatStr.new(<1/137>, "1/137"))
+</pre>
+
+The <a href="https://docs.perl6.org/routine/val">val</a> can tell you if Perl 6 thinks a string is a number and fail otherwise. Give it the <code>:val-or-fail</code> adverb and you might get an exception:
+
+<pre class="brush:plain">
+> val( "123Camelia", :val-or-fail )
+Cannot convert string to number: trailing characters after number in '123⏏Camelia' (indicated by ⏏)
+</pre>
+
+If you're expecting the lax string to number conversion of Perl 5, you're out of luck.
+
+<pre class="brush:plain">
+> "123Camelia" + 0
+Cannot convert string to number: trailing characters after number in '123⏏Camelia' (indicated by ⏏)
+</pre>
+
+<a href="https://docs.perl6.org/routine/val">val</a> returns the starting string when it can't convert it:
+
+<pre class="brush:plain">
+> my $s = val( "123Camelia" )
+123Camelia
+> $s.WHAT
+(Str)
+</pre>
+
+With <code>:val-or-fail</code>, you get a <a href="https://docs.perl6.org/type/Failure">Failure</a> object back instead:
+
+<pre class="brush:plain">
+> my $s = val( "123Camelia", :val-or-fail )
+Cannot convert string to number: trailing characters after number in '123⏏Camelia' (indicated by ⏏)
+> $s.WHAT
+(Failure)
+</pre>
+
+<h3>Digit strings that aren't numbers</h3>
+
+This means, though, that if you have strings that are digits but shouldn't be numbers (i.e. strings that use digits to identify a thingy but for whom there is no algebra), then angle brackets aren't what you want. You wouldn't want to put postal codes in them, for instance. Or vehicle number plates. Those might be digits, but you wouldn't add or multiply them. That is, you wouldn't want to pass them
+through <a href="https://docs.perl6.org/routine/val">val</a>:
+
+<pre class="brush:plain">
+my @zip_codes =   < 02199 02902 01614 94039 >; # not what you want
+my @zip_codes = qw{ 02199 02902 01614 94039 }; # stays as strings
+</pre>
+
+If you've ever had to process postal code data that was incorrectly inserted, exported, or otherwise handled, you can appreciate this.
+
+But, there are some times that you don't know if you need the number or string form. Perl 6 has signatures that can let it decide which subroutine or method to use in multiple dispatch.
+
+Indeed, it's even difficult to justify putting most things into angle brackets because number things as strings already turn into the right thing with mathematical operators. You probably don't need Perl 6 to guess at these things for you ahead of time.
+
+<h3>The case for lists of allomorphs</h3>
+
+So what is the case for the angle brackets? You want to use them when
+you want numbers to be either strings or numbers <i>types</i>. Some
+things in Perl 6 can constrain the types of values they will accept. A subroutine signature might call for an <a href="https://docs.perl6.org/type/Failure">Int</a>:
+
+<pre class="brush:plain">
+sub do_something ( Int $i ) { ... }
+</pre>
+
+But, perhaps you've got a bunch of values of unknown origin or dubious parentage. The angle brackets leave strings as strings. It turns numbers and strings that look like numbers in allomorphs. The double angle brackets are for variable interpolation:
+
+<pre class="brush:plain">
+> my $a = '123';
+123
+> my $b = 'Butterfly'
+Butterfly
+> my $c = 321
+321
+> << $a $b $c >>.perl
+(IntStr.new(123, "123"), "Butterfly", IntStr.new(321, "321"))
+</pre>
+
+Now, consider the case of constructing an argument list. You want the compactness that comes with the implied commas and quotes, but you need number-like strings:
+
+<pre class="brush:plain">
+sub int-or-str ( Int $i, Str $s, Rat $r ) { say "Hello" }
+
+int-or-str( 1, 'Butterfly', 1/2 );
+int-or-str( |< 1 Butterfly 1/2 > );
+</pre>
+
+In the first call, I make the argument list with commas and the types satisfy the signature for <code>int-or-str</code>. Everything works out.
+
+
+If I use angle quotes (and turn the resulting List into an argument list (lowercase l) with the "turn that List into an argument list" operator (uppecase |)), it still works. The numberish things come out as <a href="https://docs.perl6.org/type/IntStr">IntStr</a> or <a href="https://docs.perl6.org/type/RatStr">RatStr</a>. Since <a href="https://docs.perl6.org/type/RatStr">RatStr</a> is both <a href="https://docs.perl6.org/type/Rat">Rat</a> and <a href="https://docs.perl6.org/type/Str">Str</a> under multiple inheritance, a RatStr</a> satifies either.
+
+<h3>The stronger case for single things</h3>
+
+The single thingy angle brackets is useful mostly for grouping when you don't a literal that may be constant folded (hence losing its type). Inside the angle brackets it's a number type:
+
+<pre class="brush:plain">
+> <1/137>.WHAT
+(Rat)
+</pre>
+
+Wait a minute! That's not a stringy thing at all! But watch this:
+
+<pre class="brush:plain">
+> < 1/137 >.WHAT
+(RatStr)
+</pre>
+
+Okay, that's weird. With no spaces it's just the number type. With some whitespace, it's the allomorph type.
+
+
+
+</div> <!-- content -->
+
+</div> <!-- middle -->
+
+<div id="bottom">
+This is the bottom stuff
+</div>
+<!-- bottom -->
+
+</div> <!-- page_div -->
+</body>
+
+</html>
+
+<!-- end post -->
+

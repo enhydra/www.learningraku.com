@@ -1,0 +1,666 @@
+<!--
+title: Index 12
+link: http://www.learningraku.com/index_12.html
+author: brian
+date: 2022-04-20 19:46:44
+post_name: main 12
+status: publish
+type: list
+categories:
+tags:
+-->
+
+<html>
+
+<head>
+	<base href="https://test.learningraku.com/">
+	<title>Index 12</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="brian's site generator" />
+	<meta charset="UTF-8" />
+</head>
+
+
+<!-- start middle_main_page -->
+<div id="middle">
+
+<!-- start sidebar -->
+<div id="sidebar">
+	<img id="small_cover" src="images/cover.png" width="180" height="236" />
+
+	<div id="sponsors">
+		<iframe src="https://github.com/sponsors/briandfoy/button" title="Sponsor briandfoy" height="35" width="116" style="border: 0;"></iframe>
+	</div>
+
+	<div class="textwidget"><p><a href="https://www.oreilly.com/catalog/errata.csp?isbn=0636920062776">Book errata</a><br />
+		<a href="https://goo.gl/EbA7gF">Google Books preview</a><br />
+		<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a><br />
+		<a href="https://amzn.to/3E0JQxK">Amazon.com</a></p>
+		<hr />
+		<p><i>Many resources have not changed the name from Perl 6 to Raku, so these resources may use either.</i></p>
+		<p><a href="https://design.raku.org">Raku Design Docs (dated)</a><br />
+		<a href="http://docs.raku.org">Raku Docs</a><br />
+		<a href="https://learnxinyminutes.com/docs/raku/">Learn Raku in Y Minutes</a><br />
+		<a href="https://modules.raku.org">Raku modules</a><br />
+		<a href="https://rosettacode.org/wiki/Category:Raku">Rosetta Code examples</a><br />
+		<a href="http://examples.perl6.org/categories/euler.html">Project Euler examples</a><br />
+		<a href="http://examples.perl6.org">Perl 6 Examples</a><br />
+		<a href="https://github.com/Raku/roast">Raku Roast (test suite examples)</a></p>
+	</div>
+</div>
+<!-- end sidebar -->
+
+<!-- start excerpt_list -->
+<div id="content">
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/07/quick-tip-22-use-perl-5-modules-in-perl-6/">Quick Tip #22: Use Perl 5 modules in Perl 6</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 07, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Perl 6 has always had a goal of interacting with other languages. When Larry Wall announced the project in 2000, he talked about <a href="http://www.perl.com/pub/2000/10/23/soto2000.html">translate with 95-percent accuracy 95 percent of the scripts</a>. He wanted a way to run Perl 5 from Perl 6. <!--more-->
+
+
+And, with <a href="https://github.com/niner/Inline-Perl5">Inline::Perl5</a>, you can do that. Most notably, you can load Perl 5 modules:
+
+<pre class="brush:plain">
+use v6;
+use Inline::Perl5;
+use Business::ISBN:from&lt;Perl5&gt;;
+
+my $isbn = Business::ISBN.new( &#39;9781491954324&#39; );
+
+say $isbn.as_isbn10.as_string;
+</pre>
+
+In the authority section of the module, I specified <code>from&lt;Perl5&gt;</code>. To make this work, you need to compile <code>perl</code> as specified in the <a href="https://github.com/niner/Inline-Perl5/blob/master/README.md">Inline::Perl5 README.md</a>. You need a <code>perl</code> compiled with <code>-Duseshrplib</code>; I had to compile a new <code>perl</code> but that wasn&#39;t a big deal.
+
+If you are using a recent Rakudo and you&#39;ve already installed <a href="https://github.com/niner/Inline-Perl5">Inline::Perl5</a>, that module loads implicitly:
+
+<pre class="brush:plain">
+use v6;
+use Business::ISBN:from&lt;Perl5&gt;;
+
+my $isbn = Business::ISBN.new( &#39;9781491954324&#39; );
+
+say $isbn.as_isbn10.as_string;
+</pre>
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/07/quick-tip-22-use-perl-5-modules-in-perl-6/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/06/quick-tip-21-the-rats-in-the-machine/">Quick Tip #21: The rats in the machine</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 06, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Let&#39;s think about numbers. I&#39;ve been inserting Kickstarter messages into my Quick Tips, but this post is <i>about</i> Kickstarter. Or, about their mistreatment of numbers. There&#39;s no scandal, just those little inconsistencies that the experienced programmer notices because they have made the same mistakes. Perl 6 has features to make this easier. <!--more-->
+
+First, here&#39;s the current state of <a href="http://kck.st/2fYlzB2">my Kickstarter campaign</a> for the <i>Learning Perl 6</i> book. The first image is from the daily email they send me and the second is the dashboard on the website.
+
+<div class="image center">
+<div>
+<img height="239" src="/images/kickstarter-email.png" width="500">
+<p class="caption">The daily email report</p>
+</div>
+</div>
+
+<div class="image center">
+<div>
+<img height="169" src="/images/kickstarter-dashboard.png" width="500">
+<p class="caption">The website dashboard</p>
+</div>
+</div>
+
+The metrics aren&#39;t from the same instant, as you see from looking at the number of backers and the funding level. But, notice that the higher amount and higher backers has the lower percentage. Most of you probably immediately recognize this as two different strategies in turning Real numbers in Integers.
+
+<table>
+<tr>
+	<th>Funding</th>
+	<th>Goal</th>
+	<th>Decimal</th>
+	<th>Reported</th>
+	<th>Method</th>
+</tr>
+<tr>
+	<td>36,254</td>
+	<td>37,000</td>
+	<td>0.97983783783</td>
+	<td>97</td>
+	<td>Truncating</td>
+</tr>
+<tr>
+	<td>36,088</td>
+	<td>37,000</td>
+	<td>0.97535135135</td>
+	<td>98</td>
+	<td>Rounding</td>
+</tr>
+</table>
+
+These differences seem small, but for the person running the campaign they can provide a moment of panic. If I see the higher percentage first then see the lower percentage, I wonder if people cancelled or adjusted their pledge. This is especially troubling when you get close to the end of a campaign because there are <a href="http://www.crowdfundinsider.com/2013/11/26152-kickstarter-backer-allegedly-scams-one-hundred-projects/">bad actors out there you like to give you that last little bit then dispute the charge later</a> (and Kickstarter then charges my credit card to pay them back). And, there are plenty of Kickstarter spammers who back your project hoping you&#39;ll back theirs, then cancel their pledge when you don&#39;t. I know, weird.
+
+Your pledge is just that. No money changes hands until the pledge total goes over the minimum funding. I haven&#39;t captured any of that money, and I only expect to get about 90% of it through various credit card issues once Kickstarter collects in about two weeks.
+
+But, back to programming. When you see two different ways of getting the same number, you know you have a code smell. We know that there should be a common routine that handles it. It seems simple to divide two numbers, but obviously it isn&#39;t. There are other things, like normalization, that come into play.
+
+Let&#39;s divide some numbers in Perl 6. First, there&#39;s the division operator and it might look like it divides two numbers. If I look at the type of thingy in <code>$n</code>, I see that it&#39;s a <a href="https://docs.perl6.org/type/Rat">Rat</a> (rational number). If I look at the <code>.perl</code> representation, I see a fraction (in this case reduced):
+
+<pre class="brush:perl">
+$ perl6
+To exit type &#39;exit&#39; or &#39;^D&#39;
+&gt; my $n = 36088 / 37000
+0.975351
+&gt; $n.WHAT
+(Rat)
+&gt; $n.perl
+&lt;4511/4625&gt;
+</pre>
+
+That is, Perl 6 delays my decision to represent this number because it knows where I started. It doesn&#39;t lose bits or accuracy because it allows a series of inexact operations. Perl 6 knows the numerator and denominator still.
+
+I can represent the number as a whole number percentage in two ways. Perl 6&#39;s Real class has methods to <a href="https://docs.perl6.org/type/Real#method_truncate">truncate</a> and <a href="https://docs.perl6.org/type/Real#method_round">round</a>:
+
+<pre class="brush:perl">
+&gt; ($n * 100).truncate
+97
+&gt; ($n * 100).round
+98
+</pre>
+
+But, I don&#39;t want to make that decision everywhere in the code. If I were doing this, I would recognize the logical task. I want to pass in the numbers and get the same thing out every time. I can define a subroutine to do that:
+
+<pre class="brush:perl">
+&gt; sub show_funding_percentage ( Rat $funding --&gt; Int ) {
+* ($funding * 100).round }
+sub show_funding_percentage (Rat $funding --&gt; Int) { #`(Sub+{Callable[Int]}|140349924897624) ... }
+&gt; show_funding_percentage( $n )
+98
+</pre>
+
+The trick is making your programmers use the proper interface rather than thinking they know better because division is simple. Showing the funding percentage is a logical task. Other things might need to happen. I shouldn&#39;t have to think about all the steps to get there every time I want to use it.
+
+That&#39;s within one language though. There&#39;s another issue that could be at play. Different languages or libraries might be in the path to the website and the path to email. They get the same inputs but they produce different outputs. There are different rounding strategies; it&#39;s not the simple rules you learned in grade school. In this case I don&#39;t think that&#39;s the problem because most strategies round these two numbers the same way.
+
+As a final note, consider what else rational numbers give us. We&#39;re mostly used to inexact numbers due to the limitations of floating point numbers. With rationals, which are two integers, that isn&#39;t a problem:
+
+<pre class="brush:perl">
+$ perl5 -e &#39;print +(0.1+0.1+0.1)==0.3 ? &quot;True&quot; : &quot;False&quot;&#39;
+False
+$ perl6 -e &#39;say (0.1+0.1+0.1)==0.3&#39;
+True
+</pre>
+
+Or, I should say, it&#39;s not a problem until I make it one. I can turn a rational number into a string (<code>$s</code>) and turn that string back into a number (<code>$t</code>). I&#39;ve now lost some precision. When I multiply by what I think is the denominator, I don&#39;t get back the right numerator:
+
+<pre class="brush:perl">
+&gt; my $s = ~$n
+0.975351
+&gt; $s.WHAT
+(Str)
+&gt; my $t = +$s;
+0.975351
+&gt; $t.WHAT
+(Rat)
+&gt; $t.perl
+0.975351
+&gt; $t*37000
+36087.987
+</pre>
+
+And, we know what that small round errors lead to bigger problems.
+
+<div class="image center">
+<div>
+<a href="http://www.imdb.com/title/tt0086393/"><img height="208" src="/images/richard-pryor.jpg" width="500"></a>
+<p class="caption">Faulty rounding leads to nuclear war</p>
+</div>
+</div>
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/06/quick-tip-21-the-rats-in-the-machine/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/05/quick-tip-20-way-off-base/">Quick Tip #20: Way off base</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 05, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Want to use numbers that are represented in something other than base 10? That&#39;s no problem in Perl 6. Some languages throw you a bone with binary, octal, or hexadecimal conversions, but what if you want base 17? Or, better yet, base 36?  <!--more-->
+
+First, for <a href="https://docs.perl6.org/type/Real">Real numbers</a> (or, non-complex numbers), I have the <a href="https://docs.perl6.org/type/Real#method_base">base</a> command:
+
+<pre class="brush:plain">
+$ perl6
+&gt; 137.base(2)
+10001001
+&gt; 137.base(8)
+211
+&gt; 137.base(16)
+89
+&gt; 137.base(36)
+3T
+</pre>
+
+I can go up to base-36 because that&#39;s how many digits and Latin letters the method uses. Those convert number types to strings.
+
+I can go the other way too. The <code>:DIGIT(string)</code> syntax converts strings to numbers:
+
+<pre class="brush:plain">
+&gt; :2(&#39;10001001&#39;)
+137
+&gt; :8(&#39;211&#39;)
+137
+&gt; :16(&#39;89&#39;)
+137
+</pre>
+
+These assume that the string is a number represented that the radix after the colon. These return a Perl 6 number, which you can display in any base that you like.
+
+From there I can make some one-liners to convert bases. <a href="http://stackoverflow.com/a/2842150/2766176">I&#39;ve done this for Perl 5</a>, and now I have them for Perl 6:
+
+<pre class="brush:plain">
+alias o2b=&quot;perl6 -e &#39;say sprintf q/:2(%b)/, :8(@*ARGS.shift)&#39;&quot;
+alias o2d=&quot;perl6 -e &#39;say sprintf q/:10(%d)/, :8(@*ARGS.shift)&#39;&quot;
+alias o2h=&quot;perl6 -e &#39;say sprintf q/:16(%x)/, :8(@*ARGS.shift)&#39;&quot;
+
+alias d2b=&quot;perl6 -e &#39;say sprintf  q/:2(%b)/, @*ARGS.shift&#39;&quot;
+alias d2o=&quot;perl6 -e &#39;say sprintf  q/:8(%d)/, @*ARGS.shift&#39;&quot;
+alias d2h=&quot;perl6 -e &#39;say sprintf q/:16(%x)/, @*ARGS.shift&#39;&quot;
+
+alias h2b=&quot;perl6 -e &#39;say sprintf  q/:2(%b)/, :16(@*ARGS.shift)&#39;&quot;
+alias h2o=&quot;perl6 -e &#39;say sprintf  q/:8(%o)/, :16(@*ARGS.shift)&#39;&quot;
+alias h2d=&quot;perl6 -e &#39;say sprintf q/:10(%d)/, :16(@*ARGS.shift)&#39;&quot;
+</pre>
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/05/quick-tip-20-way-off-base/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/04/quick-tip-19-build-reusable-data-types/">Quick Tip #19: Build reusable data types</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 04, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Perl 6 lets you constrain variable values with types, but you don&#39;t have to limit yourself to the built-in types. Once defined, these act like the built-in types. Here are some subsets I&#39;ve stolen from Brad Clawsie&#39;s <a href="https://github.com/bradclawsie/Subsets-Common">Subsets::Common</a> module: <!--more-->
+
+<pre class="brush:plain">
+my package EXPORT::DEFAULT {
+	...
+	subset Pos of Numeric where * &gt; 0;
+	subset Neg of Numeric where * <0; * 0; numeric of subset unumeric where zero>= 0;
+
+	subset Even of Int where * % 2 == 0;
+	subset Odd  of Int where * % 2;
+
+	subset Time::Hour12 of PosInt where * ~~ 1 .. 12;
+	subset Time::Hour24 of Int    where * ~~ 0 .. 23;
+	subset Time::Minute of Int    where * ~~ 0 .. 59;
+	subset Time::Second of Int    where * ~~ 0 .. 59;
+	...
+}
+</0;></pre>
+
+The <code>subset</code> started the declaration and is followed by the name you want for the new type. This is a subset because you base it on an existing type that you declare with <code>of</code>. After that, you can use a <code>where</code> clause to refine your new type.
+
+And, Brad put these in a package where he declared that everything is exported.
+
+Here&#39;s one that I created for my Perl 6 version of <a href="https://github.com/briandfoy/perl6-chemistry-elements">Chemistry::Elements</a>. Don&#39;t worry so much about what&#39;s in the code; think more about the ability to have any code you need to decide if the value fits the constraint that you like. Here&#39;s the type I defined to constrain an integer to a known atomic number (typically called Z from the German word <i>Zahl</i>, as in <i>Atomzahl</i>):
+
+<pre class="brush:plain">
+	subset ZInt of Cool is export where {
+		state ( $min, $max ) = %names.keys.sort( { $^a <=> $^b } ).[0,*-1];
+		( $_.truncate == $_ and $min &lt;= $_ &lt;= $max )
+			or
+		note &quot;Expected a known atomic number between $min and $max, but got $_&quot;
+			and
+		False;
+		};
+</=></pre>
+
+For my subset, I exported it by declaring it <code>is export</code> so other people using the module could use the type outside of my module. Most notably (heh), I can give a specific error message when the value doesn&#39;t match.
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/04/quick-tip-19-build-reusable-data-types/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/03/quick-tip-18-short-circuit-subroutines-with-multi/">Quick Tip #18: Short circuit subroutines with multi</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 03, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+In <a href="https://www.learningperl6.com/2016/12/02/quick-tip-17-rakudos-built-in-profiler/">yesterday&#39;s Quick Tip</a> I used the Fibonacci sequence as an example to show off Rakudo&#39;s <code>--profile</code> option. In today&#39;s tip I&#39;ll use that same sequence to show off Perl 6&#39;s multi-dispatch features. <!--more-->
+
+Consider the situation where I have an out-of-control subroutine. The one I&#39;m about to show is not really going crazy, but I&#39;ve programmed it in such a way that for moderately low input values it becomes unusable:
+
+<pre class="brush:plain">
+sub fib_recursive ( Int $n where * &gt;= 0 --&gt; Int ) {
+	state $called = 0;
+	$called++;
+	END { say &quot;fib_recursive was called $called times&quot; }
+	note &quot;Called with $n&quot;;
+	return 1 if $n <2; "$n $n ( ) * + - -1} 1 2 and calling fib_recursive( int main note return sub where with {$n {$n-2}"; }>= 0 --&gt; Int ) {
+	say fib_recursive( $n );
+	}
+</2;></pre>
+
+I&#39;ve added some calls to <code>note</code> so I can watch the progress:
+
+<pre class="brush:plain">
+$ perl6 fibonacci.p6 5
+Called with 5
+5 calling with 4 and 3
+Called with 4
+4 calling with 3 and 2
+Called with 3
+3 calling with 2 and 1
+Called with 2
+2 calling with 1 and 0
+Called with 1
+Called with 0
+Called with 1
+Called with 2
+2 calling with 1 and 0
+Called with 1
+Called with 0
+Called with 3
+3 calling with 2 and 1
+Called with 2
+2 calling with 1 and 0
+Called with 1
+Called with 0
+Called with 1
+8
+fib_recursive was called 15 times
+</pre>
+
+If I map this out to call levels, I get something like this to explain the calls. Each level of indentation is a call level:
+
+<pre class="brush:plain">
+5
+	4
+		3
+			2
+				1
+				0
+			1
+		2
+			1
+			0
+	3
+		2
+			1
+			0
+		1
+</pre>
+
+The <code>note</code> routine sends its output to standard error. If I don&#39;t want those extra messages, I can redirect standard error to something else:
+
+<pre class="brush:plain">
+$ perl6 fibonacci.p6 5 2&gt; /dev/null
+8
+fib_recursive was called 15 times
+</pre>
+
+So far so good. I get the answer quickly enough that I don&#39;t care how long it took. However, as the argument&#39;s value increases, the slower and slower my program gets. The number of times I call the routine explodes as the number goes up. I&#39;ll leave this as an exercise for the reader, but the number of calls follows the sequence <i>F(n) = F(n-1) + F(n-2) + 1</i>. That <i>+1</i> is a sly way of saying that the number of recursive calls grows faster than the coresponding value in the Fibonacci sequence.
+
+You may have heard (or read) me rant on this before, but this is what happens to languages that can&#39;t do tail-call optimization. Perl 6 doesn&#39;t know what subroutine it might call to get the next values, so it can&#39;t turn this recursive algorithm into an iterative one. Some languages can optimize the literal source code into something much better, and that&#39;s why you see examples like this. But I could spend all day talking about this (and do in my <a href="https://www.masteringperl.org">Mastering Perl</a> class). The short answer is &quot;Don&#39;t do that.&quot;
+
+In this post, I&#39;m not going to rewrite the subroutine as something better. I&#39;m going to short-circuit it by define a new subroutine with the same name that handles particular cases.
+
+Before I start, I want to see the Fibonacci sequence. In the Perl 6 REPL, I&#39;ll slice an infinite lazy sequence:
+
+<pre class="brush:plain">
+$ perl6
+&gt; (1,1, *+* ... * )[0..30];
+(1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765 10946 17711 28657 46368 75025 121393 196418 317811 514229 832040 1346269)
+</pre>
+
+And here&#39;s the number of calls to <code>fib_recursive</code> I have to make to get those numbers:
+
+<pre class="brush:plain">
+$ perl6
+&gt; (1,1, *+*+1 ... * )[0..30]
+(1 1 3 5 9 15 25 41 67 109 177 287 465 753 1219 1973 3193 5167 8361 13529 21891 35421 57313 92735 150049 242785 392835 635621 1028457 1664079 2692537)
+</pre>
+
+Oh, too hard to line up the values? Here&#39;s a double zip (using the Z operator) of the sequence number, Fibonacci number, and subroutine call count:
+
+<pre class="brush:plain">
+$ perl6
+&gt; ( 0 .. 30 ) Z (1,1, *+* ... * )[0..30] Z (1,1, *+*+1 ... * )[0..30]
+((0 1 1) (1 1 1) (2 2 3) (3 3 5) (4 5 9) (5 8 15) (6 13 25) (7 21 41) (8 34 67) (9 55 109) (10 89 177) (11 144 287) (12 233 465) (13 377 753) (14 610 1219) (15 987 1973) (16 1597 3193) (17 2584 5167) (18 4181 8361) (19 6765 13529) (20 10946 21891) (21 17711 35421) (22 28657 57313) (23 46368 92735) (24 75025 150049) (25 121393 242785) (26 196418 392835) (27 317811 635621) (28 514229 1028457) (29 832040 1664079) (30 1346269 2692537))
+</pre>
+
+All those years you made fun of Lisp...
+
+I now know these numbers and I can use this knowledge in my program so avoid computation. I&#39;ll create a multi-sub that immediately returns the value for <i>n = 25</i>. I can see in that list that I would save 242,785 subroutine calls every time I&#39;d call fib_recursive( 25 ):
+
+In Perl 6, I can have multiple definitions of a subroutine if I give them different signatures. When I call the subroutine, Perl 6 will look through the list of definitions and use the first one that fits the argument list.
+
+The special technique here is that I use a literal value in the signature. When the value of the argument is 25, that&#39;s the subroutine Perl 6 will call:
+
+<pre class="brush:plain">
+# define first! Perl 6 looks in the order of definition!
+multi fib_recursive ( 25 ) { 121393 }
+
+# multi implies &quot;sub&quot;, but you can write &quot;multi sub&quot; if you like
+multi fib_recursive ( Int $n where * &gt;= 0 --&gt; Int ) {
+	state $called = 0;
+	$called++;
+	END { say &quot;fib_recursive was called $called times&quot; }
+	note &quot;Called with $n&quot;;
+	return 1 if $n <2; "$n $n ( ) * + - -1} 1 2 and calling fib_recursive( int main note return sub where with {$n {$n-2}"; }>= 0 --&gt; Int ) {
+	say fib_recursive( $n );
+	}
+</2;></pre>
+
+When I call it with 25 now, I immediately get the answer. The <code>END</code> block still runs and doesn&#39;t have a value for <code>$count</code> because I never ran the other subroutine definition:
+
+<pre class="brush:plain">
+$ perl6 fibonacci.p6 25 2&gt; /dev/null
+121393
+fib_recursive was called  times
+</pre>
+
+When I run it with 26, I see that <code>fib_recursive</code> runs 150,050 times. From the sequence I generated earlier, I would have had to run it 392,835 times with the pure recursive solution. The difference of 392,835 and 150,050 is 242,785. That&#39;s the number of calls from the 25 branch!
+
+<pre class="brush:plain">
+$ perl6 fibonacci.p6 26 2&gt; /dev/null
+196418
+fib_recursive was called 150050 times
+</pre>
+
+I saved some time there, but let&#39;s go one better. I could have saved more by defining three multis. To really short-circuit the sequence, I need to short circuit the <i>n-1</i> and <i>n-2</i> branches. I define another multi with the literal value of 24:
+
+<pre class="brush:plain">
+multi fib_recursive ( 24 ) {  75025 }
+multi fib_recursive ( 25 ) { 121393 }
+
+multi fib_recursive ( Int $n where * &gt;= 0 --&gt; Int ) {
+	state $called = 0;
+	$called++;
+	END { say &quot;fib_recursive was called $called times&quot; }
+	note &quot;Called with $n&quot;;
+	return 1 if $n <2; "$n $n ( ) * + - -1} 1 2 and calling fib_recursive( int main note return sub where with {$n {$n-2}"; }>= 0 --&gt; Int ) {
+	say fib_recursive( $n );
+	}
+</2;></pre>
+
+When I try it with 26 now, I call the actually-recursing <code>fib_recursive</code> exactly once. That calls the two multis for <code>fib_recursive(25)</code> and <code>fib_recursive(24)</code>, which immediately return values:
+
+<pre class="brush:plain">
+$ perl6 fibonacci.p6 26 2&gt; /dev/null
+196418
+fib_recursive was called 1 times
+</pre>
+
+In this example, I&#39;ve saved time because I had some precomputed values. The problem is as complex as when I started. It&#39;s not a better algorithm, really. It&#39;s just cheating a bit.
+
+Consider a different way to use this same technique that changes the complexity. I won&#39;t write real code here, but I want to illustrate another use of this technique.
+
+Suppose that I have a general subroutine that works in most cases, but there are a few special cases that could make the code really complicated. Handling the special cases requires a lot of structure. Let the multi subs handle that structure for you, perhaps calling common subroutines as needed:
+
+<pre class="brush:plain">
+multi open_for_business ( Date $d where *.is-a-federal-holiday ) { ... }
+multi open_for_business ( Date $d where *.is-a-weekend ) { ... }
+multi open_for_business ( Date $d ) { ... }
+</pre>
+
+I could also use this for debugging where I know I have one case that I want to inspect while not seeing debugging output from the other cases.
+
+
+
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/03/quick-tip-18-short-circuit-subroutines-with-multi/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+
+Unterminated <> operator at template line 11.
+Context:
+  6: 	my $n = get_var('start_post_n') // 1;
+  7: 	my $m = get_var('end_post_n') // get_var( 'config' )->{page_size};
+  8: 
+  9: 	foreach ( $n .. $m ) {
+  10: 		my $post = $posts[$_];
+  11: 		next unless $post;
+  12: 
+  13: 		my $date = Time::Moment
+  14: 			->from_string( $post->{date} . '-0400', lenient => 1 )
+  15: 			->strftime( '%B %d, %Y' );
+  16: %>
+Traceback (most recent call first):
+  File "template", line 11, in "main"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 148, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 163, in "Mojo::Template"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::Sandbox"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox"
+  File "template", line 37, in "Mojo::Template::Sandbox"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 163, in "Mojo::Template"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::Sandbox"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox"
+  File "template", line 6, in "Mojo::Template::Sandbox"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 163, in "Mojo::Template"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::Sandbox"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox"
+  File "_templates/index_12.html", line 25, in "Mojo::Template::Sandbox"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 163, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 173, in "Mojo::Template"
+  File "bin/cook", line 90, in "main"
+  File "bin/cook", line 48, in "main"
+Context:
+  6: my $bin  = get_var('bin');
+  7: %>
+  8: 
+  9: 
+  10: foreach my $n ( 1 .. $bins ) {
+  11: %><a class="pag_link<%= $n == $bin ? ' pag_current'  : '' =%>" href="index<%= $n == 1 ? '' : "_$n" =%>.html"><%= $n =%></a>
+  12: <% } %>
+  13: </div>
+  14: <!-- end paginate -->
+Traceback (most recent call first):
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 163, in "Mojo::Template"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::Sandbox"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox"
+  File "template", line 37, in "Mojo::Template::Sandbox"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 163, in "Mojo::Template"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::Sandbox"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox"
+  File "template", line 6, in "Mojo::Template::Sandbox"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 163, in "Mojo::Template"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::Sandbox"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox"
+  File "_templates/index_12.html", line 25, in "Mojo::Template::Sandbox"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 163, in "Mojo::Template"
+  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 173, in "Mojo::Template"
+  File "bin/cook", line 90, in "main"
+  File "bin/cook", line 48, in "main"
+
+</div>
+<!-- end excerpt_list -->
+
+</div>
+<!-- end middle_main_page -->
+
+</html>
+

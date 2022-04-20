@@ -1,0 +1,179 @@
+<!--
+
+This is the post template
+
+{
+  "author" => "brian",
+  "categories" => "kickstarter-tips types",
+  "config" => {
+    "base_dir" => "docs",
+    "category_dir" => "category",
+    "cname" => "test.learningraku.com",
+    "default_test" => "abc",
+    "feed_dir" => "feeds",
+    "items_json" => "docs/items.json",
+    "last" => undef,
+    "page_size" => 5,
+    "site_title" => "Learning Raku",
+    "static_dir" => "_static",
+    "tag_dir" => "tag",
+    "template" => "default",
+    "template_dir" => "_templates"
+  },
+  "date" => "2016-11-24 02:10:50",
+  "file" => "_posts/2016-11-24-quick-tip-8-user-defined-data-types.html",
+  "link" => "http://www.learningraku.com/2016/11/24/quick-tip-8-user-defined-data-types/",
+  "local_path" => "docs/2016/11/24/quick-tip-8-user-defined-data-types/index.html",
+  "post_epoch" => 1479953450,
+  "post_id" => 102,
+  "post_name" => "quick-tip-8-user-defined-data-types",
+  "processing_datestr" => "Wed Apr 20 19:46:42 2022",
+  "processing_epoch" => 1650498402,
+  "source_file" => "_posts/2016-11-24-quick-tip-8-user-defined-data-types.html",
+  "status" => "publish",
+  "tags" => "",
+  "title" => "Quick Tip #9: User-defined data types",
+  "type" => "post",
+  "web_path" => bless( {
+    "path" => "/2016/11/24/quick-tip-8-user-defined-data-types/"
+  }, 'Mojo::Path' )
+}
+
+-->
+
+<!-- start post -->
+
+<html>
+
+<head>
+	<base href="https://test.learningraku.com/">
+	<title>Quick Tip #9: User-defined data types</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="brian's site generator" />
+	<meta charset="UTF-8" />
+</head>
+
+<body>
+<div id="page">
+
+<!-- start top -->
+<div id="menu">
+<a href="/">Home</a> •
+<a href="/about/">About</a> •
+<a href="/book/">Book</a> •
+<a href="/downloads/">Downloads</a> •
+<a href="/feed/">Feed</a>
+</div>
+<!-- end top -->
+
+<div id="middle">
+
+<!-- start sidebar -->
+<div id="sidebar">
+	<img id="small_cover" src="images/cover.png" width="180" height="236" />
+
+	<div id="sponsors">
+		<iframe src="https://github.com/sponsors/briandfoy/button" title="Sponsor briandfoy" height="35" width="116" style="border: 0;"></iframe>
+	</div>
+
+	<div class="textwidget"><p><a href="https://www.oreilly.com/catalog/errata.csp?isbn=0636920062776">Book errata</a><br />
+		<a href="https://goo.gl/EbA7gF">Google Books preview</a><br />
+		<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a><br />
+		<a href="https://amzn.to/3E0JQxK">Amazon.com</a></p>
+		<hr />
+		<p><i>Many resources have not changed the name from Perl 6 to Raku, so these resources may use either.</i></p>
+		<p><a href="https://design.raku.org">Raku Design Docs (dated)</a><br />
+		<a href="http://docs.raku.org">Raku Docs</a><br />
+		<a href="https://learnxinyminutes.com/docs/raku/">Learn Raku in Y Minutes</a><br />
+		<a href="https://modules.raku.org">Raku modules</a><br />
+		<a href="https://rosettacode.org/wiki/Category:Raku">Rosetta Code examples</a><br />
+		<a href="http://examples.perl6.org/categories/euler.html">Project Euler examples</a><br />
+		<a href="http://examples.perl6.org">Perl 6 Examples</a><br />
+		<a href="https://github.com/Raku/roast">Raku Roast (test suite examples)</a></p>
+	</div>
+</div>
+<!-- end sidebar -->
+
+<div id="content">
+
+<h1>Quick Tip #9: User-defined data types</h1>
+
+Perl 6 has <a href="http://wphomes.soic.indiana.edu/jsiek/what-is-gradual-typing/">"gradual typing"</a>. I can constrain values when I like, and let them run free otherwise. User-defined data types are one of the Perl 6 features that excite me the most. I can define what sort of value I can put in a container thingy, and I can define my own types any way that I like. <!--more-->
+
+First, I'll show a couple of built-in types. I can constrain an array to contain only <a href="https://docs.perl6.org/type/Int">Int</a> values. I place the type between the declarator and the variable name. If every value I want to store is that type, I have no problem. If there's a non-decimal integer string (say, a hex digit), I have a problem:
+
+<pre class="brush:plain">
+$ perl6
+To exit type 'exit' or '^D'
+> my Int @array = < 1 2 3 >
+[1 2 3]
+> my Int @other_array = < 8 9 a b >
+Type check failed in assignment to @other_array; expected Int but got Str ("a")
+</pre>
+
+This means I can constrain some thing at the point I store them in the variable instead of checking a type-agnostic array every time I use it somewhere else.
+
+Perl 6 already comes with some classes. The <code>Int</code> type is a platform-agnostic number that doesn't depend on the local ideas of integers. I could use the lowercase version, <code>int</code>, to specify a native type. Those are limited to the storage types on the platform:
+
+<pre class="brush:plain">
+> my Int $j = 99999999999999999999
+99999999999999999999
+> my int $j = 99999999999999999999
+Cannot unbox 67 bit wide bigint into native integer
+</pre>
+
+I can make my own type. I can create my own classes and then use those class names as types:
+
+<pre class="brush:plain">
+> class Butterfly {}
+(Butterfly)
+> my Butterfly $thingy1 = Butterfly.new
+Butterfly.new
+> my $animal = Butterfly.new
+Butterfly.new
+> $animal.WHAT
+(Butterfly)
+> my Butterfly $thingy2 = $animal
+Butterfly.new
+> my Butterfly $thingy3 = 137
+Type check failed in assignment to $thingy3; expected Butterfly but got Int (137)
+</pre>
+
+Check that out! I didn't put anything in the class, but Perl 6 provided the <code>new</code> constructor for me. I'll write about that some other time.
+
+I can create subtypes based on those that already exist. First, the
+value has to satisfy the base type, then the extra constraint I put on it. I use subset to start it off and a where clause with some code:
+
+<pre class="brush:plain">
+> subset Vowel of Str where *.lc ∈ set( &lt;a e i o u y m> )
+(Vowel)
+> my Vowel $s = 'A';
+A
+> my Vowel $s = 'e'
+e
+> my Vowel $s = 'j'
+Type check failed in assignment to $s; expected Vowel but got Str ("j")
+</pre>
+
+In this case, I created a new type called <code>Vowel</code> based on <a href="https://docs.perl6.org/type/Str.html">Str</a>. The value has to be some sort of string, so thats a start, but I constrain it to be a string in a set (which I wrote about yesterday in <a href="/2016/11/23/quick-tip-8-perl-6-sets/">Perl 6 sets</a>).
+
+Zoffix has a very good post, <a href="http://blogs.perl.org/users/zoffix_znet/2016/04/perl-6-types-made-for-humans.html">"Perl 6 Types: Made for Humans"</A> on the same thing, and Brad Clawsie created <A href="https://github.com/bradclawsie/Subsets-Common">Subsets::Common</a> to comprise interesting types. A  <a href="http://softwareengineering.stackexchange.com/q/222555/103630">StackExchange question on gradual typing</a> is very interesting as well, although it has virtually nothing to do with Perl 6. Jonathan
+Worthington has an <a href="http://www.jnthn.net/papers/2008-yapc-eu-perl6types.pdf">older presentation on types</a> from YAPC::EU 2008.
+
+
+</div> <!-- content -->
+
+</div> <!-- middle -->
+
+<div id="bottom">
+This is the bottom stuff
+</div>
+<!-- bottom -->
+
+</div> <!-- page_div -->
+</body>
+
+</html>
+
+<!-- end post -->
+
