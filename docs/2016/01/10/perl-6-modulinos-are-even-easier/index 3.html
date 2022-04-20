@@ -1,0 +1,171 @@
+<!--
+
+This is the post template
+
+{
+  "author" => "brian",
+  "categories" => "stuff-im-playing-with",
+  "config" => {
+    "base_dir" => "docs",
+    "category_dir" => "category",
+    "cname" => "test.learningraku.com",
+    "default_test" => "abc",
+    "feed_dir" => "feeds",
+    "items_json" => "docs/items.json",
+    "last" => undef,
+    "page_size" => 5,
+    "site_title" => "Learning Raku",
+    "static_dir" => "_static",
+    "tag_dir" => "tag",
+    "template" => "default",
+    "template_dir" => "_templates"
+  },
+  "date" => "2016-01-10 12:48:39",
+  "file" => "_posts/2016-01-10-perl-6-modulinos-are-even-easier.html",
+  "link" => "http://www.learningraku.com/2016/01/10/perl-6-modulinos-are-even-easier/",
+  "local_path" => "docs/2016/01/10/perl-6-modulinos-are-even-easier/index.html",
+  "post_epoch" => 1452430119,
+  "post_id" => 37,
+  "post_name" => "perl-6-modulinos-are-even-easier",
+  "processing_datestr" => "Sun Jan 23 03:10:23 2022",
+  "processing_epoch" => 1642925423,
+  "source_file" => "_posts/2016-01-10-perl-6-modulinos-are-even-easier.html",
+  "status" => "publish",
+  "tags" => "",
+  "title" => "Perl 6 modulinos are even easier",
+  "type" => "post",
+  "web_path" => bless( {
+    "path" => "/2016/01/10/perl-6-modulinos-are-even-easier/"
+  }, 'Mojo::Path' )
+}
+
+-->
+
+<!-- start post -->
+
+<html>
+
+<head>
+	<base href="https://test.learningraku.com/">
+	<title>Perl 6 modulinos are even easier</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="brian's site generator" />
+	<meta charset="UTF-8" />
+</head>
+
+<body>
+<div id="page">
+
+<!-- start top -->
+<div id="menu">
+<a href="/">Home</a> •
+<a href="/about/">About</a> •
+<a href="/book/">Book</a> •
+<a href="/downloads/">Downloads</a> •
+<a href="/feed/">Feed</a>
+</div>
+<!-- end top -->
+
+<div id="middle">
+
+<!-- start sidebar -->
+<div id="sidebar">
+	<img id="small_cover" src="images/cover.png" width="180" height="236" />
+
+	<div id="sponsors">
+		<iframe src="https://github.com/sponsors/briandfoy/button" title="Sponsor briandfoy" height="35" width="116" style="border: 0;"></iframe>
+	</div>
+
+	<div class="textwidget"><p><a href="https://www.oreilly.com/catalog/errata.csp?isbn=0636920062776">Book errata</a><br />
+		<a href="https://goo.gl/EbA7gF">Google Books preview</a><br />
+		<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a><br />
+		<a href="https://amzn.to/3E0JQxK">Amazon.com</a></p>
+		<hr />
+		<p><i>Many resources have not changed the name from Perl 6 to Raku, so these resources may use either.</i></p>
+		<p><a href="https://design.raku.org">Raku Design Docs (dated)</a><br />
+		<a href="http://docs.raku.org">Raku Docs</a><br />
+		<a href="https://learnxinyminutes.com/docs/raku/">Learn Raku in Y Minutes</a><br />
+		<a href="https://modules.raku.org">Raku modules</a><br />
+		<a href="https://rosettacode.org/wiki/Category:Raku">Rosetta Code examples</a><br />
+		<a href="http://examples.perl6.org/categories/euler.html">Project Euler examples</a><br />
+		<a href="http://examples.perl6.org">Perl 6 Examples</a><br />
+		<a href="https://github.com/Raku/roast">Raku Roast (test suite examples)</a></p>
+	</div>
+</div>
+<!-- end sidebar -->
+
+<div id="content">
+
+<h1>Perl 6 modulinos are even easier</h1>
+
+Perl 6 has this wonderful thing called <code>MAIN</code> which is a built-in modulino thingy.
+
+In my <a href="http://www.excellentnums.com">excellent number hobby</a> (which I started <A href="http://www.masteringperl.org/tag/excellent-numbers/">writing about in Mastering Perl</a> even after I switched to C), I've been converting some bits to Perl 6 just for giggles. There's a small <a href="https://github.com/briandfoy/excellent_numbers/blob/master/lib/CpuCount.pm">Perl 5 module I wrote to get the number of CPUs</a> I rewrote in Perl 6. It's not sophisticated or surprising. It's actually quite banal in function; merely dispatch to some method that knows what to do on the platforms I care about. And, be a modulino. <!--more-->
+
+<pre class="brush:plain">
+module CpuCount {
+	sub run () is export {
+		say get_cpu_count();
+		}
+
+	sub get_cpu_count () is export {
+		state $dispatch = {
+			freebsd  => &_freebsd,
+			_default => &_posix,
+			};
+
+		my $key = $dispatch.{ $*DISTRO.name }:exists ?? $*DISTRO.name !! '_default';
+
+		$dispatch.{ $key }.();
+		}
+
+	sub _freebsd () { _get_conf( 'NPROCESSORS_ONLN' ) }
+
+	sub _posix ()   { _get_conf( '_NPROCESSORS_ONLN' ) }
+
+	sub _get_conf ( $key ) {
+		state $command = '/usr/bin/getconf';
+
+		unless $key ~~ m/ ^^ <[_A..Z0..9]>+ $$ / {
+			warn "Key $key doesn't look acceptable";
+			return;
+			};
+		qq:x{$command $key 2>/dev/null}.chomp;
+		}
+	}
+
+sub MAIN {
+	import CpuCount;
+	run;
+	}
+</pre>
+
+First, <code>MAIN</code>. Perl 6 calls that if the file is the top-level thingy rather than something that's loaded by something else. No more <code>caller</code> tricks. It's even better though. Although I don't need it here, if I give <code>MAIN</code> a signature, it does some argument handling automatically. And, lexical imports!
+
+Back to the top of the program, I can create a <code>module</code>, similar to Perl 5's <code>package BLOCK</code> syntax. I really like that. I get export handling without inheritance (that I can see, at least) by marking what is eligible with <code>is export</code>.
+
+Inside <code>get_cpu_count</code>, I use the <code>$*DISTRO</code> special variable to find out what system I'm on. That's an object with various parts I can access.
+
+In the dispatch table, I get a reference to a subroutine by using the <code>&</code> in front of it. That messed me up for a bit, but I think I like that.
+
+In <code>_get_conf</code>, I have a regex. That's changed quite a bit with double typing. The <code>^^</code> and <code>$$</code> are anchors, whitespace is insignificant by default, and character classes are much fancier. Those are put in <code> &lt;[ ... ]&gt; </code> because you can do set operations on the things in the square brackets. Very fancy, but there's more typing. I also have to use <code>..</code> to make a range of characters. Disk drives are cheap, so let's use up those bytes!
+
+I love string objects. I call the external command and can <code>chomp</code> it right away. And, <code>chomp</code> returns the modified string like God always wanted.
+
+
+</div> <!-- content -->
+
+</div> <!-- middle -->
+
+<div id="bottom">
+This is the bottom stuff
+</div>
+<!-- bottom -->
+
+</div> <!-- page_div -->
+</body>
+
+</html>
+
+<!-- end post -->
+

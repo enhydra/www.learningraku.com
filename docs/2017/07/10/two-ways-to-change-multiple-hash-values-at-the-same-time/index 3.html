@@ -1,0 +1,143 @@
+<!--
+
+This is the post template
+
+{
+  "author" => "brian",
+  "categories" => "hyperoperators zip-operators",
+  "config" => {
+    "base_dir" => "docs",
+    "category_dir" => "category",
+    "cname" => "test.learningraku.com",
+    "default_test" => "abc",
+    "feed_dir" => "feeds",
+    "items_json" => "docs/items.json",
+    "last" => undef,
+    "page_size" => 5,
+    "site_title" => "Learning Raku",
+    "static_dir" => "_static",
+    "tag_dir" => "tag",
+    "template" => "default",
+    "template_dir" => "_templates"
+  },
+  "date" => "2017-07-10 00:36:11",
+  "file" => "_posts/2017-07-10-two-ways-to-change-multiple-hash-values-at-the-same-time.html",
+  "link" => "http://www.learningraku.com/2017/07/10/two-ways-to-change-multiple-hash-values-at-the-same-time/",
+  "local_path" => "docs/2017/07/10/two-ways-to-change-multiple-hash-values-at-the-same-time/index.html",
+  "post_epoch" => 1499646971,
+  "post_id" => 391,
+  "post_name" => "two-ways-to-change-multiple-hash-values-at-the-same-time",
+  "processing_datestr" => "Sun Jan 23 03:10:24 2022",
+  "processing_epoch" => 1642925424,
+  "source_file" => "_posts/2017-07-10-two-ways-to-change-multiple-hash-values-at-the-same-time.html",
+  "status" => "publish",
+  "tags" => "",
+  "title" => "Two ways to change multiple hash values at the same time",
+  "type" => "post",
+  "web_path" => bless( {
+    "path" => "/2017/07/10/two-ways-to-change-multiple-hash-values-at-the-same-time/"
+  }, 'Mojo::Path' )
+}
+
+-->
+
+<!-- start post -->
+
+<html>
+
+<head>
+	<base href="https://test.learningraku.com/">
+	<title>Two ways to change multiple hash values at the same time</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="brian's site generator" />
+	<meta charset="UTF-8" />
+</head>
+
+<body>
+<div id="page">
+
+<!-- start top -->
+<div id="menu">
+<a href="/">Home</a> •
+<a href="/about/">About</a> •
+<a href="/book/">Book</a> •
+<a href="/downloads/">Downloads</a> •
+<a href="/feed/">Feed</a>
+</div>
+<!-- end top -->
+
+<div id="middle">
+
+<!-- start sidebar -->
+<div id="sidebar">
+	<img id="small_cover" src="images/cover.png" width="180" height="236" />
+
+	<div id="sponsors">
+		<iframe src="https://github.com/sponsors/briandfoy/button" title="Sponsor briandfoy" height="35" width="116" style="border: 0;"></iframe>
+	</div>
+
+	<div class="textwidget"><p><a href="https://www.oreilly.com/catalog/errata.csp?isbn=0636920062776">Book errata</a><br />
+		<a href="https://goo.gl/EbA7gF">Google Books preview</a><br />
+		<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a><br />
+		<a href="https://amzn.to/3E0JQxK">Amazon.com</a></p>
+		<hr />
+		<p><i>Many resources have not changed the name from Perl 6 to Raku, so these resources may use either.</i></p>
+		<p><a href="https://design.raku.org">Raku Design Docs (dated)</a><br />
+		<a href="http://docs.raku.org">Raku Docs</a><br />
+		<a href="https://learnxinyminutes.com/docs/raku/">Learn Raku in Y Minutes</a><br />
+		<a href="https://modules.raku.org">Raku modules</a><br />
+		<a href="https://rosettacode.org/wiki/Category:Raku">Rosetta Code examples</a><br />
+		<a href="http://examples.perl6.org/categories/euler.html">Project Euler examples</a><br />
+		<a href="http://examples.perl6.org">Perl 6 Examples</a><br />
+		<a href="https://github.com/Raku/roast">Raku Roast (test suite examples)</a></p>
+	</div>
+</div>
+<!-- end sidebar -->
+
+<div id="content">
+
+<h1>Two ways to change multiple hash values at the same time</h1>
+
+Somehow I ended up a binary assignment with the <A href="https://docs.perl6.org/routine/Z#(Operators)_infix_Z">zip operator</a>:
+
+<pre class="brush:plain">
+$giver&lt;wallet given> Z+= (-$amount, $amount)
+</pre>
+
+<!--more-->
+
+I was playing around with a <a href="http://www.decisionsciencenews.com/2017/06/19/counterintuitive-problem-everyone-room-keeps-giving-dollars-random-others-youll-never-guess-happens-next/">simulation problem from Uri Wilensky</a> (R's <code>gganimate</code> is pretty cool, and pretty and cool). 
+
+That's the same thing as writing out both sides:
+
+<pre class="brush:plain">
+$giver&lt;wallet given> = $giver&lt;wallet given> Z+ ( -$amount, $amount )
+</pre>
+
+But, I also could have used a hyper here:
+
+<pre class="brush:plain">
+$giver&lt;wallet given> >>+=&lt;&lt; ( -$amount, $amount )
+</pre>
+
+I've longed wished for this sort of thing in Perl 5, and I think I've strained various unmaintainable kludges to get it. Even these Perl 6 expressions might be too mind bending for the work-a-day maintainer.
+
+And, for what it's worth, the results are pretty much what I expected despite the those Ph.D.s guessing incorrectly. But then, I also have a <a target="_blank" href="https://www.amazon.com/gp/product/0716710889/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0716710889&linkCode=as2&tag=hashbang09-20&linkId=d67a7004d58db1f05afe368c4421e067">statistical thermodynamics</a> book with arm's reach of my keyboard. A closed system with a fixed number of particles and a fixed amount of energy where particles can transfer energy to other particles is a type of <a target="_blank" href="https://www.amazon.com/gp/product/093570258X/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=093570258X&linkCode=as2&tag=hashbang09-20&linkId=2bba09bd19d4454e380924f053b57929">Spherical Cow</a>. The system can exist in any of its microstates. Particle identity aside, some distributions of energy are more probable. The one that everyone might guess, that all particles will have the close to the same energy, just isn't that likely. But, this isn't a physics blog.   
+
+
+</div> <!-- content -->
+
+</div> <!-- middle -->
+
+<div id="bottom">
+This is the bottom stuff
+</div>
+<!-- bottom -->
+
+</div> <!-- page_div -->
+</body>
+
+</html>
+
+<!-- end post -->
+

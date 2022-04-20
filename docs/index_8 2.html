@@ -1,0 +1,432 @@
+<!--
+title: Index 8
+link: http://www.learningraku.com/index_8.html
+author: brian
+date: 2022-01-23 3:10:26
+post_name: main 8
+status: publish
+type: list
+categories:
+tags:
+-->
+
+<html>
+
+<head>
+	<base href="https://test.learningraku.com/">
+	<title>Index 8</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="brian's site generator" />
+	<meta charset="UTF-8" />
+</head>
+
+
+<!-- start middle_main_page -->
+<div id="middle">
+
+<!-- start sidebar -->
+<div id="sidebar">
+	<img id="small_cover" src="images/cover.png" width="180" height="236" />
+
+	<div id="sponsors">
+		<iframe src="https://github.com/sponsors/briandfoy/button" title="Sponsor briandfoy" height="35" width="116" style="border: 0;"></iframe>
+	</div>
+
+	<div class="textwidget"><p><a href="https://www.oreilly.com/catalog/errata.csp?isbn=0636920062776">Book errata</a><br />
+		<a href="https://goo.gl/EbA7gF">Google Books preview</a><br />
+		<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a><br />
+		<a href="https://amzn.to/3E0JQxK">Amazon.com</a></p>
+		<hr />
+		<p><i>Many resources have not changed the name from Perl 6 to Raku, so these resources may use either.</i></p>
+		<p><a href="https://design.raku.org">Raku Design Docs (dated)</a><br />
+		<a href="http://docs.raku.org">Raku Docs</a><br />
+		<a href="https://learnxinyminutes.com/docs/raku/">Learn Raku in Y Minutes</a><br />
+		<a href="https://modules.raku.org">Raku modules</a><br />
+		<a href="https://rosettacode.org/wiki/Category:Raku">Rosetta Code examples</a><br />
+		<a href="http://examples.perl6.org/categories/euler.html">Project Euler examples</a><br />
+		<a href="http://examples.perl6.org">Perl 6 Examples</a><br />
+		<a href="https://github.com/Raku/roast">Raku Roast (test suite examples)</a></p>
+	</div>
+</div>
+<!-- end sidebar -->
+
+<!-- start excerpt_list -->
+<div id="content">
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2017/01/17/bbedit-text-filters-in-perl-6/">BBEdit Text Filters in Perl 6</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 17, 2017</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+I&#39;ve been writing BBEdit <q href="http://bbeditextras.org/wiki/index.php?title=Text_Filters">Text Filters in Perl 6. This isn&#39;t revolutionary and I&#39;ve made no great hack. It&#39;s not a hidden part of the BBEdit docs, and it&#39;s not a feature unique to my favorite editor. You don&#39;t even need to use Perl 6; any unix interpreter will do. Your editor can probably do the same thing, and maybe even with the same programs.
+
+<div class="image center">
+<div>
+<img height="430" src="/images/text_filters.png" style="border:0" width="500">
+</div>
+</div>
+
+
+<!--more-->
+
+In your <i>.../Application Support/BBEdit/Text Filters</i>, drop in any sort of Unix script you like (mine is actually in my Dropbox folder and thus shared across my network, a feature from <a href="http://www.barebones.com/products/bbedit/bbedit10.html">BBEdit 10</a>). It uses the shebang line to run the program just as it does if you run it from the command line. This text filter gets the text you selected in the editor. Whatever you print to standard output replaces the selected text.
+
+I wanted to turn a string into the codepoint numbers and names that represent their characters. Here&#39;s that in Perl 6:
+
+<pre class="brush:plain">
+#!/Applications/Rakudo/bin/perl6
+
+$*IN
+	.lines
+	.map: {
+		eager ($_.ords Z, $_.uninames).map: {
+			printf &quot;%04x %s\n&quot;, $_.list
+			}
+		}
+</pre>
+
+This turns text such as &quot;Hamadryas&quot; into this:
+
+<pre class="brush:plain">
+0048 LATIN CAPITAL LETTER H
+0061 LATIN SMALL LETTER A
+006d LATIN SMALL LETTER M
+0061 LATIN SMALL LETTER A
+0064 LATIN SMALL LETTER D
+0072 LATIN SMALL LETTER R
+0079 LATIN SMALL LETTER Y
+0061 LATIN SMALL LETTER A
+0073 LATIN SMALL LETTER S
+</pre>
+
+There&#39;s another text filter I like. I use it to align <code>=</code> and <code>=&gt;</code> (or anything that starts with <code>=</code> in code:
+
+<pre class="brush:plain">
+my $longest = 0;
+my @lines;
+
+for $*IN.lines -&gt; $line {
+	my @columns = $line.split( / \s+ &#39;=&#39; \S+ \s+ /, 2 );
+	$longest max= @columns.[0].chars;
+	push @lines, @columns;
+	}
+
+for @lines -&gt; $line {
+	printf &quot;%-{$longest}s =&gt; %s\n&quot;, $line.list;
+	}
+</pre>
+
+Notice that <code>max=</code>. That&#39;s a binary assignment with the <a href="https://docs.perl6.org/language/operators#infix_max">max</a> operator. That&#39;s like <code>$longest = $longest max @columns.[0].chars</code>.
+
+Now I need to figure out why BBEdit won&#39;t allow me to assign a keyboard shortcut to it.
+
+
+
+</q>
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2017/01/17/bbedit-text-filters-in-perl-6/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2017/01/11/6-more-things-about-6-at-boston-perl-mongers/">6 More Things About 6, at Boston Perl mongers</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 11, 2017</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+<a href="http://www.theperlshop.com">The Perl Shop</a> sponsored me to present a <a href="http://www.slideshare.net/brian_d_foy/6-more-things-about-perl-6">Perl 6 talk</a> to the <a href="https://www.meetup.com/Boston-pm/">Boston Perl mongers</a> last night. I pulled out six thing that I didn&#39;t <a href="/2016/12/09/6-things-about-6-at-ny-pm/">talk about at the New York Perl mongers last month</a>. As before, these aren&#39;t really the big ideas or most exciting features. They are sometimes small corners that lead to other ideas.
+
+<div class="image center">
+<div>
+<a href="http://www.slideshare.net/brian_d_foy/6-more-things-about-perl-6"><img height="376" src="/images/6more-cover.png" style="border:0" width="484"></a>
+</div>
+</div>
+
+I&#39;m lining up some Perl mongers groups I want to visit this spring. If you&#39;d like me to give a presentation to your group, let me know (brian.d.foy@gmail.com).
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2017/01/11/6-more-things-about-6-at-boston-perl-mongers/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2017/01/10/andrew-shitovs-perl-at-a-glance/">Andrew Shitov's Perl at a Glance</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 10, 2017</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+<br>
+
+<div class="image left">
+<div>
+<img height="216" src="/images/perl6-at-a-glance.jpg" width="150">
+</div>
+</div>
+
+
+Andrew Shitov has published <a href="https://deeptext.media/perl6-at-a-glance/">Perl 6 at a Glance</a>, a survey book for the new language. I haven&#39;t had a change to read it yet, but you can buy it now and read it yourself. Some people have already received their copy. Get yours and tell everyone else about it.
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2017/01/10/andrew-shitovs-perl-at-a-glance/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2017/01/09/buffers-hexdump-and-perl-6-power-tools/">Buffers, hexdump, and Perl 6 Power Tools</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 09, 2017</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+I was playing the <a href="https://docs.perl6.org/type/Buf">buffers</a> and reading binary data but I ended up implementing a <a href="https://github.com/briandfoy/Perl6PowerTools/blob/master/bin/hexdump">Perl 6 version of hexdump</a>. Looking for a place to put it, I figured <a href="https://github.com/briandfoy/Perl6PowerTools">Perl6PowerTools</a> might as well exist. Now it has a single program, but I figure there are people who will look at the original <a href="http://www.perlpowertools.com/">PerlPowerTools</a> and want to translate some of those to Perl 6.
+
+<div class="image center">
+<div>
+<img height="384" src="/images/hexdump.png" style="border:0" width="500">
+</div>
+</div>
+
+<!--more-->
+
+There&#39;s quite a bit going on in the program, but I&#39;ll pull out just a bit of it. 
+
+<pre class="brush:plain">
+	my @options = qw/ C c d b o x /.grep: { $::($_) };
+	while my Buf $buf = $fh.read( octets_to_read( $counter, $n ) ) {
+		# You can select more than one option at a time
+		# change the option order to change the output order
+		# These correspond to the named Bool parameters in the signature
+		for @options -&gt; $option {
+			put $counter.fmt( &#39;%08x  &#39; ), &amp;::(&quot;show_$option&quot;)($buf);
+			}
+		$counter += $buf.elems;
+		last if $n &amp;&amp; $counter &gt;= $n;
+		}
+</pre>
+
+I implemented the <code>-C</code>, <code>-c</code>, <code>-d</code>, <code>-b</code>, <code>-o</code>, and <code>-x</code> switches. Each of these present the data in a different way, making all the combinations of octet or words with octal, decimal, or hexadecimal. 
+
+Surprisingly, the hexdump I have on my Mac will happily do all of these at once. That means I have it a bit easier since I don&#39;t have to create an option processing hierarchy to exclude others. I figured that Perl 6&#39;s <a href="https://docs.perl6.org/routine/multi">multi methods</a> would be good for that, which is one of the reasons I started writing the program. Even when I found out I didn&#39;t need that I kept going.
+
+So, on each group of octets that I read, I have the opportunity to print several lines. I need to check which options are set to True. I could do that with a lot of repeated code:
+
+<pre class="brush:plain">
+		put $counter.fmt( &#39;%08x  &#39; ), show_C($buf) if $C;
+		put $counter.fmt( &#39;%08x  &#39; ), show_c($buf) if $c;
+		put $counter.fmt( &#39;%08x  &#39; ), show_d($buf) if $d;
+		...
+</pre>
+
+Instead, I use a variable to decide the variable name with <code>$::($some_variable)</code>. I filter out all the ones that are False:
+
+<pre class="brush:plain">
+	my @options = qw/ C c d b o x /.grep: { $::($_) };
+</pre>
+
+When it&#39;s time to output something, I go through the options that I have left. Each one has an associated subroutine, which I lookup in the same way:
+
+<pre class="brush:plain">
+		for @options -&gt; $option {
+			put $counter.fmt( &#39;%08x  &#39; ), &amp;::(&quot;show_$option&quot;)($buf);
+			}
+</pre>
+
+I also thought of translating those subroutine lookups beforehand but I didn&#39;t get that far. I don&#39;t really need to keep constructing the subroutine name. That&#39;s something I can fix later.
+
+There&#39;s something that&#39;s probably surprising to Perl 5 people. This little trick isn&#39;t limited to a particular set of variables. It works with lexicals too:
+
+<pre class="brush:plain">
+my $foo = &quot;Some value&quot;;
+
+put &quot;The value of \$foo is &quot;, $::(&#39;foo&#39;); # works just fine.
+</pre>
+
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2017/01/09/buffers-hexdump-and-perl-6-power-tools/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2017/01/04/search-perl-6-repos-with-marchexgithub-api-tools/">Search Perl 6 repos with Marchex/github-api-tools</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 04, 2017</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+<a href="https://github.com/pudge">Chris Nandor</a> has been bugging me to use the <a href="https://github.com/Marchex/github-api-tools">Github tools he helped to develop for Marchex</a>, so when <a href="/2017/01/03/search-the-perl-6-repos-with-etsys-hound/">I posted about Hound</a> he showed me another way to search multiple <a href="https://github.com/">GitHub</a> repos at the same time. This version only works if everything is on GitHub (or your Enterprise version of that), but the Hound version can work with whatever mix of version control systems have, either local, remote, or both.
+
+<!--more-->
+
+This task is really simple, so it&#39;s not that impressive for those tools, but you can still search multiple GitHub repos. It only looks like you need a <a href="https://github.com/settings/tokens">GitHub personal access token</a> because the tools assume you&#39;ll want to do all the other stuff too. The stuff here doesn&#39;t actually use the <a href="https://developer.github.com/v3/">GitHub API</a>.
+
+Now I put it all together. This is really the sort of thing that Perl 5 was made to do. Here&#39;s a quickie Perl 5 example (and hey, last time is was Go, so I&#39;m getting closer). This constructs the right query, submits it to GitHub, and opens your browser to the results.
+
+<pre class="brush:perl">
+#!/Users/brian/bin/perls/perl5.14.2
+use v5.10;
+
+# You might have Enterprise, so this would be different
+$ENV{GITHUB_HOST}  //= &#39;github.com&#39;;
+$ENV{GITHUB_TOKEN} //= &#39;vanilla nut taps&#39;; # can be anything, but var needs to be defined
+
+# https://github.com/Marchex/github-api-tools
+my $binary = &#39;/Users/brian/bin/perls/github_search5.14.2&#39;;
+
+my $repos = join &#39; &#39;, map { &quot;repo:$_&quot; } qw(
+	rakudo/rakudo
+	perl6/nqp
+	perl6/doc
+	perl6/roast
+	perl6/specs
+	);
+
+@ARGV = qw(Mayor of Dunkin) unless @ARGV;
+my @command = (
+	$binary,
+	&#39;-O&#39;,
+	&#39;-f&#39;,
+	&quot;&#39;$repos&#39;&quot;,
+	@ARGV
+	);
+
+say &quot;@command&quot;;
+system { $command[0] } @command;
+</pre>
+
+To run it, I give it something to search:
+
+<pre class="brush:plain">
+$ search_perl6 encoding
+<pre>
+
+(<a href="https://github.com/search?q=encoding%20%27repo%3Arakudo%2Frakudo%20repo%3Aperl6%2Fnqp%20repo%3Aperl6%2Fdoc%20repo%3Aperl6%2Froast%20repo%3Aperl6%2Fspecs%27&amp;ref=searchresults&amp;type=Code">See that result</a>).
+
+But, I don&#39;t really need any Perl 5 here. Although the Marchex tools are in Perl 5, my program merely glues together a bunch of stuff then shells out. The Perl 6 version doesn&#39;t look that much different:
+
+<pre class="brush:plain">
+#!/Applications/Rakudo/bin/perl6
+use v6;
+
+# You might have Enterprise, so this would be different
+%*ENV{&#39;GITHUB_HOST&#39;}  //= &#39;github.com&#39;;
+%*ENV{&#39;GITHUB_TOKEN&#39;} //= &#39;gfy&#39;; # can be anything, but var needs to be defined
+
+# https://github.com/Marchex/github-api-tools
+my $binary = &#39;/Users/brian/bin/perls/github_search5.14.2&#39;;
+
+my $repos = q:w{
+	rakudo/rakudo
+	perl6/nqp
+	perl6/doc
+	perl6/roast
+	perl6/specs
+	}.map( { &quot;repo:$_&quot; } ).join( &#39; &#39; );
+
+@*ARGS = q:w/Mayor of Dunkin/ unless @*ARGS;
+my @command = (
+	$binary,
+	&#39;-O&#39;,
+	&#39;-f&#39;,
+	&quot;&#39;$repos&#39;&quot;,
+	|@*ARGS  # flatten that list with |
+	);
+
+say &quot;{@command}&quot;;
+run |@command;  # From class Proc https://docs.perl6.org/type/Proc
+</pre>
+
+Either way I see two benefits here. I can do it from the command line and it will automatically open my browser with the results. And, I don&#39;t have to remember how to type out the query. Since it doesn&#39;t use the GitHub API, it also doesn&#39;t count against my search rate limit. So, maybe two and a half benefits.
+
+
+</pre></pre>
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2017/01/04/search-perl-6-repos-with-marchexgithub-api-tools/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+
+<!-- start paginate -->
+<div id="pagination">
+
+<a class="pag_link" href="index.html">1</a>
+<a class="pag_link" href="index_2.html">2</a>
+<a class="pag_link" href="index_3.html">3</a>
+<a class="pag_link" href="index_4.html">4</a>
+<a class="pag_link" href="index_5.html">5</a>
+<a class="pag_link" href="index_6.html">6</a>
+<a class="pag_link" href="index_7.html">7</a>
+<a class="pag_link pag_current" href="index_8.html">8</a>
+<a class="pag_link" href="index_9.html">9</a>
+<a class="pag_link" href="index_10.html">10</a>
+<a class="pag_link" href="index_11.html">11</a>
+<a class="pag_link" href="index_12.html">12</a>
+<a class="pag_link" href="index_13.html">13</a>
+<a class="pag_link" href="index_14.html">14</a>
+<a class="pag_link" href="index_15.html">15</a>
+<a class="pag_link" href="index_16.html">16</a>
+<a class="pag_link" href="index_17.html">17</a>
+<a class="pag_link" href="index_18.html">18</a>
+
+</div>
+<!-- end paginate -->
+
+</div>
+<!-- end excerpt_list -->
+
+</div>
+<!-- end middle_main_page -->
+
+</html>
+

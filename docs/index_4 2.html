@@ -1,0 +1,598 @@
+<!--
+title: Index 4
+link: http://www.learningraku.com/index_4.html
+author: brian
+date: 2022-01-23 3:10:26
+post_name: main 4
+status: publish
+type: list
+categories:
+tags:
+-->
+
+<html>
+
+<head>
+	<base href="https://test.learningraku.com/">
+	<title>Index 4</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="brian's site generator" />
+	<meta charset="UTF-8" />
+</head>
+
+
+<!-- start middle_main_page -->
+<div id="middle">
+
+<!-- start sidebar -->
+<div id="sidebar">
+	<img id="small_cover" src="images/cover.png" width="180" height="236" />
+
+	<div id="sponsors">
+		<iframe src="https://github.com/sponsors/briandfoy/button" title="Sponsor briandfoy" height="35" width="116" style="border: 0;"></iframe>
+	</div>
+
+	<div class="textwidget"><p><a href="https://www.oreilly.com/catalog/errata.csp?isbn=0636920062776">Book errata</a><br />
+		<a href="https://goo.gl/EbA7gF">Google Books preview</a><br />
+		<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a><br />
+		<a href="https://amzn.to/3E0JQxK">Amazon.com</a></p>
+		<hr />
+		<p><i>Many resources have not changed the name from Perl 6 to Raku, so these resources may use either.</i></p>
+		<p><a href="https://design.raku.org">Raku Design Docs (dated)</a><br />
+		<a href="http://docs.raku.org">Raku Docs</a><br />
+		<a href="https://learnxinyminutes.com/docs/raku/">Learn Raku in Y Minutes</a><br />
+		<a href="https://modules.raku.org">Raku modules</a><br />
+		<a href="https://rosettacode.org/wiki/Category:Raku">Rosetta Code examples</a><br />
+		<a href="http://examples.perl6.org/categories/euler.html">Project Euler examples</a><br />
+		<a href="http://examples.perl6.org">Perl 6 Examples</a><br />
+		<a href="https://github.com/Raku/roast">Raku Roast (test suite examples)</a></p>
+	</div>
+</div>
+<!-- end sidebar -->
+
+<!-- start excerpt_list -->
+<div id="content">
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2018/01/18/hints-for-perl-6-on-windows/">Hints for Perl 6 on Windows</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 18, 2018</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+<style>
+img.post { border: 1px solid #000 }
+img.left { float: left; margin-right: 15px }
+img.right { float: right; margin-left: 15px }
+p.caption { font-style: italic }
+
+div.center div {
+        align: center;
+        display: block;
+	margin-top: 1em;
+	margin-bottom: 1em;
+        }
+
+div.image p {
+        font-style: italic;
+        text-align: center;
+        }
+
+div.image img {
+        border: 1px solid #000;
+        display:block;
+        margin: auto;
+        }
+
+div.right div {
+        float: right;
+        margin-left: 15px;
+        }
+
+div.left div {
+        float: left;
+        margin-right: 15px;
+        }
+</style>
+
+I&#39;m not going to waste too much time in the book explaining any particular operating system. I want to save space and I know I&#39;ll probably want to keep updating those bits anyway. Here are some hints for Windows. While writing the book I test stuff with Windows 10 and a particular workflow that I liked well enough. You might like something different (and if you do you probably don&#39;t need these instructions). <!--more-->
+
+And I need these instructions because I&#39;m not a regular Windows user. I&#39;ve also written about this setup in <a href="https://www.windowsperl.com/2018/01/18/my_windows_environment/">my Windows Perl site</a> so I won&#39;t repeat most of it here. If you have a different setup that works for you let me know about it.
+
+
+<h2>The Chocolatey package manager</h2>
+
+I use the <a href="https://chocolatey.org">Chocolatey</a> package manager to get most of what I need; that includes <a href="https://chocolatey.org/packages/rakudostar">Rakudo Star</a>, and <a href="https://conemu.github.io">ConEmu</a> Follow its installation instructions to install that from a PowerShell administrator window:
+
+<pre class="brush:plain">
+PS C:\WINDOWS\system32&gt; choco install rakudostar
+PS C:\WINDOWS\system32&gt; choco install ConEmu
+PS C:\WINDOWS\system32&gt; choco install notepadplusplus
+PS C:\WINDOWS\system32&gt; choco install git
+PS C:\WINDOWS\system32&gt; refreshenv
+</pre>
+
+<h2>Check your programs</h2>
+
+After you install Rakudo and refresh the environment try a simple invocation from the command line. You can check the version. You should get something like this:
+
+<pre class="brush:plain">
+C:\Users\hamadryas&gt; perl6 -v
+This is Rakudo Star version 2017.10 built on MoarVM version 2017.10
+implementing Perl 6.c.
+</pre>
+
+<h2>Edit a file</h2>
+
+Somehow create and edit a file. If you installed NotePad++ you can run it from the command line:
+
+<pre class="brush:plain">
+C:\Users\hamadryas&gt; notepad++ hello-perl6.p6
+</pre>
+
+Put in this text:
+
+<pre class="brush:plain">
+#!perl6
+put &#39;Hello Perl 6&#39;;
+</pre>
+
+<div class="image center">
+<div>
+<img src="/images/windows-setup/notepad-hello.png" style="border: 1px solid">
+</div>
+</div>
+
+<h2>Run a file</h2>
+
+<pre class="brush:plain">
+C:\Users\hamadryas&gt; perl6 hello-perl6.p6
+</pre>
+
+There are some Unicode test programs in the <a href="https://github.com/briandfoy/LearningPerl6_Downloads">Learning Perl 6 Downloads</a> repo.
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2018/01/18/hints-for-perl-6-on-windows/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2018/01/18/525/">Custom operators for Knuth's Arrow</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 18, 2018</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+[mathjax]
+
+The <a href="https://en.wikipedia.org/wiki/Knuth%27s_up-arrow_notation">Wikipedia page for Knuth&#39;s up arrow notation</a> makes some claims about superscripts:
+
+<blockquote>
+But many environments — such as programming languages and plain-text e-mail — do not support superscript typesetting.
+</blockquote>
+
+<!--more-->
+
+I&#39;ll ignore the claim that plain text (<a href="https://en.wikipedia.org/wiki/Plain_text">their parochial definition</a>) is the same thing as 7-bit text ASCII.
+
+The first claim, however, isn&#39;t strictly true for Perl 6 and probably many other more esoteric languages (let me know if you know which ones you know about). It got me thinking about what I could do in Perl 6.
+
+Perl 6 uses superscripts as operators defined in the core language. I found this out between the time they were implemented and later documented when <a href="https://stackoverflow.com/q/34689850/2766176">I tried to use them in variable names</a>. Now I can write some exponentiations with superscripts:
+
+<pre class="brush:plain">
+my $square = $n²;  # valid Perl 6, same as $n ** 2
+</pre>
+
+I can&#39;t superscript superscripts or superscript superscripts of superscripts though and that&#39;s what most of that claim is about. Adding a character that is already a superscript isn&#39;t the point. We typically don&#39;t type something like these <a href="http://mathworld.wolfram.com/PowerTower.html">power towers</a> directly without some sort of being-the-scenes formatting instructions (so, not plain text). I do this with \(\LaTeX\):
+
+$$x^{2^{2^2}}$$
+
+$$a^{b^{b^b}}$$
+
+$$a^{some^{other^{terms}}}$$
+
+But Perl 6 also provides builtin features that it fully expects people to use to extend the language. I can create these operators myself. (Note that in mathematics, the up arrow is an example of a hyperoperator but that has a completely different meaning from the Perl 6 <a href="https://docs.perl6.org/language/operators#Hyper_Operators">hyperoperators</a> that apply an operation to corresponding elements of two lists.)
+
+I can create an up-arrow operator, <code>↑</code>. Had I googled first I would have found that it&#39;s already been done in <a href="https://github.com/ajs/perl6-Math-Arrow/blob/master/lib/Math/Arrow.pm">Math::Arrow</a>.
+
+A single up arrow is the same as exponentiation but without a superscript. The operand on the left is raised to the power on the right. It&#39;s in the progression of <code>+</code> for addition, <code>*</code> for multiplication, and then <code>↑</code> for exponentation. This is the basis for higher orders later.
+
+It&#39;s a binary infix operator (takes two operands and goes in the middle) so I add my symbols in the angle brackets after the <code>infix:</code>. I specify that it&#39;s right associative (as is exponentiation) and that it has the same precedence as exponentiation:
+
+<pre class="brush:plain">
+sub infix:&lt;↑&gt; ( Int:D \n, Int:D \m  --&gt; Int:D )
+	is equiv(&amp;infix:&lt;**&gt;)
+	is assoc&lt;right&gt;
+	{ n ** m }
+
+put 2 ↑  3;  # 2  * 2  * 2 =  8
+</pre>
+
+That&#39;s only the starting point. With this notation I can define higher orders of repetition. The double up arrow, <code>↑↑</code>, is repeated exponentiation just like multiplication is repeated addition. The number on the right is one more than the number of exponentiations in the power tower (the other one is the base):
+
+$$2↑↑4 = 2^{2^{2^2}}$$
+
+I make a couple of subroutine definitions here to handle the special cases where the second operand is <code>0</code> or <code>1</code> since the reduction operator won&#39;t deal with those cases. Since these subroutines have the same name I use <code>multi</code> to define the candidates. The dispatcher figures out which one fits best and use that:
+
+<pre class="brush:plain">
+proto infix:&lt;↑↑&gt; ( Int:D \n, Int:D \m  --&gt; Int:D )
+	is tighter(&amp;infix:&lt;↑&gt;)
+	is assoc&lt;right&gt;
+	{ * }
+multi infix:&lt;↑↑&gt; ( \n, 0  ) { 1 }
+multi infix:&lt;↑↑&gt; ( \n, 0  ) { \n }
+multi infix:&lt;↑↑&gt; ( \n, \m ) { [↑] n xx m }
+
+put 2 ↑  3;  # 2  * 2  * 2 =  8
+put 2 ↑↑ 3;  # 2 ** 2 ** 2 = 16
+</pre>
+
+The <code>proto</code> defines the basic template for all candidates with the same name. That&#39;s where I can constrain the types of values and set the associativity and precedence. It&#39;s the gatekeeper; once I annotate the types and set the traits I don&#39;t need to annotate them in the candidates (and in some cases can&#39;t re-define them).
+
+I make the double arrow version tighter than the single arrow one I just defined. The <code>*</code> in the <code>proto</code> block dispatches to the best candidate of the same name. The two <code>multis</code> can then assume everything that needs to be checked was already handled.
+
+Now I can extend that to the triple up arrow <code>↑↑↑</code>. It&#39;s the same thing with an additional up arrow:
+
+<pre class="brush:plain">
+proto infix:&lt;↑↑↑&gt; ( Int:D \n, Int:D \m  --&gt; Int:D )
+	is assoc&lt;right&gt;
+	is tighter(&amp;infix:&lt;↑↑&gt;)  { * }
+multi infix:&lt;↑↑↑&gt; ( \n,  0 ) { 1 }
+multi infix:&lt;↑↑↑&gt; ( \n, \m ) { [↑↑] n xx m }
+
+put 2 ↑   3;  # 2  *  2  * 2  =  8
+put 2 ↑↑  3;  # 2 ↑   2 ↑  2  = 16
+put 2 ↑↑↑ 3;  # 2 ↑↑ (2 ↑↑ 2) = 256
+</pre>
+
+But there&#39;s an alternate notation that goes back further than Knuth&#39;s up arrow. I can define prefix superscripts that denote particular up arrow versions. These use superscripts:
+
+<pre class="brush:plain">
+multi prefix:&lt;⁰&gt;  ( Int:D $m ) { 1 }
+multi prefix:&lt;²&gt;  ( Int:D $m ) { $m ↑↑ 2 }
+multi prefix:&lt;³&gt;  ( Int:D $m ) { $m ↑↑ 3 }
+multi prefix:&lt;³&gt;  ( Int:D $m ) { $m ↑↑ 4 }
+
+put ²2;
+put ⁴2;
+put ²3;
+put ³3;
+</pre>
+
+There&#39;s yet another notation that doesn&#39;t use repeated arrows. It uses a superscript on the arrow to specify how many arrows there are:
+
+<pre class="brush:plain">
+multi infix:&lt;↑²&gt; ( Int:D \n, 0        --&gt; Int:D )
+	is equiv(&amp;infix:&lt;↑↑&gt;)
+	is assoc&lt;right&gt; { 1 }
+multi infix:&lt;↑²&gt; ( Int:D \n, 1        --&gt; Int:D )
+	is equiv(&amp;infix:&lt;↑↑&gt;)
+	is assoc&lt;right&gt; { n }
+multi infix:&lt;↑²&gt; ( Int:D \n, Int:D \m --&gt; Int:D )
+	is equiv(&amp;infix:&lt;↑↑&gt;)
+	is assoc&lt;right&gt; { [↑] n xx m }
+</pre>
+
+You get the idea. I&#39;ve made a much longer <a href="https://gist.github.com/briandfoy/b85de0526e3a747c15376a3d33629f28">demonstration program</a> that&#39;s in a gist.
+
+<h2>Some things that came out of exercise</h2>
+
+<ul>
+<li><a href="https://stackoverflow.com/q/48219788/2766176">Why is Perl 6&#39;s right associativity not right?</a>
+</li><li><a href="https://rt.perl.org/Ticket/Display.html?id=132713">#132713: Order of `is assoc` and precedence traits</a>
+</li><li><a href="https://rt.perl.org/Ticket/Display.html?id=132711">#132711: [LTA] Stupidly using `is assoc` with unary prefix operator has an error message from the deep</a>
+</li><li><a href="https://rt.perl.org/Ticket/Display.html?id=132710">#132710: [LTA] Warning message for duplicated tighter trait</a>
+</li></ul>
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2018/01/18/525/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2018/01/17/test-a-module-version/">Test a module version</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 17, 2018</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+The <i>META6.json</i> file has metadata for a Perl 6 module. But I like to also put things in the module file. I&#39;d rather have some of that stuff with the code in case the metadata file goes missing as it might if you throw a <i>.pm</i> file in a directory rather than installing with <code>zef</code>. That means I forget to update one of them (it&#39;s usually the <i>META6.json</i>). <!--more-->
+
+I created a test file to check that the versions in <i>META6.json</i>. I&#39;d been meaning to do this since I <a href="https://stackoverflow.com/q/44883887/2766176">asked about it on Stackoverflow</a> a long time ago:
+
+<pre class="brush:plain">
+use v6;
+
+use Test;
+use META6;
+
+use File::Find;
+constant package-name = &#39;File::Find&#39;;
+
+my $module-version = File::Find.^ver;
+ok $module-version.defined, &#39;Module specifies a version&#39;;
+diag &quot;Module version is $module-version&quot;;
+
+my $meta-file = &#39;META6.json&#39;;
+my $meta = META6.new: file =&gt; $meta-file;
+
+my $meta-version = $meta.version;
+ok $meta-version.defined, &#39;META6 specifies a version&#39;;
+diag &quot;META6 version is $meta-version&quot;;
+
+is $meta-version, $module-version, &#39;META6 version matches module version&#39;;
+
+done-testing();
+</pre>
+
+The obvious next step is to make a program to update <i>META6.json</i> for me but so far this way is a lot less work. I have no plans to make this a module but someone else can if they like. If you do, gfldex&#39;s <a href="https://gfldex.wordpress.com/2016/10/25/you-have-to-take-what-you-an-get/">You have to take what you can get</a> might be helpful.
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2018/01/17/test-a-module-version/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2018/01/16/de-duping-itunes/">De-duping iTunes</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 16, 2018</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Every so often I notice that my iTunes library has a lot of duplicate items and I need to get rid of things. It&#39;s mostly a task for finding an audio file that has the same name as another audio file but with a space and digit added right before the extension. <i>Song.mp3</i> and <i>Song 1.mp3</i> are examples of this problem. They&#39;ll be in the same directory; duplicates in different directories are a different matter and I&#39;ve done that too by comparing file digests. That&#39;s not this problem.
+
+Here&#39;s what I did. It&#39;s not pretty because I didn&#39;t care to make it so. It&#39;s not exciting because I wasn&#39;t researching anything or exploring an idea. It&#39;s just getting rid of files. I solved the problem and moved on. 
+
+I develop these little tools incrementally. Can I get all the files? Can I find the files that have the name without the space and digit. I program a step and check the result. Then I add the next step. The process drives the procedural structure. 
+
+And during this process I forked then completely rewrote a <a href="https://github.com/briandfoy/perl6-file-find">File::Find</a> module. You don&#39;t need my version for this though. The one <code>zef install File::Find</code> gives you should be fine.
+
+A few quick notes:
+
+<ul>
+<li>I really like the <code>#`( ... )</code> comments
+</li><li>An array interpolated into a pattern is an alternation of the elements
+</li><li><code>.IO</code> objects know how to make or tear apart paths.
+</li></ul>
+
+<pre class="brush:plain">
+#!/Applications/Rakudo/bin/perl6
+
+use File::Find:auth&lt;bdfoy&gt;; # https://github.com/briandfoy/perl6-file-find
+
+#`( iTunes loves screwing up files. I get a file imported multiple
+times instead of realizing it&#39;s already in there.
+
+	some song.mp3
+	some song 1.mp3
+
+Let&#39;s find these pairs where the names differ by the addition of
+a space and a single digit (although I&#39;ve had problems like this with
+as high as 4.
+)
+my $dir = &#39;/Users/brian/Dropbox/iTunes/Music&#39;;
+my $target = &#39;/Users/brian/BackupMusic&#39;;
+
+#`(
+I actually used this module to count extensions and these are the
+one I want to focus on. An array in a regex is an alternation.
+)
+my @extensions = &lt;mp3 m4a=&quot;&quot; m4p=&quot;&quot;&gt;;
+my $sequence := find(
+	dir  =&gt; $dir,
+	name =&gt; / \h &#39;1&#39; &#39;.&#39; @extensions $ /,
+	);
+
+my $count = 0;
+my $dry-run = True; # try it before we move any files
+for $sequence -&gt; $file {
+
+	#`(
+	other = the file of the same name without a numbered copy
+	if that file doesn&#39;t exist we don&#39;t have a problem
+	)
+	my $other = $file.subst:
+		/ \h &#39;1&#39; &#39;.&#39; (@extensions) $ /,
+		&quot;.$0&quot;;
+	my $exists = $other.IO.e;
+	next unless $exists;
+	$count++;
+
+	put &#39;-&#39; x 50;
+	put &quot;file: $file&quot;;
+	put &quot;other: $other ($exists)&quot;;
+
+	#`(
+	We need the part after the starting directory because we&#39;ll add
+	that to the new target directory. We might have to make a subdir
+	tree
+	)
+	my $rel = $file.IO.relative: $dir;
+
+	my $new = $rel.IO.absolute: $target;
+	my $new-dir = $new.IO.parent.IO;
+	$new-dir.mkdir unless $new-dir.e;
+	$other.IO.rename( $new ) unless $dry-run;
+	}
+
+say &quot;Found $count files&quot;;
+</pre>
+
+Here&#39;s the program I used to survey the file extensions I used to populate <code>@extensions</code>:
+
+<pre class="brush:plain">
+use File::Find:auth&lt;BDFOY&gt;; # https://github.com/briandfoy/perl6-file-find
+use PrettyDump; 
+
+my $list := find( dir =&gt; $*HOME.child( &#39;Dropbox/iTunes/Music&#39; ) );
+
+my %extensions;
+for $list -&gt; $item {
+	next if $item.d;
+	%extensions{ $item.extension }++
+	}
+
+pd %extensions;
+</pre>
+
+And here&#39;s what I had done the last time I had this problem. It&#39;s Perl 5 interpreting the results of an external <code>find</code>. I think last time I ended up throwing an <code>unlink</code> in there at some point:
+
+<pre class="brush:plain">
+use v5.14;
+open my $fh, &#39;find . -name &quot;* [1234].m[p4][ap3]&quot; |&#39;;
+
+while( <$fh> ) {
+	chomp;
+	my $other = s/\s+(\d+)(?=\.[^.]+\z)//r;
+	next unless -e $other;
+	print &quot;$_\n\t$other\n&quot;;
+	}
+
+close $fh or die &quot;Error in Find!&quot;
+</$fh></pre>
+
+I&#39;ll probably lose my Perl 6 program, forget I wrote this, and recreate this in nine months. I might even post about it again.
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2018/01/16/de-duping-itunes/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2018/01/11/turning-strings-into-fake-positionals/">Turning strings into fake positionals</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 11, 2018</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+While playing with some strings I realized that I really wanted strings to do the <a href="https://docs.perl6.org/type/Positional">Positional</a> role. When I&#39;m inspecting or modifying strings I&#39;m often doing things based on positions so the <code>Positional</code> interface seems interesting. Just for fun I can adapt the <code>[ ]</code> to be the interface to <code>substr</code>: <!--more-->
+
+<pre class="brush:plain">
+multi postcircumfix:<[ ]> ( Str:D $s, Int:D $n --&gt; Str ) {
+	$s.substr: $n, 1
+	}
+multi postcircumfix:<[ ]> ( Str:D $s, Range:D $r --&gt; Str ) {
+	$s.substr: $r.min, $r.max - $r.min + 1
+	}
+multi postcircumfix:<[ ]> ( Str:D $s, List:D $i --&gt; List ) {
+	map( { $s.substr: $_, 1 }, @$i ).List
+	}
+
+my $string = &#39;The quick, purple butterfly&#39;;
+
+{ # Works
+my $single = $string[0];
+say $single;
+}
+
+{ # Works
+my $substring = $string[5..9];
+say $substring;
+}
+
+{ # Works
+my $substring = $string[1,3,5,7];
+say $substring;
+}
+</[></[></[></pre>
+
+This outputs:
+
+<pre class="brush:plain">
+T
+uick,
+(h   u c)
+</pre>
+
+I don&#39;t want to make a habit of this though even if it is interesting.
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2018/01/11/turning-strings-into-fake-positionals/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+
+<!-- start paginate -->
+<div id="pagination">
+
+<a class="pag_link" href="index.html">1</a>
+<a class="pag_link" href="index_2.html">2</a>
+<a class="pag_link" href="index_3.html">3</a>
+<a class="pag_link pag_current" href="index_4.html">4</a>
+<a class="pag_link" href="index_5.html">5</a>
+<a class="pag_link" href="index_6.html">6</a>
+<a class="pag_link" href="index_7.html">7</a>
+<a class="pag_link" href="index_8.html">8</a>
+<a class="pag_link" href="index_9.html">9</a>
+<a class="pag_link" href="index_10.html">10</a>
+<a class="pag_link" href="index_11.html">11</a>
+<a class="pag_link" href="index_12.html">12</a>
+<a class="pag_link" href="index_13.html">13</a>
+<a class="pag_link" href="index_14.html">14</a>
+<a class="pag_link" href="index_15.html">15</a>
+<a class="pag_link" href="index_16.html">16</a>
+<a class="pag_link" href="index_17.html">17</a>
+<a class="pag_link" href="index_18.html">18</a>
+
+</div>
+<!-- end paginate -->
+
+</div>
+<!-- end excerpt_list -->
+
+</div>
+<!-- end middle_main_page -->
+
+</html>
+

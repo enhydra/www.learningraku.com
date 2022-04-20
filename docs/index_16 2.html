@@ -1,0 +1,676 @@
+<!--
+title: Index 16
+link: http://www.learningraku.com/index_16.html
+author: brian
+date: 2022-01-23 3:10:26
+post_name: main 16
+status: publish
+type: list
+categories:
+tags:
+-->
+
+<html>
+
+<head>
+	<base href="https://test.learningraku.com/">
+	<title>Index 16</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="brian's site generator" />
+	<meta charset="UTF-8" />
+</head>
+
+
+<!-- start middle_main_page -->
+<div id="middle">
+
+<!-- start sidebar -->
+<div id="sidebar">
+	<img id="small_cover" src="images/cover.png" width="180" height="236" />
+
+	<div id="sponsors">
+		<iframe src="https://github.com/sponsors/briandfoy/button" title="Sponsor briandfoy" height="35" width="116" style="border: 0;"></iframe>
+	</div>
+
+	<div class="textwidget"><p><a href="https://www.oreilly.com/catalog/errata.csp?isbn=0636920062776">Book errata</a><br />
+		<a href="https://goo.gl/EbA7gF">Google Books preview</a><br />
+		<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a><br />
+		<a href="https://amzn.to/3E0JQxK">Amazon.com</a></p>
+		<hr />
+		<p><i>Many resources have not changed the name from Perl 6 to Raku, so these resources may use either.</i></p>
+		<p><a href="https://design.raku.org">Raku Design Docs (dated)</a><br />
+		<a href="http://docs.raku.org">Raku Docs</a><br />
+		<a href="https://learnxinyminutes.com/docs/raku/">Learn Raku in Y Minutes</a><br />
+		<a href="https://modules.raku.org">Raku modules</a><br />
+		<a href="https://rosettacode.org/wiki/Category:Raku">Rosetta Code examples</a><br />
+		<a href="http://examples.perl6.org/categories/euler.html">Project Euler examples</a><br />
+		<a href="http://examples.perl6.org">Perl 6 Examples</a><br />
+		<a href="https://github.com/Raku/roast">Raku Roast (test suite examples)</a></p>
+	</div>
+</div>
+<!-- end sidebar -->
+
+<!-- start excerpt_list -->
+<div id="content">
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/11/18/quick-tip-3-inclusive-and-exclusive/">Quick Tip #3: Inclusive and Exclusive</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">November 18, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Every day of the <a href="https://www.kickstarter.com/projects/1422827986/learning-perl-6">Learning Perl 6 Kickstarter campaign</a>, I&#39;ll present a quick tip about something I like in Perl 6. Yesterday I posted <a href="/2016/11/17/quick-tip-2-fancier-sequences/">Fancier sequences</a>. In that post I only showed how you could use blocks to decide the next element in the sequence. <!--more-->
+
+There&#39;s some other interesting syntax that sequences and ranges (and a few other things). You already know how to make the fancy sequences, so I won&#39;t distract you with that in this post. I&#39;ll use simple, boring sequences for this post.
+
+By default, the <code>..</code> (<a href="https://docs.perl6.org/type/Range.html">Range</a>) and <code>...</code> (<a href="https://docs.perl6.org/type/Seq.html">Sequence</a>) operators include their end points. The range <code>0..9</code> includes the 0 and the 9. That&#39;s mostly what you want and mostly what you expect.
+
+Rather than writing programs, let&#39;s look at these in the Perl 6 REPL. When you start <i>perl6</i> without arguments, you drop into the <i>perl6</i> shell:
+
+<pre class="brush:plain">
+$ perl6
+To exit type &#39;exit&#39; or &#39;^D&#39;
+&gt; 0 .. 9
+0..9
+</pre>
+
+The REPL shows the result of what I entered. In this case, it shows me the sequence although it has not evaluated it yet.
+
+The list or flat methods will turn it into, well, a list. I can also assign it to a listy thing:
+
+<pre class="brush:plain">
+&gt; (0..9).list
+(0 1 2 3 4 5 6 7 8 9)
+&gt; (0..9).flat
+(0 1 2 3 4 5 6 7 8 9)
+&gt; my @a = 0 .. 9;
+[0 1 2 3 4 5 6 7 8 9]
+</pre>
+
+You should have line history already (if not, <a href="https://docs.perl6.org/language/faq.html#How_can_I_get_command_line_history_in_the_Perl_6_prompt_(REPL)?">See the FAQ</a>), so you can arrow up to change the previous command without re-typing everything.
+
+I try it again by including a <code>^</code> before the end element. This makes the end <i>exclusive</i>. It excludes the element from the list:
+
+<pre class="brush:plain">
+(0..^9).flat
+(0 1 2 3 4 5 6 7 8) 
+</pre>
+
+I can do the same on the other side to exclude the starting element:
+
+<pre class="brush:plain">
+&gt; (0^..9).flat
+(1 2 3 4 5 6 7 8 9)
+</pre>
+
+Or I can do it on both sides:
+
+<pre class="brush:plain">
+&gt; (0^..^9).flat
+(1 2 3 4 5 6 7 8)
+</pre>
+
+I can put spaces around the start or end elements:
+
+<pre class="brush:plain">
+&gt; (0 ^..^ 9).flat
+(1 2 3 4 5 6 7 8)
+</pre>
+
+But not between the <code>^</code> and the <code>..</code>:
+
+<pre class="brush:plain">
+&gt; (0 ^.. ^9).flat
+Range objects are not valid endpoints for Ranges
+</pre>
+
+The operators are actually <code><a href="https://docs.perl6.org/language/operators#infix_..">..</a></code>, <code><a href="https://docs.perl6.org/language/operators#infix_^..">^..</a></code>, <code><a href="https://docs.perl6.org/language/operators#infix_..^">..^</a></code>, or <code><a href="https://docs.perl6.org/language/operators#infix_^..^">^..^</a></code>.
+
+I can use this to terminate the sequences as well. I already showed the infinite sequence. But, I can use a condition as the end point. When the condition is true, the sequence ends. In this case, it&#39;s just a numerical comparison:
+
+<pre class="brush:plain">
+&gt; ( 1 ... * &gt; 15 ).list
+(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16)
+</pre>
+
+And, if I don&#39;t want to element that ends the sequence, I exclude it:
+
+<pre class="brush:plain">
+&gt; ( 1 ...^ * &gt; 15 ).list
+(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15)
+</pre>
+
+I can have a block at the end, and I can exclude the value that makes the block true:
+
+<pre class="brush:plain">
+&gt; ( 1 ... -&gt; $a { $a &gt; 15 } ).list
+(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16)
+&gt; ( 1 ...^ -&gt; $a { $a &gt; 15 } ).list
+(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15)
+</pre>
+
+But, the block can be anything that I like. I can terminate the sequence after a certain time passes:
+
+<pre class="brush:plain">
+&gt; ( 1 ... -&gt; $a { state $t = now; now &gt; $t + 0.01 } ).list
+(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16)
+&gt; ( 1 ... -&gt; $a { state $t = now; now &gt; $t + 0.02 } ).list
+(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18)
+&gt; ( 1 ... -&gt; $a { state $t = now; now &gt; $t + 0.06 } ).list
+(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 ...)
+</pre>
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/11/18/quick-tip-3-inclusive-and-exclusive/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/11/17/quick-tip-2-fancier-sequences/">Quick Tip #2: Fancier sequences</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">November 17, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Every day of the <a href="https://www.kickstarter.com/projects/1422827986/learning-perl-6">Learning Perl 6 Kickstarter campaign</a>, I&#39;ll present a <a href="/category/kickstarter-tips/">quick tip</a> about something I like in Perl 6. Yesterday I posted <a href="/2016/11/16/quick-tip-1-user-defined-infinite-sequences/">User-defined infinite sequences</a>. In that post I only showed sequences of positive numbers. That&#39;s a bit boring. Let&#39;s make something fancier. <!--more-->
+
+Let&#39;s start with one of the boring examples that every programming language likes to use. It&#39;s a bit not-safe-for-work. About 800 years ago, Fibonacci spent a lot of time thinking about what adult rabbits do with their free time. He didn&#39;t invent the problem, but he gets all the credit:
+
+<pre class="brush:plain">
+my $fibonacci := 1, 1, { $^a + $^b } ... *;
+say &quot;Fibonacci: &quot; ~ $fibonacci[0..10];
+</pre>
+
+Here&#39;s the result:
+
+<pre class="brush:plain">
+Fibonacci: 1 1 2 3 5 8 13 21 34 55 89
+</pre>
+
+We can create an infinite, lazy sequence. (As a side not, doesn&#39;t that sound wrong? The order of adjectives in English is customarily quantity followed by opinion. Doesn&#39;t lazy, infinite lists sound better?)
+
+But, what&#39;s going on with that sequence? I start off with two literals, the <code>1</code> and <code>1</code>. But, after that I have a <a href="https://docs.perl6.org/language/functions#Blocks_and_Lambdas">block</a>. When Perl 6 sees a block in the sequence, it uses it to compute the next element. And, I can do anything I like in that block.
+
+But, what&#39;s going in the block? There&#39;s a <code>$^a</code> and a <code>$^b</code>. Perl 6 figures out that this block takes two arguments and grabs the previous two items from the sequence to fill those variables. The last evaluated expression in the block becomes the next value in the sequence. After that it starts all over. And, since I used the Whatever <code>*</code> at the end, the sequence goes on forever.
+
+The Lucas Sequence is similar:
+
+<pre class="brush:plain">
+my $lucas := 2, 1, 3, { $^a + $^b } ... *;
+say &quot;Lucas: &quot; ~ $lucas[0..10];
+</pre>
+
+Here&#39;s the result:
+
+<pre class="brush:plain">
+Lucas: 2 1 3 4 7 11 18 29 47 76 123
+</pre>
+
+Let&#39;s do something more interesting. There&#39;s a sequence of &quot;digit product&quot;. You take the number and split it up into individual decimal digits. Multiply all of those and add that product to the original number. That&#39;s the next number in the sequence. Here it is:
+
+<pre class="brush:plain">
+my $d := 1, { $^a + [*] $^a.comb } ... *;
+say &quot;Digit product: &quot; ~ $d[0..10];
+</pre>
+
+Here&#39;s the result:
+
+<pre class="brush:plain">
+Digit product: 1 2 4 8 16 22 26 38 62 74 102
+</pre>
+
+There are a few interesting things in that block. First, I call the <code>comb</code> method to break the number up into digits. In front of that is the <code>[*]</code> <a href="https://docs.perl6.org/language/operators#Reduction_Operators">reduction operator</a>. It takes two elements from the succeeding list, performs the operation inside the square braces, and puts the result back on the list. It does this until there&#39;s a single element left. That gives me the product of the digits.
+
+Once I have the product, I add it to the original number (still in <code>$^a</code>). Now I have the next item in the sequence.
+
+Not fancy enough? How abou the &quot;speak and say&quot; sequence? Take a number, such as 1. Now, say the count of the like digits and the digit word. So, there is &quot;one 1&quot;. Translate that into digits, so <code>11</code>. Do it again. There&#39;s &quot;two 1s&quot;, or <code>21</code>, then, &quot;one 2 and one 1&quot;, so <code>1211</code>. Keep doing that until you get bored with it:
+
+<pre class="brush:plain">
+my $speak_and_say := 1, { .subst( /(<[0..9]>)$0*/, { .chars() ~ .[0] }, :g ) } ... *;
+say &quot;Speak and say: &quot; ~ $speak_and_say[0..5];
+</[0..9]></pre>
+
+The result is:
+
+<pre class="brush:plain">
+Speak and say: 1 11 21 1211 111221 312211
+</pre>
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/11/17/quick-tip-2-fancier-sequences/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/11/16/quick-tip-1-user-defined-infinite-sequences/">Quick Tip 1: User-defined infinite sequences</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">November 16, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Every day of the <a href="https://www.kickstarter.com/projects/1422827986/learning-perl-6">Learning Perl 6 Kickstarter campaign</a>, I&#39;ll present a <a href="/category/kickstarter-tips/">quick tip</a> about something I like in Perl 6. Let&#39;s start with sequences. <!--more-->
+
+We have simple sequences, like one digit to another. Here&#39;s 0 to 9:
+
+<pre class="brush:plain">
+my $tenner := 0 ... 9;
+</pre>
+
+Notice a few things here. I&#39;ve used the <a href="https://docs.perl6.org/language/operators#infix_:=">infix binding operator, <code>:=</code></a>. It doesn&#39;t assign a value, it makes the lefthand side the same as the righthand side.
+
+The <code>...</code> is the <a href="https://docs.perl6.org/language/operators#infix_...">sequence operator</a>, which we can use to produce <i>lazy</i> lists.
+
+Lazy lists, you say? What if I wanted not just 0 to 9, but 0 to whatever number I felt like for as long as I wanted to run the program. I don&#39;t know what that number might be, so I won&#39;t specify it. I&#39;ll just call it &quot;whatever&quot; with the <code>*</code>:
+
+<pre class="brush:plain">
+my $infinite := 0 ... *;
+</pre>
+
+Perl 6 doesn&#39;t compute this sequence. It knows that it starts at zero and keeps going until it reaches the end. That <code>*</code> is literally a <a href="https://docs.perl6.org/type/Whatever">Whatever</a> object. When Perl 6 wants to know if it&#39;s at the end, <a href="https://docs.perl6.org/type/Whatever">Whatever</a> says no.
+
+That could be a long, long list. But, the laziness takes care of that. Perl 6 doesn&#39;t evaluate the next item until it needs it. This loop will go on forever:
+
+<pre class="brush:plain">
+for $infinite -&gt; $next {
+	say $next;
+	}
+</pre>
+
+Big deal. We&#39;ve had infinite loops forever (does anyone know who made the first one?). We can do this with <code>loop</code>:
+
+<pre class="brush:plain">
+loop ( my $i = 0; ; $i++ ) {
+	say $i;
+	}
+</pre>
+
+But, a loop is just a loop. It sits there all by itself. However, we can pass around a sequence, we can store it. We can so many other things with it. We can put it in a hash and choose the one we need later:
+
+<pre class="brush:plain">
+my %hash;
+
+%hash&lt;s&gt; := 7 ... 10;
+%hash&lt;t&gt; := 0 ...  3;
+%hash&lt;u&gt; := 137 ...  *;
+
+show( %hash{ time %% 2 ?? &#39;t&#39; !! &#39;s&#39; } );
+
+sub show ( $s ) {
+	.say for |$s;
+	}
+</pre>
+
+Yep, we just stored an infinite number of values in a single hash value. I&#39;ll have more on this in the next entry.
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/11/16/quick-tip-1-user-defined-infinite-sequences/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/10/15/experiment-in-the-perl-6-repl/">Experiment in the Perl 6 REPL</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">October 15, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Perl 6 has a REPL. That&#39;s a tiny, language-specific shell that <b>R</b>eads a line, <b>E</b>valuates it, <b>P</b>rints the result, and <b>L</b>oops to do it again. It can remember the previous results in the same session.
+
+Let&#39;s start with something simple. Run the <i>perl6</i> command with no arguments and wait for the prompt: <!--more-->
+
+<pre class="brush:plain">
+$ perl6
+To exit type &#39;exit&#39; or &#39;^D&#39;
+&gt;
+</pre>
+
+I can try the usual &quot;Hello World&quot; program:
+
+<pre class="brush:plain">
+&gt; &#39;Hello World!&#39;
+Hello World!
+</pre>
+
+I can try it with <code>say</code>, which outputs the string with a newline on the end. That&#39;s how I would need to output it inside a program; inside the REPL, that doesn&#39;t look different than
+what I already did:
+
+<pre class="brush:plain">
+&gt; say &#39;Hello World!&#39;
+Hello World!
+</pre>
+
+In Perl 6 land, a string is an object, so I can call methods on the string. Perl 6 uses the dot as the method call operator:
+
+<pre class="brush:plain">
+&gt; &#39;Hello World!&#39;.say
+Hello World!
+</pre>
+
+What else can I do with &lt;code&#39;&quot;Hello World!&#39;? Perl 6 values are themselves objects. The <code>WHAT</code> &quot;meta&quot; method knows what thingys are:
+
+<pre class="brush:plain">
+&gt; &#39;Hello World!&#39;.WHAT
+(Str)
+</pre>
+
+The <code>(Str)</code> is the name of the class in parentheses. I don&#39;t need to know the type of thing it is to figure out what I can do. Or, read another way, I don&#39;t need to look at the <a href="https://docs.perl6.org/type/Str">docs for Str</a> to see what methods I can call. The <code>.^methods</code> method (ahem) tells me what the object can respond to:
+
+<pre class="brush:plain">
+&gt; &#39;Hello World!&#39;.^methods
+(BUILD Int Num chomp pred succ simplematch match ords samecase
+samemark samespace word-by-word trim-leading trim-trailing trim
+encode NFC NFD NFKC NFKD wordcase trans indent codes chars uc lc tc
+fc tclc flip ord WHY WHICH Bool Str Stringy DUMP ACCEPTS chop
+starts-with ends-with substr-eq contains indices index rindex Numeric
+gist perl comb subst-mutate subst lines split words)
+</pre>
+
+That <code>.^methods</code> looks weird, but it&#39;s really just a shortcut for <code>.HOW.methods</code>. The <a href="https://docs.perl6.org/type/Metamodel$COLON$COLONClassHOW"><b>H</b>igher <b>O</b>rder <b>W</b>orkings</a> class has many ways to <i>introspect</i> a thingy. This is an amazing boon to learning the language since you can, at least partly, discover things about the objects from inside the language. All your Ruby friends will say &quot;Welcome to 1995!&quot;.
+
+Notice that <code>say</code> is not in the list. By default, <code>.^methods</code> doesn&#39;t show methods from certain base classes. I can ask for different slices of that list by adding the <code>:all</code> adverb:
+
+<pre class="brush:plain">
+&gt; &#39;Hello World!&#39;.^methods(:all)
+(BUILD Int Num chomp pred succ simplematch match ords samecase
+samemark samespace word-by-word trim-leading trim-trailing trim encode
+NFC NFD NFKC NFKD wordcase trans indent codes chars uc lc tc fc tclc
+flip ord WHY WHICH Bool Str Stringy DUMP ACCEPTS chop starts-with
+ends-with substr-eq contains indices index rindex Numeric gist perl
+comb subst-mutate subst lines split words trans fmt comb acosech cotan
+sin fc contains EVAL cosec atan2 abs ord trim-trailing ords acotan
+asec ceiling unpolar acosec acos indices log10 exp match subst chrs
+acosh truncate acotanh Num path floor UInt words flip asin codes
+univals asech chomp split cotanh ...)
+</pre>
+
+That&#39;s right, I said adverb. Things that start with a colon are modifiers for an action. You can worry about those later. In this case, <code>:all</code> modifies how <code>.^methods</code> responds.
+
+Still, I don&#39;t see <code>say</code> in that list, which is truncated with <code>...</code>. Perl 6 displays the result as a &quot;gist&quot;, or, the general idea of the result in a human-readable form. It&#39;s the same thing as this:
+
+<pre class="brush:plain">
+&gt; &#39;Hello World!&#39;.^methods(:all).gist
+</pre>
+
+This gist an amazing feature. I&#39;ve wished that <a href="">Data::Dumper</a> was built into Perl 5 so many times. Now it&#39;s available to most objects automatically, but it is not going to overload you with output. I&#39;ll have to do a bit of work on my own for that.
+
+If that&#39;s too high-level for you, the <code>perl</code> method is closer to the internal representation. You can run this yourself if you&#39;d like to see the very long and complicated output that&#39;s pretty useless to all but 11 people in the world:
+
+<pre class="brush:plain">
+&gt; &#39;Hello World!&#39;.^methods(:all).perl
+</pre>
+
+But, I want to find that <code>say</code> method. What do I get back from <code>^methods()</code>? I call <code>WHAT</code> again and see that I get a <a href="https://docs.perl6.org/type/List">List</a> object:
+
+<pre class="brush:plain">
+&gt; &#39;Hello World!&#39;.^methods(:all).WHAT
+(List)
+</pre>
+
+That&#39;s a list, but what&#39;s in the list? I can call <code>map</code> on the <a href="https://docs.perl6.org/type/List">List</a>. I cheat a bit here because I know that there should be something like <code>map</code> and I looked at the documentation. I&#39;d much rather discover that through exploration, but that&#39;s how it is at the moment:
+
+<pre class="brush:plain">
+&gt; &#39;Hello World!&#39;.^methods(:all).map( {.WHAT.gist} ).unique
+((Submethod) (Method) (Method+{Callable[Int:D]}) (Method+{&lt;anon|140546676469920&gt;}))
+</pre>
+
+
+The <code>map</code> gets each item in the list and passes it to the block argument. Perl 6 does some impressive stuff with blocks, but for now think of it as an inline subroutine. Inside this <code>map</code>, I call <code>.WHAT.gist</code>. What&#39;s up with the leading dot?
+
+Perl 6 has a default variable, which it calls the <i>topic</i>. If there&#39;s no object in front of the method-calling dot, it uses that topic.
+
+Once I&#39;ve constructed that list I call <code>unique</code> to make a list of just the types it saw. Each thing is a some sort of <a href="https://docs.perl6.org/type/Method">Method</a>.
+
+A <a href="https://docs.perl6.org/type/Method">Method</a> knows its name (if it has one). This in itself is quite interesting. If I call <code>can</code> on an object and that object can respond to a method of that name, it gives me back a list of methods? (A list? Yep! Because Perl 6 has multi dispatch based on the arguments I pass!). Even though I have a list of one item, I only want to first item. I store that in <code>$method</code> (which I must declare before use):
+
+<pre class="brush:plain">
+&gt; my $method = &#39;Hello World!&#39;.can( &#39;say&#39; ).first
+say
+</pre>
+
+
+The REPL remembers what I stored in that variable. It&#39;s a <a href="https://docs.perl6.org/type/Method">Method</a> and I can ask it its name. I can also use the variable in place of the literal method name to operate on my string:
+
+<pre class="brush:plain">
+&gt; $method.name
+say
+&gt; &#39;Hello World!&#39;.$method
+Hello World!
+</pre>
+
+It&#39;s a bit easier to see if I use a different method, such as <code>uc</code> to uppercase
+
+<pre class="brush:plain">
+&gt; my $method = &#39;Hello World!&#39;.can( &#39;uc&#39; ).first
+uc
+&gt; &#39;Hello World!&#39;.$method
+HELLO WORLD!
+</pre>
+
+This is very exciting! It might not seem like much, but when these things are objects that know things about themselves, a big world of  programming opens up.
+
+But, I started off looking for <code>say</code> but I haven&#39;t found it yet.
+
+I can make a new list of just the names by calling <code>map</code> and <code>sort</code> that. When I give only one argument to the block in <code>sort</code>, it uses that result to compare elements. It also remembers that value so it does not calculate it again (so, no Schwartzian Transform needed!):
+
+<pre class="brush:plain">
+&gt; &#39;Hello World!&#39;.^methods(:all).map( { .name } ).sort( { .lc } ).unique.join( &quot;\n&quot; )
+</pre>
+
+This creates a really long string, but it&#39;s all the methods available on <code>&quot;Hello World&quot;</code>. I can make a shorter list with <code>grep</code> by looking for things that have <code>sa</code> at the start of the string:
+
+<pre class="brush:plain">
+&gt; &#39;Hello World!&#39;.^methods(:all).map( {.name} ).grep( { /^^ sa/ } ).join( &quot;\n&quot; )
+samecase
+samemark
+samespace
+samecase
+say
+</pre>
+
+And, I&#39;ve found <code>say</code>! It took me a bit, but I was able to find out quite a bit starting with just the object.
+
+I can define my own class with some attributes. Here&#39;s a <code>Butterfly</code> class that has a name and a type attribute. I
+can create an object in that class, then look at the
+
+<pre class="brush:plain">
+&gt; class Butterfly { has Str $.name; has Str $.type; }
+(Butterfly)
+&gt; my $camelia = Butterfly.new( name =&gt; &#39;Camelia&#39;, type =&gt; &#39;Monarch&#39; );
+Butterfly.new(name =&gt; &quot;Camelia&quot;, type =&gt; &quot;Monarch&quot;)
+&gt; $camelia.WHAT
+(Butterfly)
+&gt; $camelia.^attributes
+(Str $!name Str $!type)
+</pre>
+
+I could keep going like this to try bits of Perl 6. I don&#39;t have to write programs for the very short experiements. Personally, I like to keep the experiments in files because I keep changing things. It&#39;s better than retyping.
+
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/10/15/experiment-in-the-perl-6-repl/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/02/28/dos-pattern-matching-in-perl-6/">DOS pattern matching, in Perl 6</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">February 28, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+I rewrote my <a href="http://www.learning-perl.com/2016/02/dos-pattern-matching-in-perl/">DOS pattern matching</a> in Perl 6. There&#39;s nothing particularly fancy here and I tried to keep it close to the version I wrote in Perl 5 and <a href="https://blogs.msdn.microsoft.com/oldnewthing/20071217-00/?p=24143">the way Raymond Chen presented it</a>. <!--more-->
+
+<pre class="brush:plain">
+#!perl6
+
+=begin pod
+
+Match 8.3 filenames in the DOS way, from Raymond Chen
+
+https://blogs.msdn.microsoft.com/oldnewthing/20071217-00/?p=24143
+
+1. Start with eleven spaces and the cursor at position 1.
+
+2. Read a character from the input. If the end of the input is
+reached, then stop.
+
+3. If the next character in the input is a dot, then set positions 9,
+10, and 11 to spaces, move the cursor to position 9, and go back to
+step 2.
+
+4. If the next character in the input is an asterisk, then fill the
+rest of the pattern with question marks, move the cursor to position
+12, and go back to step 2. (Yes, this is past the end of the pattern.)
+
+5. If the cursor is not at position 12, copy the input character to
+the cursor position and advance the cursor.
+
+*: Remember that Perl 6 counts strings counting from zero.
+
+=end pod
+
+for $=finish.lines -&gt; $line {
+	my $dos_pattern = &#39; &#39; x 11;
+	my $cursor = 0;
+
+	for $line.split(&quot;&quot;, :skip-empty) -&gt; $char {
+		if $char eq &#39;.&#39; {
+			$dos_pattern.substr-rw( 8, 3 ) = &#39; &#39; x 3;
+			$cursor = 8;
+			}
+		elsif $char eq &#39;*&#39; {
+			$dos_pattern.substr-rw( $_, 1 ) = &#39;?&#39; for $cursor .. 10;
+			$cursor = 11;
+			}
+		elsif $cursor != 11 {
+			$dos_pattern.substr-rw( $cursor++, 1 ) = $char;
+			}
+
+		}
+
+	printf &quot;%d: %12s -&gt; %12s\n&quot;, $++, $line, $dos_pattern;
+	}
+
+=finish
+ABCD.TXT
+ABCDEFGHIJK
+A*B.TXT
+*.*
+*
+*.TXT
+.TXT
+</pre>
+
+I get the same output.
+
+<pre class="brush:plain">
+0:     ABCD.TXT -&gt;  ABCD    TXT
+1:  ABCDEFGHIJK -&gt;  ABCDEFGHIJK
+2:      A*B.TXT -&gt;  A???????TXT
+3:          *.* -&gt;  ???????????
+4:            * -&gt;  ???????????
+5:        *.TXT -&gt;  ????????TXT
+6:         .TXT -&gt;          TXT
+</pre>
+
+But let&#39;s look at some differences.
+
+I have <code>$line.split(&quot;&quot;, :skip-empty)</code>. Splitting with an empty string creates empty elements at the beginning <i>and</i> end of the list, so I can add the <code>:skip-empty</code>. 
+
+There&#39;s a <a href="https://doc.perl6.org/type/Str#routine_chars"><code>chars</code></a> method in the <code>Str</code> class, but it doesn&#39;t return characters. It returns a count. The <a href="https://doc.perl6.org/type/Str#routine_lines"><code>lines</code></a> method, however, returns lines and not a count.
+
+The <a href="https://doc.perl6.org/type/Str"><code>Str</code> class</a> has several <code>subst*</code> methods that do slightly different things. The <code>subset-rw</code> provides the lvalue that I can assign to. 
+
+And, check out that anonymous variable in the <code>printf</code> line. Perl 6 has a feature that creates persistent state variables that are private to a statement. Don&#39;t give the variable a name. <code>$++</code> is a variable without a name that I post-increment. That&#39;s pretty handy.
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/02/28/dos-pattern-matching-in-perl-6/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+
+<!-- start paginate -->
+<div id="pagination">
+
+<a class="pag_link" href="index.html">1</a>
+<a class="pag_link" href="index_2.html">2</a>
+<a class="pag_link" href="index_3.html">3</a>
+<a class="pag_link" href="index_4.html">4</a>
+<a class="pag_link" href="index_5.html">5</a>
+<a class="pag_link" href="index_6.html">6</a>
+<a class="pag_link" href="index_7.html">7</a>
+<a class="pag_link" href="index_8.html">8</a>
+<a class="pag_link" href="index_9.html">9</a>
+<a class="pag_link" href="index_10.html">10</a>
+<a class="pag_link" href="index_11.html">11</a>
+<a class="pag_link" href="index_12.html">12</a>
+<a class="pag_link" href="index_13.html">13</a>
+<a class="pag_link" href="index_14.html">14</a>
+<a class="pag_link" href="index_15.html">15</a>
+<a class="pag_link pag_current" href="index_16.html">16</a>
+<a class="pag_link" href="index_17.html">17</a>
+<a class="pag_link" href="index_18.html">18</a>
+
+</div>
+<!-- end paginate -->
+
+</div>
+<!-- end excerpt_list -->
+
+</div>
+<!-- end middle_main_page -->
+
+</html>
+

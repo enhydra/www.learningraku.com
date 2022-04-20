@@ -1,0 +1,213 @@
+<!--
+
+This is the post template
+
+{
+  "author" => "brian",
+  "categories" => "kickstarter-tips sets",
+  "config" => {
+    "base_dir" => "docs",
+    "category_dir" => "category",
+    "cname" => "test.learningraku.com",
+    "default_test" => "abc",
+    "feed_dir" => "feeds",
+    "items_json" => "docs/items.json",
+    "last" => undef,
+    "page_size" => 5,
+    "site_title" => "Learning Raku",
+    "static_dir" => "_static",
+    "tag_dir" => "tag",
+    "template" => "default",
+    "template_dir" => "_templates"
+  },
+  "date" => "2016-11-23 05:26:37",
+  "file" => "_posts/2016-11-23-quick-tip-8-perl-6-sets.html",
+  "link" => "http://www.learningraku.com/2016/11/23/quick-tip-8-perl-6-sets/",
+  "local_path" => "docs/2016/11/23/quick-tip-8-perl-6-sets/index.html",
+  "post_epoch" => 1479878797,
+  "post_id" => 104,
+  "post_name" => "quick-tip-8-perl-6-sets",
+  "processing_datestr" => "Sun Jan 23 03:10:23 2022",
+  "processing_epoch" => 1642925423,
+  "source_file" => "_posts/2016-11-23-quick-tip-8-perl-6-sets.html",
+  "status" => "publish",
+  "tags" => "",
+  "title" => "Quick Tip #8: Perl 6 sets",
+  "type" => "post",
+  "web_path" => bless( {
+    "path" => "/2016/11/23/quick-tip-8-perl-6-sets/"
+  }, 'Mojo::Path' )
+}
+
+-->
+
+<!-- start post -->
+
+<html>
+
+<head>
+	<base href="https://test.learningraku.com/">
+	<title>Quick Tip #8: Perl 6 sets</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="brian's site generator" />
+	<meta charset="UTF-8" />
+</head>
+
+<body>
+<div id="page">
+
+<!-- start top -->
+<div id="menu">
+<a href="/">Home</a> •
+<a href="/about/">About</a> •
+<a href="/book/">Book</a> •
+<a href="/downloads/">Downloads</a> •
+<a href="/feed/">Feed</a>
+</div>
+<!-- end top -->
+
+<div id="middle">
+
+<!-- start sidebar -->
+<div id="sidebar">
+	<img id="small_cover" src="images/cover.png" width="180" height="236" />
+
+	<div id="sponsors">
+		<iframe src="https://github.com/sponsors/briandfoy/button" title="Sponsor briandfoy" height="35" width="116" style="border: 0;"></iframe>
+	</div>
+
+	<div class="textwidget"><p><a href="https://www.oreilly.com/catalog/errata.csp?isbn=0636920062776">Book errata</a><br />
+		<a href="https://goo.gl/EbA7gF">Google Books preview</a><br />
+		<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a><br />
+		<a href="https://amzn.to/3E0JQxK">Amazon.com</a></p>
+		<hr />
+		<p><i>Many resources have not changed the name from Perl 6 to Raku, so these resources may use either.</i></p>
+		<p><a href="https://design.raku.org">Raku Design Docs (dated)</a><br />
+		<a href="http://docs.raku.org">Raku Docs</a><br />
+		<a href="https://learnxinyminutes.com/docs/raku/">Learn Raku in Y Minutes</a><br />
+		<a href="https://modules.raku.org">Raku modules</a><br />
+		<a href="https://rosettacode.org/wiki/Category:Raku">Rosetta Code examples</a><br />
+		<a href="http://examples.perl6.org/categories/euler.html">Project Euler examples</a><br />
+		<a href="http://examples.perl6.org">Perl 6 Examples</a><br />
+		<a href="https://github.com/Raku/roast">Raku Roast (test suite examples)</a></p>
+	</div>
+</div>
+<!-- end sidebar -->
+
+<div id="content">
+
+<h1>Quick Tip #8: Perl 6 sets</h1>
+
+Perl 6 has proper sets and set-like types, along operators to do proper set operations. <!--more-->
+
+<ul>
+<li><a href="https://docs.perl6.org/type/Set">Set</a> - a collection of unique thingys
+<li><a href="https://docs.perl6.org/type/Bag">Bag</a> - a collection of unique thingys, but weighted for the count of the number of times something is put the bag
+<li><a href="https://docs.perl6.org/type/Mix">Mix</a> - a bag that allows fractional weights
+</ul>
+
+These are immutable types. Once you make them, that's it. Each has a <code>*Hash</code> version that allows you to change the members, but I'll ignore those.
+
+<pre class="brush:plain">
+$ perl6
+> my $set = set( 1, 2, 3, 4 )
+set(4, 3, 1, 2)
+> 4 ∈ $set                      # member of
+True
+> 5 ∈ $set                      # member of
+False
+> 5 ∉ $set                      # not member of
+True
+> set( 2, 3 ) ⊆ $set            # subset of
+True
+> set( 2, 6 ) ⊆ $set            # subset of
+False
+</pre>
+
+A set is a more natural way to see if a value exists in a list of values. You might each for a hash and use <code>:exists</code> to check for the key, but a set will do that (even though that's what
+Perl 6 sets are doing for you behind the scenes for now):
+
+<pre class="brush:plain">
+my $set  = set( &lt;a b c d> );
+my $item = 'h';
+say "$item is in set" if $item ∈ $set;
+</pre>
+
+
+Perl 6 has the operators to turn two lists into a set:
+
+<pre class="brush:plain">
+$ perl6
+> ( 1, 2, 3 ) ∪ ( 4, 5 )        # union
+set(5, 4, 3, 1, 2)
+> ( 1, 2, 4 ) ∩ ( 1,  2, 3 )    # intersection
+set(1, 2)
+> ( 1, 2, 4 ) ∖ ( 1, 2, 3 )     # difference
+set(4)
+> ( 1, 2, 4 ) ⊖ ( 1, 2, 3 )     # symmetric difference
+set(4, 3)
+</pre>
+
+So far I've used the fancy Unicode characters that you'd see in set math, but each of these have <a href="https://docs.perl6.org/language/unicode_texas">Texas (ASCII) versions</a> too:
+
+<table>
+<tr>
+<th>Texas</th>
+<th>Fancy</th>
+<th>Codepoint (hex)</th>
+<th>Operation</th>
+</tr>
+
+<tr><td>(elem)</td> <td>∈</td><td>U+2208</td><td>member of, <code>$a ∈ $set</code> or <code>$a (elem) $set</code></td></tr>
+<tr><td>!(elem)</td><td>∉</td><td>U+2209</td><td>not a member of, <code>$a ∉ $set</code> or <code>$a !(elem) $set</code></td></tr>
+<tr><td>(cont)</td> <td>∋</td><td>U+220B</td><td>contains, </td></tr>
+<tr><td>!(cont)</td><td>∌</td><td>U+220C</td><td>does not contain</td></tr>
+<tr><td>(&lt;=)</td><td>⊆</td><td>U+2286</td><td>subset of or equal to, </td></tr>
+<tr><td>!(&lt;=)</td><td>⊈</td><td>U+2288</td><td>not subset of nor equal to, </td></tr>
+<tr><td>(&lt;)</td> <td>⊂</td><td>U+2282</td><td>subset of</td></tr>
+<tr><td>!(&lt;)</td> <td>⊄</td><td>U+2284</td><td>not subset of</td></tr>
+<tr><td>(>=)</td>   <td>⊇</td><td>U+2287</td><td>superset of or equal to, </td></tr>
+<tr><td>!(>=)</td>   <td>⊉</td><td>U+2289</td><td>not superset of nor equal to, </td></tr>
+<tr><td>(>)</td>    <td>⊃</td><td>U+2283</td><td>superset of</td></tr>
+<tr><td>!(>)</td>    <td>⊅</td><td>U+2285</td><td>not superset of</td></tr>
+<tr><td>(&gt;+)</td><td>≼</td><td>U+227C</td><td>baggy superset</td></tr>
+<tr><td>!(>+)</td>   <td>≽</td><td>U+227D</td><td>not baggy superset</td></tr>
+
+</table>
+
+There are operators that return sets from two lists:
+
+<table>
+<tr>
+<th>Texas</th>
+<th>Fancy</th>
+<th>Codepoint (hex)</th>
+<th>Operation</th>
+</tr>
+<tr><td>(|)</td><td>∪</td><td>U+222A</td><td>union</td></tr>
+<tr><td>(&)</td><td>∩</td><td>U+2229</td><td>intersection</td></tr>
+<tr><td>(-)</td><td>∖</td><td>U+2216</td><td>difference</td></tr>
+<tr><td>(^)</td><td>⊖</td><td>U+2296</td><td>symmetric difference</td></tr>
+<tr><td>(.)</td><td>⊍</td><td>U+228D</td><td>baggy multiplication</td></tr>
+<tr><td>(+)</td><td>⊎</td><td>U+228E</td><td>baggy addition</td></tr>
+
+</table>
+
+
+
+</div> <!-- content -->
+
+</div> <!-- middle -->
+
+<div id="bottom">
+This is the bottom stuff
+</div>
+<!-- bottom -->
+
+</div> <!-- page_div -->
+</body>
+
+</html>
+
+<!-- end post -->
+

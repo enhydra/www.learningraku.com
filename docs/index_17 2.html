@@ -1,0 +1,346 @@
+<!--
+title: Index 17
+link: http://www.learningraku.com/index_17.html
+author: brian
+date: 2022-01-23 3:10:26
+post_name: main 17
+status: publish
+type: list
+categories:
+tags:
+-->
+
+<html>
+
+<head>
+	<base href="https://test.learningraku.com/">
+	<title>Index 17</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="brian's site generator" />
+	<meta charset="UTF-8" />
+</head>
+
+
+<!-- start middle_main_page -->
+<div id="middle">
+
+<!-- start sidebar -->
+<div id="sidebar">
+	<img id="small_cover" src="images/cover.png" width="180" height="236" />
+
+	<div id="sponsors">
+		<iframe src="https://github.com/sponsors/briandfoy/button" title="Sponsor briandfoy" height="35" width="116" style="border: 0;"></iframe>
+	</div>
+
+	<div class="textwidget"><p><a href="https://www.oreilly.com/catalog/errata.csp?isbn=0636920062776">Book errata</a><br />
+		<a href="https://goo.gl/EbA7gF">Google Books preview</a><br />
+		<a href="http://shop.oreilly.com/product/0636920062776.do">O&#8217;Reilly Media listing</a><br />
+		<a href="https://amzn.to/3E0JQxK">Amazon.com</a></p>
+		<hr />
+		<p><i>Many resources have not changed the name from Perl 6 to Raku, so these resources may use either.</i></p>
+		<p><a href="https://design.raku.org">Raku Design Docs (dated)</a><br />
+		<a href="http://docs.raku.org">Raku Docs</a><br />
+		<a href="https://learnxinyminutes.com/docs/raku/">Learn Raku in Y Minutes</a><br />
+		<a href="https://modules.raku.org">Raku modules</a><br />
+		<a href="https://rosettacode.org/wiki/Category:Raku">Rosetta Code examples</a><br />
+		<a href="http://examples.perl6.org/categories/euler.html">Project Euler examples</a><br />
+		<a href="http://examples.perl6.org">Perl 6 Examples</a><br />
+		<a href="https://github.com/Raku/roast">Raku Roast (test suite examples)</a></p>
+	</div>
+</div>
+<!-- end sidebar -->
+
+<!-- start excerpt_list -->
+<div id="content">
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/02/23/perl-6-examples/">Perl 6 Examples</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">February 23, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+In the early days of Perl 6 we don&#39;t have a library of reliable books, mostly because the language had shifted so rapidly. But, there are plenty of examples of Perl 6. I&#39;ve listed some of them in the sidebar of <a href="/">this website</a>. <!--more-->
+
+<ul>
+<li>The <a href="//github.com/perl6/roast">test suite (&quot;roast&quot;)</a> for Perl 6 has examples of almost all of the features so developers can verify the specification.
+</li><li><a href="//rosettacode.org/wiki/Category:Perl_6">Rosetta Code has a section with Perl 6 examples</a>.
+</li><li><a href="//examples.perl6.org/">There&#39;s examples.perl6.org</a>, which includes <a href="//examples.perl6.org/categories/euler.html">Project Euler solutions</a>. See it&#39;s <a href="https://github.com/perl6/perl6-examples">GitHub repo</a> too.
+</li><li><a href="//learnxinyminutes.com/docs/perl6/">Learn Perl 6 in Y minutes</a> is a summary of Perl 6, in code.
+</li></ul>
+
+We don&#39;t emphasize code reading enough. We&#39;re used to teaching you how to write new code, usually while you struggle with a particular concept we give you. You&#39;ll learn much more by reading code. Someone else will do it slightly differently or even in a completely different way using features you didn&#39;t know about. 
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/02/23/perl-6-examples/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/02/06/dont-install-over-your-existing-perl-6/">Don't install over your existing Perl 6</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">February 06, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+When you want to install a new Perl 6 (or any of its backend stuff), don&#39;t install over what you already have working. The language and the tools aren&#39;t stable or reliable enough for you to end up with something that still works. It&#39;s getting better (relative to Pugs, which could take days, or the situation five years ago), but it doesn&#39;t pass the <a href="//www.urbandictionary.com/define.php?term=Grandma+Test">grandma test</a> yet. <!--more-->
+
+I&#39;m at the first meeting of the Perl 6 Study Group in NYC, which Jim Keenan has organized in the back of <a href="//www.yelp.com/biz/d-b-a-new-york-2">dba</a>. That&#39;s the same place the first ever Perl users group meeting took place. My goal today was to explore some installation strategies for Perl 6.
+
+First, you aren&#39;t merely installing Perl 6. There&#39;s a <b>backend</b> you&#39;ll need. Perl 6 can run on <a href="//www.moarvm.org">MoarVM</a>, JVM, and maybe a few others. You&#39;ll need to build that. Second, you need to bootstrap Perl 6 since it&#39;s written in Perl 6. <a href="//github.com/perl6/nqp">NQP</a> (Not Quite Perl 6) is the path to that bootstrapping. Third, there&#39;s the Perl 6 implementation. Most people will go for <a href="//rakudo.org/downloads/star/">Rakudo</a>, but one of the goals of Perl 6 is to get away from the single, canonical interpreter we have in Perl 5 Land.
+
+<div class="image center">
+<div>
+<img height="392" src="http://i0.kym-cdn.com/entries/icons/original/000/000/574/moar-cat.jpg" width="500">
+</div>
+</div>
+
+Most of this you won&#39;t have to worry about in most cases. The <a href="//github.com/tadzik/rakudobrew">rakudobrew</a> tool automates this. When you follow that link, you&#39;ll end up on a GitHub page. When you run rakudobrew, you&#39;ll pull from several GitHub projects:
+
+<pre class="brush:perl">
+my %git_repos = (
+    rakudo =&gt; &quot;$GIT_PROTO://github.com/rakudo/rakudo.git&quot;,
+    MoarVM =&gt; &quot;$GIT_PROTO://github.com/MoarVM/MoarVM.git&quot;,
+    nqp    =&gt; &quot;$GIT_PROTO://github.com/perl6/nqp.git&quot;,
+    panda  =&gt; &quot;$GIT_PROTO://github.com/tadzik/panda.git&quot;,
+    zef    =&gt; &quot;$GIT_PROTO://github.com/ugexe/zef.git&quot;,
+);
+</pre>
+
+I strongly believe that the path to mastery includes understanding what a tool does even if it automates really annoying stuff that you don&#39;t want to think about. You see the rakudo, MoarVM, and NQP components there. Panda and zef are Perl 6 module tools.
+
+Pulling directly from repos, even if its from a  specific tag, seems fragile and makes me nervous. Some of this is technically unfounded but socially aware. Pulling from several repos each time I want to build Perl 6 also makes me nervous. I could download <a href="//rakudo.org/downloads/star/">Rakudo Star</a>, a tarball that includes the basics and a MoarVM and install it by hand.
+
+rakudobrew is more interesting because it should manage several installed versions at the same time. Pulling from the repositories works fine, but the various hand-offs to external programs and the shell are fragile. I talked to a tech from Amazon Web Services about setting up a shared Perl 6 machine, and sadly he ran into problems on a fresh install of everything. These aren&#39;t uncommon. It&#39;s also the first problem that people are going to run into and the quickest way that they are going to give up. We need more binary packages until the installation system is reliable to the point that we never think about it.
+
+For my task, I installed several by hand and these worked without a problem:
+
+<pre class="brush:plain">
+$ perl Configure.pl --prefix=/Users/brian/Dropbox/Perl6/20160205 --gen-moar --make-install
+$ perl Configure.pl --prefix=/Users/brian/Dropbox/Perl6/20160205.2 --gen-moar --make-install
+$ git checkout -b v6.c
+$ perl Configure.pl --prefix=/Users/brian/Dropbox/Perl6/6.c --gen-moar --make-install
+</pre>
+
+For some reason, the same session wouldn&#39;t build using rakudobrew. It would fail with the a similar mismatch in tools I reported in <a href="//github.com/MoarVM/MoarVM/issues/334">Issue 334 for MoarVM</a>. Basically, the installer chooses a set of tools and adds them to the Makefile as the command name, like  <code>AR=ar</code>. This leaves it up to the path to choose the first one it finds, not the one that goes with the compiler it chose.
+
+I recommend that you don&#39;t nuke your existing implementation when you want a different version of Perl 6. You might even up with something that doesn&#39;t work. I should be old enough to know not to install new software while I&#39;m at an airport, but I tried to upgrade and spent the rest of the flight trying to fix the installation errors.
+
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/02/06/dont-install-over-your-existing-perl-6/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/01/27/topaz-is-still-on-sourceforge/">Topaz is still on SourceForge</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 27, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Topaz, which was almost the next version of Perl in 2000, is still in Sourceforge. Chip Salzenberg had a hunch that rewriting Perl&#39;s guts in C++ would be the thing to solve its maintenance issues. He codenamed his project <a href="http://topaz.sourceforge.net">Topaz</a> and went to work. <!--more-->
+
+He didn&#39;t get it working though, and Chip&#39;s the sort of guy that can get anything working. He took C++ to its limits. At the 1999 OSCON, he explained what he wanted to do and why he chose C++ in his talk <a href="//www.perl.com/pub/1999/09/topaz.html">Topaz: Perl for the 22nd Century</a>. It&#39;s old enough that there&#39;s a RealAudio version of the talk. Heck, the Topaz repo uses CVS. I tried compiling CVS but it doesn&#39;t like my <code>getline</code> (and I didn&#39;t try that hard).
+
+<div class="image center">
+<div>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/mauroescritor/8358129568/in/photolist-dJzAJd-5Cz8Dm-CnSZBx-Dj25nn-amh4Qk-6244vQ-8rPBN8-5vr5SF-q2Z6yZ-aNe4qv-cnJoxm-aGQPFr-k9toVP-psVtf7-pvntY3-p6VHk3-562LX-rucn81-73APpS-pot4gV-9M6kJZ-8Z3Ggf-fURCw6-7hkyqs-qk3fig-5JYbkP-qEMbPs-oRn87b-8QbWKt-pCrsRT-7e55Bp-mokQtZ-pChMar-bcMVye-5CuSVg-5CzaVj-5CzaUo-5CuSTk-5CuSSM-5Cz8L7-5CuQKi-5CuQGx-5Cz8EW-5CuQD6-C8i8qh-7VPKPA-rFZdSX-csk9DG-pEAXFo-kRFFj2" title="Blue topaz"><img alt="Blue topaz" height="388" src="https://farm9.staticflickr.com/8513/8358129568_d4e8916090.jpg" width="500"></a><script async charset="utf-8" src="//embedr.flickr.com/assets/client-code.js"></script>
+</div>
+</div>
+
+A year later he had given up, for solid technical reasons, but also because the community pushed all in for Perl 6.  I recall a talk where Chip discussed very technical C++ things he discovered, but it seems to have disappeared from the world. We also might have been sitting around a table in the hallway listening to him talk about it too. For what it&#39;s worth, Simon Cozens tried a similar thing with <a href="//www.perl.com/pub/2000/09/sapphire.html">Sapphire</a> (and there&#39;s <a href="http://perl11.org">Perl 11</a> and <a href="http://rperl.org">RPerl</a> and ...).
+
+Much of the discussion around that time was about which language the next perl sources would use. The then current Perl 5 sources were in C and had macros on top of macros (on top of macros) as it bent over backward to not conflict with other C code it might be embedded next to. Today we have <a href="http://www.metacpan.org/module/DBI">DBI</a> as a generic database interface, but back in the day there were things like <b>oraperl</b>, an Oracle client with Perl embedded in it (or Perl with an Oracle client embedded in it).
+
+Other options were briefly considered, but a crazy idea stuck. Perl 6 would be written in Perl 6. That sounds a little weird, but if you unwind it a bit it works. 
+
+There&#39;s <a href="//github.com/perl6/nqp">NQP</a>, or &quot;Not Quite Perl 6&quot; which serves as a basic layer between a virtual machine and Perl 6. From that, NQP looks quite a bit like Perl 6 and can bootstrap Perl 6. As long as NQP can translate its part to the layer under it, Perl 6 can go anywhere NQP can go. That might be Parrot, a JVM, or <a href="//www.moarvm.org">MOAR</a> (MetaModel on a Runtime).
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/01/27/topaz-is-still-on-sourceforge/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/01/10/a-perl-6-bbedit-codeless-language-module/">A Perl 6 BBEdit Codeless Language Module</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 10, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Now I have rudimentary Perl 6 syntax coloring for BBEdit, my long-preferred editor on the Mac for years. I don&#39;t need anything fancy, so I did the minimum to color the stuff in the files I had open. BBEdit supports <a href="http://www.barebones.com/support/develop/clm.html">Codeless Language Modules</a> that specify various things about the language, including its file extensions, name, keywords, and so on. It&#39;s something a normal user can put into an XML or JSON file and drop into an <i>Application Support/BBEdit/Language Modules</i> directory for immediate use (with an application restart). It&#39;s not as clever as a compiled code module, but good enough for me at the moment. <!--more-->
+
+<div class="image center">
+<div>
+<img src="/images/perl6_clm.png">
+</div>
+</div>
+
+I&#39;ve put it in the <a href="https://github.com/briandfoy/Perl6_BBEdit_CLM">Perl6_BBEdit_CLM</a> project on GitHub for anyone who wants to improve it. For example, I&#39;ve only listed the keywords I was actually using.
+
+You can get syntax coloring for other editors:
+
+<ul>
+<li><a href="http://perltricks.com/article/194/2015/9/22/Activating-Perl-6-syntax-highlighting-in-Vim">http://perltricks.com/article/194/2015/9/22/Activating-Perl-6-syntax-highlighting-in-Vim</a>
+</li><li><a href="https://github.com/hinrik/perl6-mode">emacs Perl6 mode</a>
+</li></ul>
+
+If you know of others, let me know.
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/01/10/a-perl-6-bbedit-codeless-language-module/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/01/10/perl-6-modulinos-are-even-easier/">Perl 6 modulinos are even easier</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 10, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Perl 6 has this wonderful thing called <code>MAIN</code> which is a built-in modulino thingy.
+
+In my <a href="http://www.excellentnums.com">excellent number hobby</a> (which I started <a href="http://www.masteringperl.org/tag/excellent-numbers/">writing about in Mastering Perl</a> even after I switched to C), I&#39;ve been converting some bits to Perl 6 just for giggles. There&#39;s a small <a href="https://github.com/briandfoy/excellent_numbers/blob/master/lib/CpuCount.pm">Perl 5 module I wrote to get the number of CPUs</a> I rewrote in Perl 6. It&#39;s not sophisticated or surprising. It&#39;s actually quite banal in function; merely dispatch to some method that knows what to do on the platforms I care about. And, be a modulino. <!--more-->
+
+<pre class="brush:plain">
+module CpuCount {
+	sub run () is export {
+		say get_cpu_count();
+		}
+
+	sub get_cpu_count () is export {
+		state $dispatch = {
+			freebsd  =&gt; &amp;_freebsd,
+			_default =&gt; &amp;_posix,
+			};
+
+		my $key = $dispatch.{ $*DISTRO.name }:exists ?? $*DISTRO.name !! &#39;_default&#39;;
+
+		$dispatch.{ $key }.();
+		}
+
+	sub _freebsd () { _get_conf( &#39;NPROCESSORS_ONLN&#39; ) }
+
+	sub _posix ()   { _get_conf( &#39;_NPROCESSORS_ONLN&#39; ) }
+
+	sub _get_conf ( $key ) {
+		state $command = &#39;/usr/bin/getconf&#39;;
+
+		unless $key ~~ m/ ^^ <[_a..z0..9]>+ $$ / {
+			warn &quot;Key $key doesn&#39;t look acceptable&quot;;
+			return;
+			};
+		qq:x{$command $key 2&gt;/dev/null}.chomp;
+		}
+	}
+
+sub MAIN {
+	import CpuCount;
+	run;
+	}
+</[_a..z0..9]></pre>
+
+First, <code>MAIN</code>. Perl 6 calls that if the file is the top-level thingy rather than something that&#39;s loaded by something else. No more <code>caller</code> tricks. It&#39;s even better though. Although I don&#39;t need it here, if I give <code>MAIN</code> a signature, it does some argument handling automatically. And, lexical imports!
+
+Back to the top of the program, I can create a <code>module</code>, similar to Perl 5&#39;s <code>package BLOCK</code> syntax. I really like that. I get export handling without inheritance (that I can see, at least) by marking what is eligible with <code>is export</code>.
+
+Inside <code>get_cpu_count</code>, I use the <code>$*DISTRO</code> special variable to find out what system I&#39;m on. That&#39;s an object with various parts I can access.
+
+In the dispatch table, I get a reference to a subroutine by using the <code>&amp;</code> in front of it. That messed me up for a bit, but I think I like that.
+
+In <code>_get_conf</code>, I have a regex. That&#39;s changed quite a bit with double typing. The <code>^^</code> and <code>$$</code> are anchors, whitespace is insignificant by default, and character classes are much fancier. Those are put in <code> &lt;[ ... ]&gt; </code> because you can do set operations on the things in the square brackets. Very fancy, but there&#39;s more typing. I also have to use <code>..</code> to make a range of characters. Disk drives are cheap, so let&#39;s use up those bytes!
+
+I love string objects. I call the external command and can <code>chomp</code> it right away. And, <code>chomp</code> returns the modified string like God always wanted.
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/01/10/perl-6-modulinos-are-even-easier/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+
+<!-- start paginate -->
+<div id="pagination">
+
+<a class="pag_link" href="index.html">1</a>
+<a class="pag_link" href="index_2.html">2</a>
+<a class="pag_link" href="index_3.html">3</a>
+<a class="pag_link" href="index_4.html">4</a>
+<a class="pag_link" href="index_5.html">5</a>
+<a class="pag_link" href="index_6.html">6</a>
+<a class="pag_link" href="index_7.html">7</a>
+<a class="pag_link" href="index_8.html">8</a>
+<a class="pag_link" href="index_9.html">9</a>
+<a class="pag_link" href="index_10.html">10</a>
+<a class="pag_link" href="index_11.html">11</a>
+<a class="pag_link" href="index_12.html">12</a>
+<a class="pag_link" href="index_13.html">13</a>
+<a class="pag_link" href="index_14.html">14</a>
+<a class="pag_link" href="index_15.html">15</a>
+<a class="pag_link" href="index_16.html">16</a>
+<a class="pag_link pag_current" href="index_17.html">17</a>
+<a class="pag_link" href="index_18.html">18</a>
+
+</div>
+<!-- end paginate -->
+
+</div>
+<!-- end excerpt_list -->
+
+</div>
+<!-- end middle_main_page -->
+
+</html>
+
