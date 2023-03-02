@@ -1,0 +1,1889 @@
+<html>
+
+<head>
+	<base href="https://test.learningraku.com/">
+	<title>December 2016 - Learning Raku (formerly Perl 6)</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="brian's site generator" />
+	<meta charset="UTF-8" />
+</head>
+
+<!-- start excerpt_list -->
+<div id="content">
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/01/quick-tip-16-explosive-combinatorials/">Quick Tip #16: Explosive combinatorials</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 01, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Perl 6 has several sophisticated ways to make lists. I was playing with a particular task where I needed combinations for something similar to bin packing.
+
+I have a list of items and I want to combine those into other lists of a particular length. Duplication doesn&#39;t matter (so, not sets), although later I&#39;ll want to filter the lists on some utility function. That&#39;s not the interesting bit. <!--more-->
+
+Create a list, and specify a length. Imagine a loop where the length gets bigger:
+
+<pre class="brush:plain">
+$ perl6
+&gt; my @n = &lt;1 2 3&gt;;
+[1 2 3]
+&gt; my $n = 4;
+4
+</pre>
+
+Now for the fancy stuff. The <code>xx</code> replicates the list. It&#39;s not flat. I get a list that has that number of lists. Yep, Perl 6 has proper lists of lists. 
+
+Then, I take that list of lists and reduce it with a cross operator. I end up with a bunch of lists of length <code>$n</code> in all the combinations:
+
+<pre class="brush:plain">
+&gt; ( [X] ( @n xx $n ) )
+((1 1 1 1) (1 1 1 2) (1 1 1 3) (1 1 2 1) (1 1 2 2) (1 1 2 3) 
+(1 1 3 1) (1 1 3 2) (1 1 3 3) (1 2 1 1) (1 2 1 2) (1 2 1 3) 
+(1 2 2 1) (1 2 2 2) (1 2 2 3) (1 2 3 1) (1 2 3 2) (1 2 3 3) 
+(1 3 1 1) (1 3 1 2) (1 3 1 3) (1 3 2 1) (1 3 2 2) (1 3 2 3) 
+(1 3 3 1) (1 3 3 2) (1 3 3 3) (2 1 1 1) (2 1 1 2) (2 1 1 3) 
+(2 1 2 1) (2 1 2 2) (2 1 2 3) (2 1 3 1) (2 1 3 2) (2 1 3 3) 
+(2 2 1 1) (2 2 1 2) (2 2 1 3) (2 2 2 1) (2 2 2 2) (2 2 2 3) 
+(2 2 3 1) (2 2 3 2) (2 2 3 3) (2 3 1 1) (2 3 1 2) (2 3 1 3) 
+(2 3 2 1) (2 3 2 2) (2 3 2 3) (2 3 3 1) (2 3 3 2) (2 3 3 3) 
+(3 1 1 1) (3 1 1 2) (3 1 1 3) (3 1 2 1) (3 1 2 2) (3 1 2 3) 
+(3 1 3 1) (3 1 3 2) (3 1 3 3) (3 2 1 1) (3 2 1 2) (3 2 1 3) 
+(3 2 2 1) (3 2 2 2) (3 2 2 3) (3 2 3 1) (3 2 3 2) (3 2 3 3) 
+(3 3 1 1) (3 3 1 2) (3 3 1 3) (3 3 2 1) (3 3 2 2) (3 3 2 3) 
+(3 3 3 1) (3 3 3 2) (3 3 3 3))
+</pre>
+
+Note that permutations are different, and that&#39;s even easier because there&#39;s a method for that:
+
+<pre class="brush:plain">
+&gt; @n.permutations
+((1 2 3) (1 3 2) (2 1 3) (2 3 1) (3 1 2) (3 2 1))
+</pre>
+
+But, let&#39;s do it step by step.
+
+First, I have a list:
+
+<pre class="brush:plain">
+&gt; (1, 2, 3)
+( 1 2 3 )
+</pre>
+
+Now, I want to replicate it. I can do that to get two lists in a bigger list:
+
+<pre class="brush:plain">
+&gt; (1, 2, 3) xx 2
+((1 2 3) (1 2 3))
+</pre>
+
+As a side note, if you don&#39;t like that, you could &quot;de-containerize&quot; (using <code>|</code>) the small list so it loses its structure:
+
+<pre class="brush:plain">
+&gt; |(1, 2, 3) xx 2
+(1 2 3 1 2 3)
+</pre>
+
+I want to keep the structure, however, so I can combine two copies of the list. The next step is a cross. Here I do it by hand:
+
+<pre class="brush:plain">
+&gt; (1, 2, 3) X ( 1, 2, 3 )
+((1 1) (1 2) (1 3) (2 1) (2 2) (2 3) (3 1) (3 2) (3 3))
+</pre>
+
+That&#39;s not so bad. The cross makes little lists of the first element of the first list and all the elements of the second list in turn. Then with the second element, and so on. The big list is a bunch of two element little lists.
+
+Now, do that as a reduction. With two lists, it&#39;s the same result:
+
+<pre class="brush:plain">
+&gt; [X] (1, 2, 3), (1, 2, 3)
+((1 1) (1 2) (1 3) (2 1) (2 2) (2 3) (3 1) (3 2) (3 3))
+</pre>
+
+But, try it with three lists. The lefthand cross gives the result I&#39;ve already shown. There&#39;s one more cross to go. Take the first element, <code>(1, 1)</code> and combine it with <code>1</code> to get <code>(1, 1, 1)</code>. And, do all of those:
+
+<pre class="brush:plain">
+&gt; (1, 2, 3) X ( 1, 2, 3 ) X ( 1, 2, 3 )
+...
+&gt;  ((1, 1) ... (3, 3))    X ( 1, 2, 3 )
+((1 1 1) (1 1 2) ... (3 3 2) (3 3 3))
+</pre>
+
+The reduction operator does that for me. It takes two elements, does the operation, and puts the result back on the list. Then it takes that element and the next element and does the operation again. It keeps doing that until there&#39;s one element. I can cross as many times as I like without repeatedly typing it. This is the same thing:
+
+<pre class="brush:plain">
+&gt; [X] (1, 2, 3), ( 1, 2, 3 ), ( 1, 2, 3 )
+...
+</pre>
+
+And, I already know how to replicate the list:
+
+<pre class="brush:plain">
+&gt; [X] (1, 2, 3) xx 3
+((1 1 1) (1 1 2) ... (3 3 2) (3 3 3))
+</pre>
+
+Now, I put that list in a variable and the count in another variable:
+
+<pre class="brush:plain">
+&gt; [X] @n xx $n
+( ... )
+</pre>
+
+The combinatorial explosion might wreck the computer, but that&#39;s why they make bigger computers. And, later, Perl 6 will let things happen in parallel.
+
+But, I said that I wanted to apply a utility function to these. I can <code>grep</code> those:
+
+<pre class="brush:plain">
+&gt; ( [X] @n xx 5 ).grep( { .sum &gt; 13 } )
+((2 3 3 3 3) (3 2 3 3 3) (3 3 2 3 3) (3 3 3 2 3) (3 3 3 3 2) (3 3 3 3 3))
+</pre>
+
+But, I can do better than that! Oh yeah, it gets better. I want to partition the big set. I can call <code>categorize</code>. The string I return is which hash key the item &quot;belongs&quot; to. I get a hash back, and each key has an array with the values associated with that key:
+
+<pre class="brush:plain">
+&gt; ( [X] @n xx 5 ).categorize( { .sum &gt; 13 ?? &#39;pass&#39; !! &#39;fail&#39; } )
+{fail =&gt; [(1 1 1 1 1) ... (3 3 3 3 1)], pass =&gt; [(2 3 3 3 3) (3 2 3 3 3) (3 3 2 3 3) (3 3 3 2 3) (3 3 3 3 2) (3 3 3 3 3)]}
+</pre>
+
+This sort of thing replaces several Perl 5 modules I&#39;ve written where I had to manage arrays of arrays to build tuples.
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/01/quick-tip-16-explosive-combinatorials/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/01/should-i-just-call-it-p6-or-v6/">Should I just call it P6? or v6?</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 01, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+I&#39;m working on chapter that I need to turn in to O&#39;Reilly and I keep typing &quot;Perl 6&quot;. It&#39;s annoying. But, what else would I call it? I&#39;m not looking to change the name, just the nickname in the book. <!--more-->
+
+<iframe allowfullscreen frameborder="0" height="315" src="https://www.youtube.com/embed/DGtq1GlmaAw" width="560"></iframe>
+
+I&#39;m not annoyed because a previous language shares the name. No matter what I think that&#39;s a done deal. I&#39;m more annoyed that it takes some much typing and is repetitive. In <a href="//www.learning-perl.com/">Learning Perl</a>, I often said things like &quot;v5.24 does this&quot; of &quot;v5.10 did that&quot; without saying the magic word. What if I said &quot;v6&quot;? For instance, the sentence, &quot;In v6, the match operator immediately applies the pattern to $_.&quot; 
+
+But, I think that also implies that it&#39;s a change from earlier versions. What about &quot;P6&quot;? It&#39;s the same thing. I could say &quot;QP&quot; for &quot;Quite Perl 6&quot; ;)
+
+I&#39;m talking about the language, not the implementation, so saying &quot;Rakudo&quot;, &quot;Rakudo Star&quot;, &quot;R*&quot; or the like aren&#39;t right.
+
+And, when are we going to get an implementation named Camelia? ;)
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/01/should-i-just-call-it-p6-or-v6/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/02/quick-tip-17-rakudos-built-in-profiler/">Quick Tip #17: Rakudo's built-in profiler</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 02, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Rakudo comes with a built-in profiler. Invoke the program with the <code>--profiler</code> option and
+
+<pre class="brush:plain">
+$ perl6 --profiler some_script.p6
+... output ...
+Writing profiler output to profile-1480712222.02931.html
+</pre>
+
+That profile is an HTML file using Bootstrap and other fun things to make it look pretty. It&#39;s not as sophisticated as something like Perl 5&#39;s <a href="https://www.metacpan.org/module/Devel::NYTProf">Devel::NYTProf</a>, but it&#39;s still pretty interesting. <!--more-->
+
+Let&#39;s write some routines to do Fibonacci numbers, which seem to be most authors&#39; favorite example for this sort of thing. Indeed, I used it in the &quot;Benchmarking&quot; chapter of <a href="http://www.masteringperl.org">Mastering Perl</a>, but mostly to point out how wrong the simple benchmarks were.
+
+I&#39;ll implement it in four ways, none of which I claim to be the best:
+
+<ul>
+<li>The recursive way you see in most examples
+</li><li>A recursive fashion with memoization
+</li><li>Using the sequence operator
+</li><li>Using memoization with an iterative approach.
+</li></ul>
+
+In <a href="http://www.masteringperl.org">Mastering Perl</a>, I presented a few arguments that escape the usual discussion:
+
+<ul>
+<li>The routine that runs fastest the first time isn&#39;t necessarily the best
+</li><li>Caching results you&#39;ll use again eventually pays off in time
+</li><li>Using less time usually means using less memory
+</li><li>You improve with better algorithms instead of different syntax.
+</li></ul>
+
+Here are some implementations in Perl 6, where I didn&#39;t try at all to make them efficient. I merely want something to show the workings of the profiler:
+
+<pre class="brush:plain">
+sub fib_recursive ( Int $n where * &gt;= 0 --&gt; Int ) {
+	return 1 if $n <2; $n ( ) * + - 1 2 fib_recursive( fib_recursive_memoize int return sub where }>= 0 --&gt; Int ) {
+	state @n = ( 1, 1 );
+
+	return @n[$n] if $n <@n.elems; $n ( ) * + - 1 2 @n[$n]="fib_recursive_memoize(" fib_recursive_memoize( fib_sequence int return sub where }>= 0 --&gt; Int ) {
+	my $seq := 1, 1, * + * ... *;
+	$seq[$n]
+	}
+
+sub fib_memoize ( Int $n where * &gt;= 0 --&gt; Int ) {
+	state @n = ( 1, 1 );
+	return @n[$n] if $n <@n.elems; $n - .. @n.elems for> $index {
+		@n[$index] = @n[$index-1] + @n[$index-2];
+		}
+
+	@n[*-1]
+	}
+
+sub MAIN ( Int $n where * &gt;= 0 --&gt; Int ) {
+	for 1 .. 10 {
+		say fib_recursive( $n );
+		say fib_recursive_memoize( $n );
+		say fib_sequence( $n );
+		say fib_memoize( $n );
+		}
+	}
+</@n.elems;></@n.elems;></2;></pre>
+
+I run this program under the profiler, and if I&#39;ve everything correctly, I should see the same number output several times. Or, I&#39;ve done it wrong the same way each time.
+
+<pre class="brush:perl">
+$ perl6 --profile fib.p6 20
+10946
+10946
+.....
+10946
+10946
+Writing profiler output to profile-1480712222.02931.html
+</pre>
+
+If you don&#39;t like that filename, you can choose your own:
+
+<pre class="brush:perl">
+$ perl6 --profile --profile-filename=fibonacci.html fib.p6 20
+10946
+10946
+.....
+10946
+10946
+Writing profiler output to fibonacci.html
+</pre>
+
+I can then look at the profiler output. Here&#39;s a screenshot that shows the time spent in each of the subroutines:
+
+<div class="image center">
+<div>
+<img height="250" src="/images/fibonacci_profiler.png" width="500">
+</div>
+</div>
+
+To see the rest of the report, run the program yourself!
+
+I won&#39;t write too much about interpreting these results, but there are several things you should think about in these sorts of comparisons.
+
+First, test with a variety of values, especially those of vastly different orders of magnitude. The recursive solution might look really fast for small <i>N</i>, but it gets bad very quickly.
+
+Second, test it several times, as I&#39;ve done in this example. Some implementations always take the same amount of time while others get faster and faster. In a program where this level of optimization matters, you&#39;re likely to run the interesting routine several times.
+
+Third, consider a completely different approach than any you see here. The Fibonacci numbers aren&#39;t going to change (neither are the values of other sequences). Why compute them again? Just look them up. (I&#39;ll write more about this tomorrow when <a href="https://www.learningperl6.com/2016/12/03/quick-tip-18-short-circuit-subroutines-with-multi/">I use multi subs</a>) Something like Redis can store huge lists without eating all your resources or complicating your program.
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/02/quick-tip-17-rakudos-built-in-profiler/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/03/quick-tip-18-short-circuit-subroutines-with-multi/">Quick Tip #18: Short circuit subroutines with multi</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 03, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+In <a href="https://www.learningperl6.com/2016/12/02/quick-tip-17-rakudos-built-in-profiler/">yesterday&#39;s Quick Tip</a> I used the Fibonacci sequence as an example to show off Rakudo&#39;s <code>--profile</code> option. In today&#39;s tip I&#39;ll use that same sequence to show off Perl 6&#39;s multi-dispatch features. <!--more-->
+
+Consider the situation where I have an out-of-control subroutine. The one I&#39;m about to show is not really going crazy, but I&#39;ve programmed it in such a way that for moderately low input values it becomes unusable:
+
+<pre class="brush:plain">
+sub fib_recursive ( Int $n where * &gt;= 0 --&gt; Int ) {
+	state $called = 0;
+	$called++;
+	END { say &quot;fib_recursive was called $called times&quot; }
+	note &quot;Called with $n&quot;;
+	return 1 if $n <2; "$n $n ( ) * + - -1} 1 2 and calling fib_recursive( int main note return sub where with {$n {$n-2}"; }>= 0 --&gt; Int ) {
+	say fib_recursive( $n );
+	}
+</2;></pre>
+
+I&#39;ve added some calls to <code>note</code> so I can watch the progress:
+
+<pre class="brush:plain">
+$ perl6 fibonacci.p6 5
+Called with 5
+5 calling with 4 and 3
+Called with 4
+4 calling with 3 and 2
+Called with 3
+3 calling with 2 and 1
+Called with 2
+2 calling with 1 and 0
+Called with 1
+Called with 0
+Called with 1
+Called with 2
+2 calling with 1 and 0
+Called with 1
+Called with 0
+Called with 3
+3 calling with 2 and 1
+Called with 2
+2 calling with 1 and 0
+Called with 1
+Called with 0
+Called with 1
+8
+fib_recursive was called 15 times
+</pre>
+
+If I map this out to call levels, I get something like this to explain the calls. Each level of indentation is a call level:
+
+<pre class="brush:plain">
+5
+	4
+		3
+			2
+				1
+				0
+			1
+		2
+			1
+			0
+	3
+		2
+			1
+			0
+		1
+</pre>
+
+The <code>note</code> routine sends its output to standard error. If I don&#39;t want those extra messages, I can redirect standard error to something else:
+
+<pre class="brush:plain">
+$ perl6 fibonacci.p6 5 2&gt; /dev/null
+8
+fib_recursive was called 15 times
+</pre>
+
+So far so good. I get the answer quickly enough that I don&#39;t care how long it took. However, as the argument&#39;s value increases, the slower and slower my program gets. The number of times I call the routine explodes as the number goes up. I&#39;ll leave this as an exercise for the reader, but the number of calls follows the sequence <i>F(n) = F(n-1) + F(n-2) + 1</i>. That <i>+1</i> is a sly way of saying that the number of recursive calls grows faster than the coresponding value in the Fibonacci sequence.
+
+You may have heard (or read) me rant on this before, but this is what happens to languages that can&#39;t do tail-call optimization. Perl 6 doesn&#39;t know what subroutine it might call to get the next values, so it can&#39;t turn this recursive algorithm into an iterative one. Some languages can optimize the literal source code into something much better, and that&#39;s why you see examples like this. But I could spend all day talking about this (and do in my <a href="https://www.masteringperl.org">Mastering Perl</a> class). The short answer is &quot;Don&#39;t do that.&quot;
+
+In this post, I&#39;m not going to rewrite the subroutine as something better. I&#39;m going to short-circuit it by define a new subroutine with the same name that handles particular cases.
+
+Before I start, I want to see the Fibonacci sequence. In the Perl 6 REPL, I&#39;ll slice an infinite lazy sequence:
+
+<pre class="brush:plain">
+$ perl6
+&gt; (1,1, *+* ... * )[0..30];
+(1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765 10946 17711 28657 46368 75025 121393 196418 317811 514229 832040 1346269)
+</pre>
+
+And here&#39;s the number of calls to <code>fib_recursive</code> I have to make to get those numbers:
+
+<pre class="brush:plain">
+$ perl6
+&gt; (1,1, *+*+1 ... * )[0..30]
+(1 1 3 5 9 15 25 41 67 109 177 287 465 753 1219 1973 3193 5167 8361 13529 21891 35421 57313 92735 150049 242785 392835 635621 1028457 1664079 2692537)
+</pre>
+
+Oh, too hard to line up the values? Here&#39;s a double zip (using the Z operator) of the sequence number, Fibonacci number, and subroutine call count:
+
+<pre class="brush:plain">
+$ perl6
+&gt; ( 0 .. 30 ) Z (1,1, *+* ... * )[0..30] Z (1,1, *+*+1 ... * )[0..30]
+((0 1 1) (1 1 1) (2 2 3) (3 3 5) (4 5 9) (5 8 15) (6 13 25) (7 21 41) (8 34 67) (9 55 109) (10 89 177) (11 144 287) (12 233 465) (13 377 753) (14 610 1219) (15 987 1973) (16 1597 3193) (17 2584 5167) (18 4181 8361) (19 6765 13529) (20 10946 21891) (21 17711 35421) (22 28657 57313) (23 46368 92735) (24 75025 150049) (25 121393 242785) (26 196418 392835) (27 317811 635621) (28 514229 1028457) (29 832040 1664079) (30 1346269 2692537))
+</pre>
+
+All those years you made fun of Lisp...
+
+I now know these numbers and I can use this knowledge in my program so avoid computation. I&#39;ll create a multi-sub that immediately returns the value for <i>n = 25</i>. I can see in that list that I would save 242,785 subroutine calls every time I&#39;d call fib_recursive( 25 ):
+
+In Perl 6, I can have multiple definitions of a subroutine if I give them different signatures. When I call the subroutine, Perl 6 will look through the list of definitions and use the first one that fits the argument list.
+
+The special technique here is that I use a literal value in the signature. When the value of the argument is 25, that&#39;s the subroutine Perl 6 will call:
+
+<pre class="brush:plain">
+# define first! Perl 6 looks in the order of definition!
+multi fib_recursive ( 25 ) { 121393 }
+
+# multi implies &quot;sub&quot;, but you can write &quot;multi sub&quot; if you like
+multi fib_recursive ( Int $n where * &gt;= 0 --&gt; Int ) {
+	state $called = 0;
+	$called++;
+	END { say &quot;fib_recursive was called $called times&quot; }
+	note &quot;Called with $n&quot;;
+	return 1 if $n <2; "$n $n ( ) * + - -1} 1 2 and calling fib_recursive( int main note return sub where with {$n {$n-2}"; }>= 0 --&gt; Int ) {
+	say fib_recursive( $n );
+	}
+</2;></pre>
+
+When I call it with 25 now, I immediately get the answer. The <code>END</code> block still runs and doesn&#39;t have a value for <code>$count</code> because I never ran the other subroutine definition:
+
+<pre class="brush:plain">
+$ perl6 fibonacci.p6 25 2&gt; /dev/null
+121393
+fib_recursive was called  times
+</pre>
+
+When I run it with 26, I see that <code>fib_recursive</code> runs 150,050 times. From the sequence I generated earlier, I would have had to run it 392,835 times with the pure recursive solution. The difference of 392,835 and 150,050 is 242,785. That&#39;s the number of calls from the 25 branch!
+
+<pre class="brush:plain">
+$ perl6 fibonacci.p6 26 2&gt; /dev/null
+196418
+fib_recursive was called 150050 times
+</pre>
+
+I saved some time there, but let&#39;s go one better. I could have saved more by defining three multis. To really short-circuit the sequence, I need to short circuit the <i>n-1</i> and <i>n-2</i> branches. I define another multi with the literal value of 24:
+
+<pre class="brush:plain">
+multi fib_recursive ( 24 ) {  75025 }
+multi fib_recursive ( 25 ) { 121393 }
+
+multi fib_recursive ( Int $n where * &gt;= 0 --&gt; Int ) {
+	state $called = 0;
+	$called++;
+	END { say &quot;fib_recursive was called $called times&quot; }
+	note &quot;Called with $n&quot;;
+	return 1 if $n <2; "$n $n ( ) * + - -1} 1 2 and calling fib_recursive( int main note return sub where with {$n {$n-2}"; }>= 0 --&gt; Int ) {
+	say fib_recursive( $n );
+	}
+</2;></pre>
+
+When I try it with 26 now, I call the actually-recursing <code>fib_recursive</code> exactly once. That calls the two multis for <code>fib_recursive(25)</code> and <code>fib_recursive(24)</code>, which immediately return values:
+
+<pre class="brush:plain">
+$ perl6 fibonacci.p6 26 2&gt; /dev/null
+196418
+fib_recursive was called 1 times
+</pre>
+
+In this example, I&#39;ve saved time because I had some precomputed values. The problem is as complex as when I started. It&#39;s not a better algorithm, really. It&#39;s just cheating a bit.
+
+Consider a different way to use this same technique that changes the complexity. I won&#39;t write real code here, but I want to illustrate another use of this technique.
+
+Suppose that I have a general subroutine that works in most cases, but there are a few special cases that could make the code really complicated. Handling the special cases requires a lot of structure. Let the multi subs handle that structure for you, perhaps calling common subroutines as needed:
+
+<pre class="brush:plain">
+multi open_for_business ( Date $d where *.is-a-federal-holiday ) { ... }
+multi open_for_business ( Date $d where *.is-a-weekend ) { ... }
+multi open_for_business ( Date $d ) { ... }
+</pre>
+
+I could also use this for debugging where I know I have one case that I want to inspect while not seeing debugging output from the other cases.
+
+
+
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/03/quick-tip-18-short-circuit-subroutines-with-multi/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/04/quick-tip-19-build-reusable-data-types/">Quick Tip #19: Build reusable data types</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 04, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Perl 6 lets you constrain variable values with types, but you don&#39;t have to limit yourself to the built-in types. Once defined, these act like the built-in types. Here are some subsets I&#39;ve stolen from Brad Clawsie&#39;s <a href="https://github.com/bradclawsie/Subsets-Common">Subsets::Common</a> module: <!--more-->
+
+<pre class="brush:plain">
+my package EXPORT::DEFAULT {
+	...
+	subset Pos of Numeric where * &gt; 0;
+	subset Neg of Numeric where * <0; * 0; numeric of subset unumeric where zero>= 0;
+
+	subset Even of Int where * % 2 == 0;
+	subset Odd  of Int where * % 2;
+
+	subset Time::Hour12 of PosInt where * ~~ 1 .. 12;
+	subset Time::Hour24 of Int    where * ~~ 0 .. 23;
+	subset Time::Minute of Int    where * ~~ 0 .. 59;
+	subset Time::Second of Int    where * ~~ 0 .. 59;
+	...
+}
+</0;></pre>
+
+The <code>subset</code> started the declaration and is followed by the name you want for the new type. This is a subset because you base it on an existing type that you declare with <code>of</code>. After that, you can use a <code>where</code> clause to refine your new type.
+
+And, Brad put these in a package where he declared that everything is exported.
+
+Here&#39;s one that I created for my Perl 6 version of <a href="https://github.com/briandfoy/perl6-chemistry-elements">Chemistry::Elements</a>. Don&#39;t worry so much about what&#39;s in the code; think more about the ability to have any code you need to decide if the value fits the constraint that you like. Here&#39;s the type I defined to constrain an integer to a known atomic number (typically called Z from the German word <i>Zahl</i>, as in <i>Atomzahl</i>):
+
+<pre class="brush:plain">
+	subset ZInt of Cool is export where {
+		state ( $min, $max ) = %names.keys.sort( { $^a <=> $^b } ).[0,*-1];
+		( $_.truncate == $_ and $min &lt;= $_ &lt;= $max )
+			or
+		note &quot;Expected a known atomic number between $min and $max, but got $_&quot;
+			and
+		False;
+		};
+</=></pre>
+
+For my subset, I exported it by declaring it <code>is export</code> so other people using the module could use the type outside of my module. Most notably (heh), I can give a specific error message when the value doesn&#39;t match.
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/04/quick-tip-19-build-reusable-data-types/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/05/quick-tip-20-way-off-base/">Quick Tip #20: Way off base</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 05, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Want to use numbers that are represented in something other than base 10? That&#39;s no problem in Perl 6. Some languages throw you a bone with binary, octal, or hexadecimal conversions, but what if you want base 17? Or, better yet, base 36?  <!--more-->
+
+First, for <a href="https://docs.perl6.org/type/Real">Real numbers</a> (or, non-complex numbers), I have the <a href="https://docs.perl6.org/type/Real#method_base">base</a> command:
+
+<pre class="brush:plain">
+$ perl6
+&gt; 137.base(2)
+10001001
+&gt; 137.base(8)
+211
+&gt; 137.base(16)
+89
+&gt; 137.base(36)
+3T
+</pre>
+
+I can go up to base-36 because that&#39;s how many digits and Latin letters the method uses. Those convert number types to strings.
+
+I can go the other way too. The <code>:DIGIT(string)</code> syntax converts strings to numbers:
+
+<pre class="brush:plain">
+&gt; :2(&#39;10001001&#39;)
+137
+&gt; :8(&#39;211&#39;)
+137
+&gt; :16(&#39;89&#39;)
+137
+</pre>
+
+These assume that the string is a number represented that the radix after the colon. These return a Perl 6 number, which you can display in any base that you like.
+
+From there I can make some one-liners to convert bases. <a href="http://stackoverflow.com/a/2842150/2766176">I&#39;ve done this for Perl 5</a>, and now I have them for Perl 6:
+
+<pre class="brush:plain">
+alias o2b=&quot;perl6 -e &#39;say sprintf q/:2(%b)/, :8(@*ARGS.shift)&#39;&quot;
+alias o2d=&quot;perl6 -e &#39;say sprintf q/:10(%d)/, :8(@*ARGS.shift)&#39;&quot;
+alias o2h=&quot;perl6 -e &#39;say sprintf q/:16(%x)/, :8(@*ARGS.shift)&#39;&quot;
+
+alias d2b=&quot;perl6 -e &#39;say sprintf  q/:2(%b)/, @*ARGS.shift&#39;&quot;
+alias d2o=&quot;perl6 -e &#39;say sprintf  q/:8(%d)/, @*ARGS.shift&#39;&quot;
+alias d2h=&quot;perl6 -e &#39;say sprintf q/:16(%x)/, @*ARGS.shift&#39;&quot;
+
+alias h2b=&quot;perl6 -e &#39;say sprintf  q/:2(%b)/, :16(@*ARGS.shift)&#39;&quot;
+alias h2o=&quot;perl6 -e &#39;say sprintf  q/:8(%o)/, :16(@*ARGS.shift)&#39;&quot;
+alias h2d=&quot;perl6 -e &#39;say sprintf q/:10(%d)/, :16(@*ARGS.shift)&#39;&quot;
+</pre>
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/05/quick-tip-20-way-off-base/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/06/quick-tip-21-the-rats-in-the-machine/">Quick Tip #21: The rats in the machine</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 06, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Let&#39;s think about numbers. I&#39;ve been inserting Kickstarter messages into my Quick Tips, but this post is <i>about</i> Kickstarter. Or, about their mistreatment of numbers. There&#39;s no scandal, just those little inconsistencies that the experienced programmer notices because they have made the same mistakes. Perl 6 has features to make this easier. <!--more-->
+
+First, here&#39;s the current state of <a href="http://kck.st/2fYlzB2">my Kickstarter campaign</a> for the <i>Learning Perl 6</i> book. The first image is from the daily email they send me and the second is the dashboard on the website.
+
+<div class="image center">
+<div>
+<img height="239" src="/images/kickstarter-email.png" width="500">
+<p class="caption">The daily email report</p>
+</div>
+</div>
+
+<div class="image center">
+<div>
+<img height="169" src="/images/kickstarter-dashboard.png" width="500">
+<p class="caption">The website dashboard</p>
+</div>
+</div>
+
+The metrics aren&#39;t from the same instant, as you see from looking at the number of backers and the funding level. But, notice that the higher amount and higher backers has the lower percentage. Most of you probably immediately recognize this as two different strategies in turning Real numbers in Integers.
+
+<table>
+<tr>
+	<th>Funding</th>
+	<th>Goal</th>
+	<th>Decimal</th>
+	<th>Reported</th>
+	<th>Method</th>
+</tr>
+<tr>
+	<td>36,254</td>
+	<td>37,000</td>
+	<td>0.97983783783</td>
+	<td>97</td>
+	<td>Truncating</td>
+</tr>
+<tr>
+	<td>36,088</td>
+	<td>37,000</td>
+	<td>0.97535135135</td>
+	<td>98</td>
+	<td>Rounding</td>
+</tr>
+</table>
+
+These differences seem small, but for the person running the campaign they can provide a moment of panic. If I see the higher percentage first then see the lower percentage, I wonder if people cancelled or adjusted their pledge. This is especially troubling when you get close to the end of a campaign because there are <a href="http://www.crowdfundinsider.com/2013/11/26152-kickstarter-backer-allegedly-scams-one-hundred-projects/">bad actors out there you like to give you that last little bit then dispute the charge later</a> (and Kickstarter then charges my credit card to pay them back). And, there are plenty of Kickstarter spammers who back your project hoping you&#39;ll back theirs, then cancel their pledge when you don&#39;t. I know, weird.
+
+Your pledge is just that. No money changes hands until the pledge total goes over the minimum funding. I haven&#39;t captured any of that money, and I only expect to get about 90% of it through various credit card issues once Kickstarter collects in about two weeks.
+
+But, back to programming. When you see two different ways of getting the same number, you know you have a code smell. We know that there should be a common routine that handles it. It seems simple to divide two numbers, but obviously it isn&#39;t. There are other things, like normalization, that come into play.
+
+Let&#39;s divide some numbers in Perl 6. First, there&#39;s the division operator and it might look like it divides two numbers. If I look at the type of thingy in <code>$n</code>, I see that it&#39;s a <a href="https://docs.perl6.org/type/Rat">Rat</a> (rational number). If I look at the <code>.perl</code> representation, I see a fraction (in this case reduced):
+
+<pre class="brush:perl">
+$ perl6
+To exit type &#39;exit&#39; or &#39;^D&#39;
+&gt; my $n = 36088 / 37000
+0.975351
+&gt; $n.WHAT
+(Rat)
+&gt; $n.perl
+&lt;4511/4625&gt;
+</pre>
+
+That is, Perl 6 delays my decision to represent this number because it knows where I started. It doesn&#39;t lose bits or accuracy because it allows a series of inexact operations. Perl 6 knows the numerator and denominator still.
+
+I can represent the number as a whole number percentage in two ways. Perl 6&#39;s Real class has methods to <a href="https://docs.perl6.org/type/Real#method_truncate">truncate</a> and <a href="https://docs.perl6.org/type/Real#method_round">round</a>:
+
+<pre class="brush:perl">
+&gt; ($n * 100).truncate
+97
+&gt; ($n * 100).round
+98
+</pre>
+
+But, I don&#39;t want to make that decision everywhere in the code. If I were doing this, I would recognize the logical task. I want to pass in the numbers and get the same thing out every time. I can define a subroutine to do that:
+
+<pre class="brush:perl">
+&gt; sub show_funding_percentage ( Rat $funding --&gt; Int ) {
+* ($funding * 100).round }
+sub show_funding_percentage (Rat $funding --&gt; Int) { #`(Sub+{Callable[Int]}|140349924897624) ... }
+&gt; show_funding_percentage( $n )
+98
+</pre>
+
+The trick is making your programmers use the proper interface rather than thinking they know better because division is simple. Showing the funding percentage is a logical task. Other things might need to happen. I shouldn&#39;t have to think about all the steps to get there every time I want to use it.
+
+That&#39;s within one language though. There&#39;s another issue that could be at play. Different languages or libraries might be in the path to the website and the path to email. They get the same inputs but they produce different outputs. There are different rounding strategies; it&#39;s not the simple rules you learned in grade school. In this case I don&#39;t think that&#39;s the problem because most strategies round these two numbers the same way.
+
+As a final note, consider what else rational numbers give us. We&#39;re mostly used to inexact numbers due to the limitations of floating point numbers. With rationals, which are two integers, that isn&#39;t a problem:
+
+<pre class="brush:perl">
+$ perl5 -e &#39;print +(0.1+0.1+0.1)==0.3 ? &quot;True&quot; : &quot;False&quot;&#39;
+False
+$ perl6 -e &#39;say (0.1+0.1+0.1)==0.3&#39;
+True
+</pre>
+
+Or, I should say, it&#39;s not a problem until I make it one. I can turn a rational number into a string (<code>$s</code>) and turn that string back into a number (<code>$t</code>). I&#39;ve now lost some precision. When I multiply by what I think is the denominator, I don&#39;t get back the right numerator:
+
+<pre class="brush:perl">
+&gt; my $s = ~$n
+0.975351
+&gt; $s.WHAT
+(Str)
+&gt; my $t = +$s;
+0.975351
+&gt; $t.WHAT
+(Rat)
+&gt; $t.perl
+0.975351
+&gt; $t*37000
+36087.987
+</pre>
+
+And, we know what that small round errors lead to bigger problems.
+
+<div class="image center">
+<div>
+<a href="http://www.imdb.com/title/tt0086393/"><img height="208" src="/images/richard-pryor.jpg" width="500"></a>
+<p class="caption">Faulty rounding leads to nuclear war</p>
+</div>
+</div>
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/06/quick-tip-21-the-rats-in-the-machine/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/07/quick-tip-22-use-perl-5-modules-in-perl-6/">Quick Tip #22: Use Perl 5 modules in Perl 6</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 07, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Perl 6 has always had a goal of interacting with other languages. When Larry Wall announced the project in 2000, he talked about <a href="http://www.perl.com/pub/2000/10/23/soto2000.html">translate with 95-percent accuracy 95 percent of the scripts</a>. He wanted a way to run Perl 5 from Perl 6. <!--more-->
+
+
+And, with <a href="https://github.com/niner/Inline-Perl5">Inline::Perl5</a>, you can do that. Most notably, you can load Perl 5 modules:
+
+<pre class="brush:plain">
+use v6;
+use Inline::Perl5;
+use Business::ISBN:from&lt;Perl5&gt;;
+
+my $isbn = Business::ISBN.new( &#39;9781491954324&#39; );
+
+say $isbn.as_isbn10.as_string;
+</pre>
+
+In the authority section of the module, I specified <code>from&lt;Perl5&gt;</code>. To make this work, you need to compile <code>perl</code> as specified in the <a href="https://github.com/niner/Inline-Perl5/blob/master/README.md">Inline::Perl5 README.md</a>. You need a <code>perl</code> compiled with <code>-Duseshrplib</code>; I had to compile a new <code>perl</code> but that wasn&#39;t a big deal.
+
+If you are using a recent Rakudo and you&#39;ve already installed <a href="https://github.com/niner/Inline-Perl5">Inline::Perl5</a>, that module loads implicitly:
+
+<pre class="brush:plain">
+use v6;
+use Business::ISBN:from&lt;Perl5&gt;;
+
+my $isbn = Business::ISBN.new( &#39;9781491954324&#39; );
+
+say $isbn.as_isbn10.as_string;
+</pre>
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/07/quick-tip-22-use-perl-5-modules-in-perl-6/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/08/quick-tip-23-use-prove-to-run-perl-6-tests/">Quick Tip #23: Use prove to run Perl 6 tests</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 08, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+<p>
+You can run Perl 6 tests with <code><a href="http://www.metacpan.org/module/App::prove">prove</a></code>. Forget for a moment that <code>prove</code> is a Perl 5 tool. It&#39;s just some tool that&#39;s magically on your system. It&#39;s a <a href="https://testanything.org">Test Anywhere Protocol</a> consumer so anything that outputs TAP is fine with it.
+</p>
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/08/quick-tip-23-use-prove-to-run-perl-6-tests/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/09/6-things-about-6-at-ny-pm/">6 Things About 6, at NY.pm</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 09, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+I gave a short talk to the <a href="https://www.meetup.com/The-New-York-Perl-Meetup-Group/">New York Perl mongers</a> about six things I like at Perl 6. I wouldn&#39;t label these as the most groundbreaking, novel, or exciting features. They are just six things I picked out from what I was thinking about this week. Sometimes it&#39;s the little touches that matter. <!--more-->
+
+<div class="image center">
+<div>
+<a href="http://www.slideshare.net/brian_d_foy/6-things-about-perl-6"><img height="366" src="/images/6things.png" style="border:0" width="482"></a>
+</div>
+</div>
+
+If you&#39;d like me to give a presentation to your group, let me know (brian.d.foy@gmail.com). I&#39;d like to do a bunch more of these talks to get a feel for the Perl 6 audience and how I can incorporate that into the book.
+
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/09/6-things-about-6-at-ny-pm/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/09/quick-tip-24-how-long-did-that-take/">Quick Tip #24: How long did that take?</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 09, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+I can use P6&#39;s <a href="/2016/11/30/quick-tip-15-phasers/">phasers</a> to track how my program moves from one phase to the next. In particular, I&#39;m curious about how much time my program spends in the compile-phase. P6 might be a bit slow now, or at least slower than you think it should be, but that&#39;s okay. The core developers want to be correct first and fast second (but, also both). If you look at the <a href="https://github.com/rakudo/rakudo/blob/nom/docs/ChangeLog">Rakudo change logs</a>, you see lots of entries mentioning big speedups in things they got working first and are now optimizing. <!--more-->
+
+Here I use <code>BEGIN</code> and <code>INIT</code>, although I leave off their braces. In the first <code>put</code> I concatenate a result with its label. In the second <code>put</code>, I interpolate a result into a string by placing code in braces in the string:
+
+<pre class="brush:plain">
+put &quot;Compile to run time: &quot; ~ INIT now - BEGIN now;
+sleep 3;
+put &quot;Run time to finish: { now - INIT now }&quot;;
+</pre>
+
+I see that the compile time isn&#39;t that bad (it&#39;s not humanly noticeable in this program):
+
+<pre class="brush:plain">
+Compile to run time: 0.03161371
+Run time to finish: 3.00564300
+</pre>
+
+You might think its weird that those numbers come out like that when it looks like some things happen earlier than the statement that creates them. I can expand the example to see that the phasers fire before the statements that contain them:
+
+<pre class="brush:plain">
+INIT { put &quot;Starting run time at { now }&quot; }
+END  { put &quot;Ending at { now }&quot; }
+
+put &quot;Compile to run time: &quot; ~
+	INIT { put &quot;INIT in run time message { now }&quot;; now } \ # unspace!
+		-
+	BEGIN { put &quot;BEGIN in run time message { now }&quot;; now }
+	;
+sleep 3;
+put &quot;Run time to finish: {
+	now - INIT { put &quot;INIT in finish message { now }&quot;; now }
+	}&quot;;
+</pre>
+
+You can see that <code>now</code> creates an <a href="https://docs.perl6.org/type/Instant">Instant</a> object:
+
+<pre class="brush:plain">
+BEGIN in run time message Instant:1481307679.940645
+Starting run time at Instant:1481307679.995588
+INIT in run time message Instant:1481307679.996641
+INIT in finish message Instant:1481307679.998188
+Compile to run time: 0.0538441
+Run time to finish: 3.0023635
+Ending at Instant:1481307683.004673
+</pre>
+
+I wanted to check how much of a hit I take by <a href="/2016/12/07/quick-tip-22-use-perl-5-modules-in-perl-6/">loading a Perl 5 module</a>:
+
+<pre class="brush:plain">
+use Business::ISBN:from&lt;Perl5&gt;;
+
+my $isbn = Business::ISBN.new( &#39;9781491954324&#39; );
+put &quot;ISBN: &quot;, $isbn.as_string;
+
+put &quot;Compile to run time: &quot; ~ INIT now - BEGIN now;
+sleep 3;
+put &quot;Run time to finish: { now - INIT now }&quot;;
+</pre>
+
+The results are much better than I thought. Even loading a file from a foreign language is quick. It&#39;s not even noticeable:
+
+<pre class="brush:plain">
+ISBN: 978-1-4919-5432-4
+Compile to run time: 0.0359533
+Run time to finish: 3.0084209
+</pre>
+
+If I loaded a different, more complicated module these result may be different. But, I was interested if there was a penalty for loading any module. I don&#39;t see it.
+
+
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/09/quick-tip-24-how-long-did-that-take/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/10/quick-tip-25-very-literal-quoting/">Quick Tip #25: Very literal Quoting</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 10, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Perl 6 has a basic <a href="https://docs.perl6.org/language/quoting">quoting mechanism</a> that is as literal as it can be. It doesn&#39;t escape anything and doesn&#39;t interpolate anything. The <code>Q</code> does nothing special so you get a string as close to exactly what you see: <!--more-->
+
+<pre class="brush:plain">
+$ perl6
+&gt; Q/Single quote delimiter with \/; # no escaping
+Single quote delimiter with \
+&gt; Q/This is about $var./ # no interpolation
+This is about $var.
+&gt; Q&quot;This is still about $var.&quot; # still no interpolation
+This is still about $var.
+&gt; Q&quot;C:\\This\is\a\path&quot; # no \ proliferation!
+C:\\This\is\a\path
+</pre>
+
+It does have on interesting feature. It knows how to count balanced delimiters. If I use one of the paired characters, I can have the opening version in the literal string as long as the open and closing bits are balanced (so, every opener has a closer):
+
+<pre class="brush:plain">
+&gt; Q&lt; I have some &lt;&lt; inside &gt;&gt; &gt;
+ I have some &lt;&lt; inside &gt;&gt;
+</pre>
+
+If I don&#39;t have balanced thingys, I have a problem:
+
+<pre class="brush:plain">
+&gt; Q&lt; I have some &lt;&lt; inside  &gt;
+===SORRY!=== Error while compiling:
+Couldn&#39;t find terminator &gt; (corresponding &lt; was at line 1)
+at line 2
+------&gt; &lt;BOL&gt;⏏&lt;I EOL&gt;
+    expecting any of:
+        &gt;
+</pre>
+
+I wouldn&#39;t recommend this, though, because I can choose many other delimiters:
+
+<pre class="brush:plain">
+&gt; Q🐱I have some &gt;&gt; inside🐱
+I have some &gt;&gt; inside
+</pre>
+
+I can&#39;t use anything I like as a delimiter, though, and some of the exclusions may surprise you:
+
+<table>
+<tr>
+	<th>Prohibited</th>
+	<th>Reason</th>
+</tr>
+
+<tr>
+	<td><code>#</code></td>
+	<td>start of a comment</td>
+</tr>
+<tr>
+	<td><code>(</code></td>
+	<td>Looks like a function call</td>
+</tr>
+<tr>
+	<td><code>:</code></td>
+	<td>Starts an adverb</td>
+</tr>
+<tr>
+	<td><code>&#39;</code></td>
+	<td>Identifier character</td>
+</tr>
+<tr>
+	<td><code>-</code></td>
+	<td>Identifier character</td>
+</tr>
+<tr>
+	<td>word characters</td>
+	<td>Because that&#39;s crazy</td>
+</tr>
+</table>
+
+The rest of the quoting mechanisms build up from there. Other quoting forms have their own operators, such as <code>q//</code> for single quoting with limited escaping and qq// for double quoting with interpolation. The <code>Q</code> can handle them will an adverb:
+
+<pre class="brush:plain">
+q/This has a backslash \n/
+Q:q//This has a backslash \n/
+qq/This and a newline \n/
+Q:qq/This and a newline \n/
+</pre>
+
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/10/quick-tip-25-very-literal-quoting/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/11/quick-tip-26-keep-just-the-good-parts/">Quick Tip #26: Keep just the good parts</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 11, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Ever wanted to break up a string based on the parts that you wanted to keep? You probably already know about <code><a href="https://docs.perl6.org/routine/split">split</a></code>; it uses a pattern to find the parts to discard. Perl 6&#39;s <code><a comb" docs.perl6.org hre"https: routine>comb</a></code> uses a pattern to find the parts of a string it keeps. <!--more-->
+
+Suppose you want to keep all the words, which for this example you consider that to mean groups of non-whitespace. The pattern you want to keep is <code>/ \S+ /</code> (remember that patterns have insignificant). Here&#39;s what that could look like in the REPL:
+
+<pre class="brush:plain">
+$ perl6
+To exit type &#39;exit&#39; or &#39;^D&#39;
+&gt; $_ = &#39;Hamadryas chloe&#39;
+Hamadryas chloe
+&gt; .comb( /\S+/ )  # operates on $_ by default
+(Hamadryas chloe)
+&gt; .comb( /\S+/ ).elems
+2
+</pre>
+
+That doesn&#39;t look much different than the string you started with even though it is now two elements. The REPL prints out what it considers to be a nicely formatted string, but sometimes that&#39;s confusing. You could look at it with <code>.perl</code> instead:
+
+<pre class="brush:plain">
+&gt; .comb( /\S+/ ).perl
+(&quot;Hamadryas&quot;, &quot;chloe&quot;).Seq
+</pre>
+
+Now you see the two elements. However, there&#39;s a more interesting way to do this. You can use the <code><a href="https://docs.perl6.org/routine/fmt">fmt</a></code> method on a list. It will apply its template to each item in the list. You can easily surround each word with braces, for example:
+
+<pre class="brush:plain">
+&gt; .comb( /\S+/ ).fmt( &#39;{%s}&#39; )
+{Hamadryas} {chloe}
+</pre>
+
+Now you can see which parts of the string belong to which element. This feature pleases me more and more each time I use it. Even though you could do this with a <code>map</code>, this is so much easier.
+
+Try it on this string to extract the species from these scientific names. The <code>&lt;?after ...</code> is a <a href="https://docs.perl6.org/language/regexes#Lookbehind_assertions">lookbehind assertion</a> that says that pattern has to come before the part the matches. But, it matches a condition at a particular point of the string instead of matching characters so that part is part of what <code>comb</code> keeps:
+
+<pre class="brush:plain">
+&gt; $_ = &#39;Hamadryas chloe, Hamadryas epinome, Hamadryas laodamia&#39;
+Hamadryas chloe, Hamadryas epinome, Hamadryas laodamia
+&gt; .comb( /&lt;?after Hamadryas \s+&gt; &lt;[a..z]&gt;+/ )
+(chloe epinome laodamia)
+&gt; .comb( /&lt;?after Hamadryas \s+&gt; &lt;[a..z]&gt;+/ ).fmt( &#39;{%s}&#39; )
+{chloe} {epinome} {laodamia}
+</pre>
+
+Here&#39;s something a bit more complicated (and contrived even). Make a pattern to grab the items out of a list separated by commas with a final <code>and</code>:
+
+<pre class="brush:plain">
+&gt; $_ = &#39;Daphnaeae, Epimeliades, Kissiae, and Meliae&#39;
+Daphnaeae, Epimeliades, Kissiae, and Meliae
+&gt; .comb( rx:i/ &lt;[a..z]&gt;+ &lt;?before [\, \s+ [and \s+]? | $ ]&gt; / )
+(Daphnaeae Epimeliades Kissiae Meliae)
+</pre>
+
+There&#39;s a lookahead assertion that looks for a &quot;comma whitespace with optional and&quot; or the end of string. I&#39;ll leave it as an exercise for the reader to work this out for styles that (mistakenly) eschew the Oxford comma.
+
+It&#39;s probably easier to split on the separators in this case, but you&#39;re playing with <code>comb</code> in this tip. You&#39;ll appreciate this more when the parts separating the good bits are more complicated to match than the other way around.
+
+And, for a final tip, <code>comb</code> with no pattern splits into characters:
+
+<pre class="brush:plain">
+&gt; .comb
+(D a p h n a e a e ,   E p i m e l i a d e s ,   K i s s i a e ,   a n d   M e l i a e)
+</pre>
+
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/11/quick-tip-26-keep-just-the-good-parts/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/12/quick-tip-27/">Quick Tip #27: Read the docs locally</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 12, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+The <code>p6doc</code> command helps you read the Perl 6 docs. It&#39;s in the <a href="https://github.com/perl6/doc">Perl 6 documentation repo</a> (so, it doesn&#39;t come with Rakudo). <!--more-->
+
+
+Check out the <a href="https://github.com/perl6/doc">repo</a> and from within that directory install it with zef:
+
+<pre class="brush:perl">
+$ zef --depsonly install . 
+</pre>
+
+From there you should have to <code>p6doc</code> command. Run it to see what it can do:
+
+<pre class="brush:plain">
+What documentation do you want to read?
+Examples: p6doc Str
+          p6doc Str.split
+          p6doc faq
+
+You can list some top level documents:
+          p6doc -l
+
+You can also look up specific method/routine definitions:
+          p6doc -f push
+
+You can bypass the pager and print straight to stdout:
+          p6doc -n Str
+</pre>
+
+Now, a word of caution here. Perl 6 has lots of undocumented bits and not everything works yet. But, you can help by sending pull requests. The <code>-l</code> lists the top-level pages it knows about:
+
+<pre class="brush:plain">
+$ p6doc -l
+5to6-nutshell
+5to6-perlfunc
+5to6-perlop
+5to6-perlsyn
+5to6-perlvar
+AST
+Any
+Array
+Associative
+Attribute
+Backtrace
+Bag
+...
+unicode_entry
+unicode_texas
+variables
+</pre>
+
+I can read the docs from the command line:
+
+<pre class="brush:plain">
+$ p6doc Str
+TITLE
+class Str
+
+SUBTITLE
+String of characters
+
+    class Str is Cool does Stringy { }
+
+Built-in class for strings. Objects of type Str are immutable.
+
+Methods
+
+  routine chop
+
+    multi sub    chop(Str:D)  returns Str:D
+    multi method chop(Str:D: $chars = 1) returns Str:D
+
+Returns the string with $chars characters removed from the end.
+
+  routine chomp
+
+Defined as:
+
+    multi sub    chomp(Str:D ) returns Str:D
+    multi method chomp(Str:D:) returns Str:D
+</pre>
+
+
+But, this is 2016. Let&#39;s read it in the browser. First, from the directory, create the HTML files. This might take awhile (a long, long time), but you can read the same docs on <a href="http://docs.perl6.org">docs.perl6.org</a>:
+
+<pre class="brush:plain">
+$ make html
+</pre>
+
+
+Then, run the web app to serve it all. That&#39;s a <a href="http://www.mojolicious.org">Mojolicious</a> app, so you&#39;re throwing Perl 5 a bone.
+
+<pre class="brush:plain">
+$ make run
+Starting local server…
+perl5.24.0 app.pl daemon
+[Tue Dec  6 11:18:29 2016] [debug] Install Mojolicious::Plugin::AssetPack to enable SASS processor. You will also need CSS::Sass module or have `sass` command working
+[Tue Dec  6 11:18:29 2016] [info] Listening at &quot;http://*:3000&quot;
+Server available at http://127.0.0.1:3000
+</pre>
+
+And this is what you get:
+
+<div class="image center">
+<div>
+<img height="571" src="/images/local_perl6_docs.png" width="500">
+</div>
+</div>
+
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/12/quick-tip-27/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/13/quick-tip-28-perl-6s-schwartzian-transform/">Quick Tip #28: Perl 6's Schwartzian Transform</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 13, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+This is a really <a href="https://www.learningperl6.com/category/kickstarter-tips/">Quick Tip</a>. It&#39;s about the Schwartzian Transform, which makes things quicker. <!--more-->
+
+You may have seen my presentation from the <a href="http://act.yapc.eu/alpineperl2016/">Alpine Perl Workshop 2016</a>. I talked abou the <a href="http://www.slideshare.net/brian_d_foy/the-surprisingly-tense-history-of-the-schwartzian-transform">surprisingly tense history of the Schwartzian Transform</a>. I also <a href="http://perltricks.com/article/the-history-of-the-schwartzian-transform/">wrote about it for PerlTricks</a>.
+
+In short, Randal didn&#39;t invent it but he made it popular. The popularity wasn&#39;t immediate though.
+
+In Perl 5 that looks like this map-sort-map:
+
+<pre class="brush:plain">
+print
+  map { $_-&gt;[0] }
+  sort { $a-&gt;[1] <=> $b-&gt;[1] }
+  map { [$_, lc] }
+  &lt;&gt;;
+</=></pre>
+
+The trick is to reduce the number of time you call <code>lc</code>. There&#39;s no need to call it over and over on the same string.
+
+How would you do the same thing in Perl 6?
+
+First, Perl 6 has a unary version of <code><a href="https://docs.perl6.org/routine/sort#(Any)_method_sort">sort</a></code>. I tell it how to make a value then it does that for each pair of elements to compare:
+
+<pre class="brush:plain">
+my @sorted_words = sort { .lc }, @words;
+</pre>
+
+It takes two elements from the list, lowercases both of them, and compares them with string equality (cmp). You don&#39;t have to type out the <code>.lc</code> twice. This doesn&#39;t transform the elements, so the output list isn&#39;t necessarily all lowercase. It&#39;s the original list but possibly re-ordered.
+
+Not only that, sort caches the result of the operation so it doesn&#39;t have to redo it. That is, Perl 6 already does what the Schwartzian Transform was doing!
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/13/quick-tip-28-perl-6s-schwartzian-transform/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/14/quick-tip-29-flip-flopping-junctions/">Quick Tip #29: Flip-flopping junctions</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 14, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+The <a href="https://docs.perl6.org/language/operators#infix_ff">flip flop operator</a> isn&#39;t just something for politicians and nervous interface designers. It&#39;s a feature designed to turn on and off to set a window of processing. <!--more-->
+
+Suppose I want to see all the words between two words in <i>/usr/share/dict/words</i> (your distro may place it elsewhere). I want to extract a window of lines from a big text.
+
+The <code><a href="https://docs.perl6.org/language/operators#infix_ff">ff</a></code> operator is False until its lefthand expression is true, and then True until its righthand expression is True. After that, it&#39;s false. So, it turns on when the left side becomes true and turns off when the right side does.
+
+Here&#39;s a program that reads lines from a file and prints the ones between the two words I specify:
+
+<pre class="brush:plain">
+sub MAIN (
+	Str :$file  = &#39;/usr/share/dict/words&#39;,
+	Str :$first!,
+	Str :$last!,
+	) {
+	my $fh = open( $file );
+
+	for $fh.lines -&gt; $line {
+		say $line if $line ~~ $first ff $line ~~ $last; # flip-flop
+		}
+	}
+</pre>
+
+It&#39;s up to me to ensure that the first value is less than the last one, and I&#39;m going to ignore matters of case for this example:
+
+<pre class="brush:plain">
+$ perl6 words.p6 --first=fox --last=hound
+fox
+foxbane
+foxberry
+foxchop
+...
+Houghton
+hounce
+hound
+</pre>
+
+I can specify the same word for the start and end. When the particular word shows up, the flip-flop evaluates the lefthand side. Since it&#39;s the same word, the flip-flop turns on.
+
+<pre class="brush:plain">
+$ perl6 words.p6 --first=fox --last=fox
+fox
+</pre>
+
+I still have to read all the lines in this example, but there it is.
+
+The flip-flop has inclusive and exclusive versions, just like the ranges and sequences I wrote about in <a href="https://www.learningperl6.com/2016/11/18/quick-tip-3-inclusive-and-exclusive/">Quick Tip #3: Inclusive and Exclusive</a>. I can exclude either endpoint with a <code>^</code>:
+
+<pre class="brush:plain">
+sub MAIN (
+	Str :$file  = &#39;/usr/share/dict/words&#39;,
+	Str :$first!,
+	Str :$last!,
+	) {
+	my $fh = open( $file );
+
+	for $fh.lines -&gt; $line {
+		say $line if $line ~~ $first ^ff^ $line ~~ $last; # changed!
+		}
+	}
+</pre>
+
+Now I don&#39;t see &quot;fox&quot; or &quot;hound&quot; in the output:
+
+<pre class="brush:plain">
+$ perl6 words.p6 --first=fox --last=hound
+foxbane
+foxberry
+foxchop
+...
+Houghton
+hounce
+</pre>
+
+In that example I excluded both endpoints with <code>^ff^</code>, but I can exclude either side on their own with <code><a href="https://docs.perl6.org/language/operators#infix_^ff">^ff</a></code> or <code><a href="https://docs.perl6.org/language/operators#infix_ff^">ff^</a></code>.
+
+But, I don&#39;t have to be satisfied with one window. I can put <a href="https://docs.perl6.org/type/Junction">Junctions</a> into <code>$first</code> and <code>$last</code> to make multiple windows. Any of the values in <code>$first</code> can turn it on and any of the values in <code>$last</code> can turn it off.
+
+<pre class="brush:perl">
+sub MAIN (
+	Str :$file  = &#39;/usr/share/dict/words&#39;,
+	) {
+	my $fh = open( $file );
+
+	my $first = any( &lt;cat fox&gt; );
+	my $last  = any( &lt;dog hound&gt; );
+
+	for $fh.lines -&gt; $line {
+		say $line if $line ~~ $first ff $line ~~ $last;
+		}
+	}
+</pre>
+
+Now I see that it turns off at &quot;dog&quot; but turns on again at &quot;fox&quot;:
+
+<pre class="brush:perl">
+cat
+catabaptist
+catabases
+...
+doffer
+doftberry
+dog
+fox
+foxbane
+foxberry
+...
+houghmagandy
+Houghton
+hounce
+</pre>
+
+If you&#39;re used to the sed version of flip-flopping, there&#39;s also <code><a href="https://docs.perl6.org/language/operators#infix_fff">fff</a></code>. This one doesn&#39;t evaluate both sides for the same element.
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/14/quick-tip-29-flip-flopping-junctions/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/15/quick-tip-30-uninstall-a-perl-6-module/">Quick Tip #30: Uninstall a Perl 6 module</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 15, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+You can uninstall Perl 6 modules. Many people have asked for a way to uninstall a Perl 5 module, but that toolchain didn&#39;t do the sort of tracking that Perl 6 does. Some of these are recent developments, so you should have the most recent <a href="http://www.rakudo.org">Rakudo</a> that you can use. <!--more-->
+
+In <a href="https://github.com/ugexe/zef">zef</a>:
+
+<pre class="brush:plain">
+$ zef uninstall Some::Module
+</pre>
+
+You might like <a href="http://ugexe.com/slightly-less-basic-perl6-module-management/">Slightly less basic Perl6 module management</a>, as well as the rest of Nick&#39;s blog.
+
+If that doesn&#39;t work, niner has <a href="https://gist.github.com/niner/b39258032f70c083e57b">a gist that reaches into the internals</a>:
+
+<pre class="brush:plain">
+#!/usr/bin/env perl6
+use v6.c;
+
+sub MAIN($short-name, :$ver = True, :$auth = True, :$api = True) {
+    my $comp-unit = $*REPO.resolve(CompUnit::DependencySpecification.new(:$short-name, :$ver, :$auth, :$api));
+    $comp-unit.repo.uninstall($comp-unit.distribution);
+}
+</pre>
+
+This is the final <a href="https://www.learningperl6.com/category/kickstarter-tips/">Quick Tip</a>. Thanks to everyone who helped me reach my Kickstarter goal. Now I have to get down to fulfilling your rewards and writing the book!
+
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/15/quick-tip-30-uninstall-a-perl-6-module/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/19/a-dedicated-learningperl6-twitter-account/">A dedicated LearningPerl6 Twitter account</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 19, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+If you only want my Perl 6 messages, I&#39;ve created a new <a href="https://twitter.com/LearningPerl6">@LearningPerl6</a> Twitter account. Like my other <a href="https://twitter.com/briandfoy_perl">@briandfoy_perl</a> is mostly just Perl with some things that Perl people might like, this one will be even more restricted. If you like feeds, this blog can do that. You&#39;ll get the same articles on Twitter (through <a href="https://dlvrit.com">dlvr.it</a>), as well as other interesting things I might run across. <!--more-->
+
+<div class="center image">
+<div>
+<img src="/images/twitter_profile_pic_blog.png">
+</div>
+</div>
+
+And, if there&#39;s another social media spot you&#39;d like to get notices, let me know about those. I&#39;ll see what I can do.
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/19/a-dedicated-learningperl6-twitter-account/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/19/translating-the-perlfaq-to-perl-6/">Translating the perlfaq to Perl 6</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 19, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+I started a GitHub project to <a href="https://github.com/briandfoy/perl5faq_in_perl6">translate the Perl 5 perlfaq to Perl 6</a>. For years I maintained those documents so they are a bit special to me. Sadly, the <a href="https://github.com/tpf/perlfaq">canonical TPF repo</a> started over in 2012 with the sources current in v5.15, so most of that history has been lost. Oh well. <!--more-->
+
+I don&#39;t want to create a new FAQ for Perl 6, because an <a href="https://docs.perl6.org/language/faq.html">official FAQ</a> already exists. If that document steals from this new project, that&#39;s fine with me. I&#39;m doing this just because I am, and if you want to help or play with it, welcome! But, I&#39;m just translating and adapting, not adding or deleting.
+
+I grabbed the perlfaq questions and put them into new documents, created a repo, and filled in some of the basic meta-answers for perlfaq1. I&#39;m curious how the rest of the perlfaq would turn out. The questions were things important to people twenty years ago. How does that hold up today?
+
+<ul>
+<li>Some things might not matter anymore in Perl 6
+</li><li>Some things use different tools now
+</li><li>The modules have all changed, and if they haven&#39;t, we can <a href="/2016/12/07/quick-tip-22-use-perl-5-modules-in-perl-6/">use the Perl 5 modules</a>.
+</li></ul>
+
+If it doesn&#39;t matter anymore, keeping the question but explaining the way Perl 6 handles it for you is something some people will appreciate. If it&#39;s a task-based question, people probably still have the question (and will have it frequently).
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/19/translating-the-perlfaq-to-perl-6/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/25/strip-leading-spaces-from-here-docs/">Strip leading spaces from here-docs</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 25, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+<a href="https://www.effectiveperlprogramming.com/2016/12/strip-leading-spaces-from-here-docs-with-v5-26/">Perl v5.26 steals Perl 6&#39;s feature to strip leading whitespace from here-docs</a>. I wrote about that for The Effective Perler, but here&#39;s the same thing for <a href="https://docs.perl6.org/language/quoting#Heredocs:_:to">Perl 6 here-docs</a>. As with most things, the Perl 5 feature is slightly different. <!--more-->
+
+Before v5.26, you had to start your here-doc lines at the beginning of the line. This doesn&#39;t line up with the indention, which some people find annoying:
+
+<pre class="brush:plain">
+use v5;
+
+sub say_something {
+	my $string =&lt;&lt;&#39;HERE&#39;;
+This line is not indented
+Neither is this line
+And the delimiter is not indented
+HERE
+
+	print $string;
+	}
+
+say_something();
+</pre>
+
+Perl 6 already strips leading whitespace from the lines inside a here-doc. It
+
+<pre class="brush:plain">
+use v6;
+
+sub say_something {
+	my $string = q:to/HERE/;
+		This line is not indented
+			But this line is indented
+		And the delimiter is not indented
+		HERE
+
+	print $string;
+	}
+
+say_something();
+</pre>
+
+The whitespace before the final delimiter is stripped from each line in the string:
+
+<pre class="brush:plain">
+This line is not indented
+	But this line is indented
+And the delimiter is not indented
+</pre>
+
+This still works if you don&#39;t have the same whitespace before each line:
+
+<pre class="brush:plain">
+use v6;
+
+sub say_something {
+	my $string = q:to/HERE/;
+		This line is not indented
+			But this line is indented
+And the delimiter is not indented
+		HERE
+
+	print $string;
+	}
+
+say_something();
+</pre>
+
+It works, but you get a warning (in Perl 5 this would be a compilation error). In my code I had two tabs; apparently it translates that into eight spaces:
+
+<pre class="brush:plain">
+This line is not indented
+	But this line is indented
+And the delimiter is not indented
+Asked to remove 16 spaces, but the shortest indent is 0 spaces
+  in any trim_heredoc at gen/moar/m-Perl6-Actions.nqp line 499
+</pre>
+
+It tries to strip as much whitespace as it can (up to the amount in front of the delimiter). Since it considers a tab as eight spaces, the amount of space it strips might make the string look different than your typing. This version has a mix of spaces and tabs (although something might translate this example before you get it):
+
+<pre class="brush:plain">
+use v6;
+
+sub say_something {
+	my $string = q:to/HERE/;
+		This line has two tabs
+			This line has three tabs
+                But this one has 16 spaces
+		HERE
+
+	print $string;
+	}
+
+say_something();
+</pre>
+
+Allow it looks like the last line is indented more, when it converts tabs to eight spaces, the third line isn&#39;t indented at all:
+
+<pre class="brush:plain">
+This line has two tabs
+	This line has three tabs
+But this one has 16 spaces
+</pre>
+
+But, a tab isn&#39;t just eight spaces. It&#39;s the number of spaces to get to the next multiple of 8. The last line of this here-doc mixes tabs and spaces:
+
+<pre class="brush:plain">
+use v6;
+
+sub say_something {
+	my $string = q:to/HERE/;
+		This line has two tabs
+			This line has three tabs
+    	    But this one has 4 spaces, a tab, and 4 spaces
+		HERE
+
+	print $string;
+	}
+
+say_something();
+</pre>
+
+You get a warning. This time it thinks there are 12 spaces in the last line:
+
+<pre class="brush:plain">
+This line has two tabs
+	This line has three tabs
+But this one has 4 spaces, a tab, and 4 spaces
+Asked to remove 16 spaces, but the shortest indent is 12 spaces
+  in any trim_heredoc at gen/moar/m-Perl6-Actions.nqp line 499
+</pre>
+
+It&#39;s the same thing with more leading spaces:
+
+<pre class="brush:plain">
+use v6;
+
+sub say_something {
+	my $string = q:to/HERE/;
+		This line has two tabs
+			This line has three tabs
+       	    But this one has 7 spaces, a tab, and 4 spaces
+		HERE
+
+	print $string;
+	}
+
+say_something();
+</pre>
+
+So, be careful how you specify those leading spaces (and how you accept patches and so on).
+
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/25/strip-leading-spaces-from-here-docs/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/12/30/indir-changes-the-directory-just-for-its-block/">indir() changes the directory just for its block</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 30, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+<i>Update for April 2017: <code>indir</code> is now a <a href="https://docs.perl6.org/routine/indir">documented part of the language</a>.</i>
+
+How many times have I wanted to change the current working directory for just one block? It&#39;s usually such a pain because I have to remember to change it back. <!--more-->
+
+In Perl 6, the <code>indir</code> routine does this for me:
+
+<pre class="brush:plain">
+indir $some_dir, {
+    ...; # do stuff in that directory
+    }
+</pre>
+
+The current working directory is changed just for that block of code. When that block is done, the value is back to whatever it was before. That this is built into the language is quite pleasing to me (and the dependency-adverse contexts I tend to work in). There&#39;s no variable to mess with (in Perl 6 that would be <code>$*CWD</code>, which has some issues at the moment) and it reads nicely as a sentence.
+
+This isn&#39;t documented yet (it only shows up in <a href="https://raw.githubusercontent.com/perl6/specs/master/S16-io.pod">Synopsis 16</a>, last changed 10 years ago, and was <a href="https://github.com/rakudo/rakudo/blob/beec02a6fa69e3ac290b4dd24c07d87a9f248b13/docs/announce/2014.10.md">announced as part of 2014.10</a>), but it&#39;s in there and it mostly works. At the moment (Rakudo 2016.11) it only works when the target directory is readable <i>and</i> writeable, but I&#39;ve filed <a href="https://rt.perl.org/Ticket/Display.html?id=130460">RT #130460</a> about that. And, I&#39;ve filed <a href="https://github.com/perl6/doc/issues/1091">GitHub #1091</a> about the lack of documentation (which depends on someone declaring what it should actually do). Since it&#39;s untested and undocumented, that means it might change or disappear. Consider that before you get too excited. But, how can you not get excited about something that makes common things really easy?
+
+I feel a little bad that I&#39;m not stopping to fully investigate these corner cases, but if I did that I&#39;d never get any writing done for <i>Learning Perl 6</i>! Maybe someone else has the time to make this bit of Perl 6 tested and documented.
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/12/30/indir-changes-the-directory-just-for-its-block/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+
+Unterminated <> operator at template line 11.
+Context:
+  6: <%
+  7: 	my $items = get_var('items');
+  8: 
+  9: 	foreach my $item ( $items->@* ) {
+  10: 		my $date = Time::Moment
+  11: 			->from_string( $item->{date} . '-0400', lenient => 1 )
+  12: 			->strftime( '%B %d, %Y' );
+  13: %>
+  14:     <!-- ----------------------------------------------------------- -->
+  15: 	<div class="post">
+  16: 		<h2 class="post_title excerpt_page"><a href="<%= $item->{web_path} =%>"><%= $item->{title} =%></a></h2>
+Traceback (most recent call first):
+  File "template", line 11, in "Mojo::Template::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 148, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::render"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox::include"
+  File "_templates/month_list", line 34, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 173, in "Mojo::Template::render"
+  File "bin/cook", line 258, in "Mojo::Template::render_file"
+  File "bin/cook", line 44, in "main::make_year_month_pages"
+Context:
+  6: my $bin  = get_var('bin');
+  7: %>
+  8: 
+  9: 
+  10: foreach my $n ( 1 .. $bins ) {
+  11: %><a class="pag_link<%= $n == $bin ? ' pag_current'  : '' =%>" href="index<%= $n == 1 ? '' : "_$n" =%>.html"><%= $n =%></a>
+  12: <% } %>
+  13: </div>
+  14: <!-- end paginate -->
+Traceback (most recent call first):
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::render"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox::include"
+  File "_templates/month_list", line 34, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 173, in "Mojo::Template::render"
+  File "bin/cook", line 258, in "Mojo::Template::render_file"
+  File "bin/cook", line 44, in "main::make_year_month_pages"
+
+</div>
+<!-- end excerpt_list -->
+
+</html>
+

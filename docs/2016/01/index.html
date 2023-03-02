@@ -1,0 +1,260 @@
+<html>
+
+<head>
+	<base href="https://test.learningraku.com/">
+	<title>January 2016 - Learning Raku (formerly Perl 6)</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="brian's site generator" />
+	<meta charset="UTF-8" />
+</head>
+
+<!-- start excerpt_list -->
+<div id="content">
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/01/03/perl-6-at-a-glance-by-andrew-shitov/">Perl 6 at a Glance, by Andrew Shitov</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 03, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+<br>
+
+<div class="image left">
+<div>
+<a href="http://deeptext.media/perl6-at-a-glance/"><img height="216" src="/images/perl6-at-a-glance.jpg" width="150"></a>
+</div>
+</div>
+
+Andrew Shitov&#39;s <i><a href="http://deeptext.media/perl6-at-a-glance/">Perl 6 at a Glance</a></i> is already shipping out books. I haven&#39;t had a chance to read it myself, but from the excerpts on the website this looks like a nice survey of the Perl 6 language. It&#39;s not a tutorial book like <i>Learning Perl 6</i>, but I think it&#39;s more than enough to whet your appetite for some of the cool features.
+
+If you are daunted by the reams of pages the printed docs would be, this 130-page book may give you what you need to know with a lot less work.
+
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/01/03/perl-6-at-a-glance-by-andrew-shitov/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/01/10/a-perl-6-bbedit-codeless-language-module/">A Perl 6 BBEdit Codeless Language Module</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 10, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Now I have rudimentary Perl 6 syntax coloring for BBEdit, my long-preferred editor on the Mac for years. I don&#39;t need anything fancy, so I did the minimum to color the stuff in the files I had open. BBEdit supports <a href="http://www.barebones.com/support/develop/clm.html">Codeless Language Modules</a> that specify various things about the language, including its file extensions, name, keywords, and so on. It&#39;s something a normal user can put into an XML or JSON file and drop into an <i>Application Support/BBEdit/Language Modules</i> directory for immediate use (with an application restart). It&#39;s not as clever as a compiled code module, but good enough for me at the moment. <!--more-->
+
+<div class="image center">
+<div>
+<img src="/images/perl6_clm.png">
+</div>
+</div>
+
+I&#39;ve put it in the <a href="https://github.com/briandfoy/Perl6_BBEdit_CLM">Perl6_BBEdit_CLM</a> project on GitHub for anyone who wants to improve it. For example, I&#39;ve only listed the keywords I was actually using.
+
+You can get syntax coloring for other editors:
+
+<ul>
+<li><a href="http://perltricks.com/article/194/2015/9/22/Activating-Perl-6-syntax-highlighting-in-Vim">http://perltricks.com/article/194/2015/9/22/Activating-Perl-6-syntax-highlighting-in-Vim</a>
+</li><li><a href="https://github.com/hinrik/perl6-mode">emacs Perl6 mode</a>
+</li></ul>
+
+If you know of others, let me know.
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/01/10/a-perl-6-bbedit-codeless-language-module/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/01/10/perl-6-modulinos-are-even-easier/">Perl 6 modulinos are even easier</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 10, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Perl 6 has this wonderful thing called <code>MAIN</code> which is a built-in modulino thingy.
+
+In my <a href="http://www.excellentnums.com">excellent number hobby</a> (which I started <a href="http://www.masteringperl.org/tag/excellent-numbers/">writing about in Mastering Perl</a> even after I switched to C), I&#39;ve been converting some bits to Perl 6 just for giggles. There&#39;s a small <a href="https://github.com/briandfoy/excellent_numbers/blob/master/lib/CpuCount.pm">Perl 5 module I wrote to get the number of CPUs</a> I rewrote in Perl 6. It&#39;s not sophisticated or surprising. It&#39;s actually quite banal in function; merely dispatch to some method that knows what to do on the platforms I care about. And, be a modulino. <!--more-->
+
+<pre class="brush:plain">
+module CpuCount {
+	sub run () is export {
+		say get_cpu_count();
+		}
+
+	sub get_cpu_count () is export {
+		state $dispatch = {
+			freebsd  =&gt; &amp;_freebsd,
+			_default =&gt; &amp;_posix,
+			};
+
+		my $key = $dispatch.{ $*DISTRO.name }:exists ?? $*DISTRO.name !! &#39;_default&#39;;
+
+		$dispatch.{ $key }.();
+		}
+
+	sub _freebsd () { _get_conf( &#39;NPROCESSORS_ONLN&#39; ) }
+
+	sub _posix ()   { _get_conf( &#39;_NPROCESSORS_ONLN&#39; ) }
+
+	sub _get_conf ( $key ) {
+		state $command = &#39;/usr/bin/getconf&#39;;
+
+		unless $key ~~ m/ ^^ <[_a..z0..9]>+ $$ / {
+			warn &quot;Key $key doesn&#39;t look acceptable&quot;;
+			return;
+			};
+		qq:x{$command $key 2&gt;/dev/null}.chomp;
+		}
+	}
+
+sub MAIN {
+	import CpuCount;
+	run;
+	}
+</[_a..z0..9]></pre>
+
+First, <code>MAIN</code>. Perl 6 calls that if the file is the top-level thingy rather than something that&#39;s loaded by something else. No more <code>caller</code> tricks. It&#39;s even better though. Although I don&#39;t need it here, if I give <code>MAIN</code> a signature, it does some argument handling automatically. And, lexical imports!
+
+Back to the top of the program, I can create a <code>module</code>, similar to Perl 5&#39;s <code>package BLOCK</code> syntax. I really like that. I get export handling without inheritance (that I can see, at least) by marking what is eligible with <code>is export</code>.
+
+Inside <code>get_cpu_count</code>, I use the <code>$*DISTRO</code> special variable to find out what system I&#39;m on. That&#39;s an object with various parts I can access.
+
+In the dispatch table, I get a reference to a subroutine by using the <code>&amp;</code> in front of it. That messed me up for a bit, but I think I like that.
+
+In <code>_get_conf</code>, I have a regex. That&#39;s changed quite a bit with double typing. The <code>^^</code> and <code>$$</code> are anchors, whitespace is insignificant by default, and character classes are much fancier. Those are put in <code> &lt;[ ... ]&gt; </code> because you can do set operations on the things in the square brackets. Very fancy, but there&#39;s more typing. I also have to use <code>..</code> to make a range of characters. Disk drives are cheap, so let&#39;s use up those bytes!
+
+I love string objects. I call the external command and can <code>chomp</code> it right away. And, <code>chomp</code> returns the modified string like God always wanted.
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/01/10/perl-6-modulinos-are-even-easier/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/01/27/topaz-is-still-on-sourceforge/">Topaz is still on SourceForge</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 27, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Topaz, which was almost the next version of Perl in 2000, is still in Sourceforge. Chip Salzenberg had a hunch that rewriting Perl&#39;s guts in C++ would be the thing to solve its maintenance issues. He codenamed his project <a href="http://topaz.sourceforge.net">Topaz</a> and went to work. <!--more-->
+
+He didn&#39;t get it working though, and Chip&#39;s the sort of guy that can get anything working. He took C++ to its limits. At the 1999 OSCON, he explained what he wanted to do and why he chose C++ in his talk <a href="//www.perl.com/pub/1999/09/topaz.html">Topaz: Perl for the 22nd Century</a>. It&#39;s old enough that there&#39;s a RealAudio version of the talk. Heck, the Topaz repo uses CVS. I tried compiling CVS but it doesn&#39;t like my <code>getline</code> (and I didn&#39;t try that hard).
+
+<div class="image center">
+<div>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/mauroescritor/8358129568/in/photolist-dJzAJd-5Cz8Dm-CnSZBx-Dj25nn-amh4Qk-6244vQ-8rPBN8-5vr5SF-q2Z6yZ-aNe4qv-cnJoxm-aGQPFr-k9toVP-psVtf7-pvntY3-p6VHk3-562LX-rucn81-73APpS-pot4gV-9M6kJZ-8Z3Ggf-fURCw6-7hkyqs-qk3fig-5JYbkP-qEMbPs-oRn87b-8QbWKt-pCrsRT-7e55Bp-mokQtZ-pChMar-bcMVye-5CuSVg-5CzaVj-5CzaUo-5CuSTk-5CuSSM-5Cz8L7-5CuQKi-5CuQGx-5Cz8EW-5CuQD6-C8i8qh-7VPKPA-rFZdSX-csk9DG-pEAXFo-kRFFj2" title="Blue topaz"><img alt="Blue topaz" height="388" src="https://farm9.staticflickr.com/8513/8358129568_d4e8916090.jpg" width="500"></a><script async charset="utf-8" src="//embedr.flickr.com/assets/client-code.js"></script>
+</div>
+</div>
+
+A year later he had given up, for solid technical reasons, but also because the community pushed all in for Perl 6.  I recall a talk where Chip discussed very technical C++ things he discovered, but it seems to have disappeared from the world. We also might have been sitting around a table in the hallway listening to him talk about it too. For what it&#39;s worth, Simon Cozens tried a similar thing with <a href="//www.perl.com/pub/2000/09/sapphire.html">Sapphire</a> (and there&#39;s <a href="http://perl11.org">Perl 11</a> and <a href="http://rperl.org">RPerl</a> and ...).
+
+Much of the discussion around that time was about which language the next perl sources would use. The then current Perl 5 sources were in C and had macros on top of macros (on top of macros) as it bent over backward to not conflict with other C code it might be embedded next to. Today we have <a href="http://www.metacpan.org/module/DBI">DBI</a> as a generic database interface, but back in the day there were things like <b>oraperl</b>, an Oracle client with Perl embedded in it (or Perl with an Oracle client embedded in it).
+
+Other options were briefly considered, but a crazy idea stuck. Perl 6 would be written in Perl 6. That sounds a little weird, but if you unwind it a bit it works. 
+
+There&#39;s <a href="//github.com/perl6/nqp">NQP</a>, or &quot;Not Quite Perl 6&quot; which serves as a basic layer between a virtual machine and Perl 6. From that, NQP looks quite a bit like Perl 6 and can bootstrap Perl 6. As long as NQP can translate its part to the layer under it, Perl 6 can go anywhere NQP can go. That might be Parrot, a JVM, or <a href="//www.moarvm.org">MOAR</a> (MetaModel on a Runtime).
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/01/27/topaz-is-still-on-sourceforge/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+
+Unterminated <> operator at template line 11.
+Context:
+  6: <%
+  7: 	my $items = get_var('items');
+  8: 
+  9: 	foreach my $item ( $items->@* ) {
+  10: 		my $date = Time::Moment
+  11: 			->from_string( $item->{date} . '-0400', lenient => 1 )
+  12: 			->strftime( '%B %d, %Y' );
+  13: %>
+  14:     <!-- ----------------------------------------------------------- -->
+  15: 	<div class="post">
+  16: 		<h2 class="post_title excerpt_page"><a href="<%= $item->{web_path} =%>"><%= $item->{title} =%></a></h2>
+Traceback (most recent call first):
+  File "template", line 11, in "Mojo::Template::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 148, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::render"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox::include"
+  File "_templates/month_list", line 34, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 173, in "Mojo::Template::render"
+  File "bin/cook", line 258, in "Mojo::Template::render_file"
+  File "bin/cook", line 44, in "main::make_year_month_pages"
+Context:
+  6: my $bin  = get_var('bin');
+  7: %>
+  8: 
+  9: 
+  10: foreach my $n ( 1 .. $bins ) {
+  11: %><a class="pag_link<%= $n == $bin ? ' pag_current'  : '' =%>" href="index<%= $n == 1 ? '' : "_$n" =%>.html"><%= $n =%></a>
+  12: <% } %>
+  13: </div>
+  14: <!-- end paginate -->
+Traceback (most recent call first):
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::render"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox::include"
+  File "_templates/month_list", line 34, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 173, in "Mojo::Template::render"
+  File "bin/cook", line 258, in "Mojo::Template::render_file"
+  File "bin/cook", line 44, in "main::make_year_month_pages"
+
+</div>
+<!-- end excerpt_list -->
+
+</html>
+

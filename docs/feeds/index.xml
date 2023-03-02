@@ -14,7 +14,7 @@
 	<atom:link href="https://www.learningraku.com/feed.rss" rel="self" type="application/rss+xml" />
 	<link>https://www.learningraku.com</link>
 	<description></description>
-	<lastBuildDate>Wed, 20 Apr 2022 19:46:47 -0400</lastBuildDate>
+	<lastBuildDate>Thu, 02 Mar 2023 01:50:48 -0500</lastBuildDate>
 	<language>en-US</language>
 	<sy:updatePeriod>hourly</sy:updatePeriod>
 	<sy:updateFrequency>1</sy:updateFrequency>
@@ -24,7 +24,7 @@
 	<item>
 		<title>Learning Raku digital cover mock-up</title>
 		<link>http://www.learningraku.com/2020/03/19/learning-raku-digital-cover-mock-up/</link>
-		<pubDate>Thu, 19 Mar 2020 22:02:00 -0400</pubDate>
+		<pubDate>Thu, 19 Mar 2020 22:02:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[<p>
@@ -36,7 +36,7 @@
 	<item>
 		<title>Reducing comparison operators</title>
 		<link>http://www.learningraku.com/2020/03/17/reducing-comparison-operators/</link>
-		<pubDate>Tue, 17 Mar 2020 20:07:00 -0400</pubDate>
+		<pubDate>Tue, 17 Mar 2020 20:07:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[<p>
@@ -56,7 +56,7 @@ Basically, it matches <code>\d+</code> then immediately uses an assertion that l
 	<item>
 		<title>Long Live Raku</title>
 		<link>http://www.learningraku.com/2019/12/01/long-live-raku/</link>
-		<pubDate>Sun, 01 Dec 2019 08:22:00 -0400</pubDate>
+		<pubDate>Sun, 01 Dec 2019 08:22:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[<p>
@@ -77,7 +77,7 @@ Various parts of the Raku community will change their names, labels, and referen
 	<item>
 		<title>Taiwanese editions of Learning Perl 6</title>
 		<link>http://www.learningraku.com/2019/06/12/taiwanese-editions-of-learning-perl-6/</link>
-		<pubDate>Wed, 12 Jun 2019 02:35:00 -0400</pubDate>
+		<pubDate>Wed, 12 Jun 2019 02:35:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[<span class="excerpt">
@@ -97,7 +97,7 @@ Learning Perl 6 has its first translation. I know that the translators worked ha
 	<item>
 		<title>Rakudo Star 2018.10 is in Chocolatey</title>
 		<link>http://www.learningraku.com/2018/11/16/rakudo-star-2018-10-is-in-chocolatey/</link>
-		<pubDate>Fri, 16 Nov 2018 05:16:00 -0400</pubDate>
+		<pubDate>Fri, 16 Nov 2018 05:16:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[<p>
@@ -115,7 +115,7 @@ Rakudo Star 2018.10 is now in Chocolatey as the <a href="https://chocolatey.org/
 	<item>
 		<title>Preview Learning Perl 6 in Google Books</title>
 		<link>http://www.learningraku.com/2018/09/03/preview-learning-perl-6-in-google-books/</link>
-		<pubDate>Mon, 03 Sep 2018 16:06:00 -0400</pubDate>
+		<pubDate>Mon, 03 Sep 2018 16:06:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[<p>
@@ -127,7 +127,7 @@ Most O&#39;Reilly books have extensive previews on Google Books, and that&#39;s 
 	<item>
 		<title>Update your Kickstarter reward survey</title>
 		<link>http://www.learningraku.com/2018/08/21/update-your-kickstarter-reward-survey/</link>
-		<pubDate>Tue, 21 Aug 2018 00:19:00 -0400</pubDate>
+		<pubDate>Tue, 21 Aug 2018 00:19:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[<a href="https://www.kickstarter.com/projects/1422827986/learning-perl-6/posts/2268162">The book is going to the printers</a> so I&#39;ll have the paper book rewards soon. It&#39;s been awhile since the Kickstarter backers responded to the survey to supply their shipping address—<a href="https://help.kickstarter.com/hc/en-us/articles/115005126894-How-can-I-view-or-change-my-survey-responses-">log into Kickstarter to change that</a>. Or, you can send me a message through Kickstarter or email (<a href="mailto:brian.d.foy@gmail.com">brian.d.foy@gmail.com</a>).
@@ -139,7 +139,7 @@ If you&#39;re reward was an ebook, update your email address so I can send it to
 	<item>
 		<title>The book cover</title>
 		<link>http://www.learningraku.com/2018/08/15/the-book-cover/</link>
-		<pubDate>Wed, 15 Aug 2018 22:50:00 -0400</pubDate>
+		<pubDate>Wed, 15 Aug 2018 22:50:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[The book production is in its final phases. Now that we know how big the book is (a literal measurement), we know how wide the spine is (<a href="https://www.programmingperl.org/2012/03/20-years-of-programming-perl/">note the physical comparisons I did for <i>Programming Perl</i></a>). The page size is already fixed. From there we create cover that wraps the paper. Here it is:
@@ -157,7 +157,7 @@ You can <a href="https://goo.gl/KHavUw">pre-order Learning Perl 6 on Amazon (US 
 	<item>
 		<title>Table of contents</title>
 		<link>http://www.learningraku.com/2018/08/14/table-of-contents/</link>
-		<pubDate>Tue, 14 Aug 2018 21:41:00 -0400</pubDate>
+		<pubDate>Tue, 14 Aug 2018 21:41:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Now that the book is done I have the <a href="/downloads/LearningPerl6_TOC.pdf">table of contents (PDF)</a>. That&#39;s quite a feat considering I re-ordered some chapters only a couple of months ago! The end of this post also contains a text version that&#39;s slightly outdated since it comes from my original sources before the editors adjusted some things. The content is essentially the same though.
@@ -686,7 +686,7 @@ Since I&#39;ve just finished the last quality control cycle with O&#39;Reilly, I
 	<item>
 		<title>Pre-order Learning Perl 6</title>
 		<link>http://www.learningraku.com/2018/06/19/pre-order-learning-perl-6/</link>
-		<pubDate>Tue, 19 Jun 2018 17:55:00 -0400</pubDate>
+		<pubDate>Tue, 19 Jun 2018 17:55:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[You can now <a href="https://goo.gl/KHavUw">pre-order Learning Perl 6 (Amazon US link)</a>. You&#39;ve been able to do that for awhile but I didn&#39;t want to say anything until I knew it was going to be a book. Since I turned in the book to O&#39;Reilly yesterday and it entered production today, I&#39;m pretty sure that&#39;s happening now.
@@ -700,7 +700,7 @@ If you were a KickStarter backer you don&#39;t need to order the book. I&#39;ll 
 	<item>
 		<title>Use pre-built Rakudo packages on Appveyor</title>
 		<link>http://www.learningraku.com/2018/03/15/use-pre-built-rakudo-packages-on-appveyor/</link>
-		<pubDate>Thu, 15 Mar 2018 03:07:00 -0400</pubDate>
+		<pubDate>Thu, 15 Mar 2018 03:07:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[I&#39;ve been fooling around with <a href="/2018/03/15/use-pre-built-rakudo-packages-on-travis-ci/">pre-built Rakudo packages on Travis CI</a> so I figured that I should do the same on AppVeyor. Last night I had a <a href="https://ci.appveyor.com/project/briandfoy/venturi/build/1.0.12/job/ahmktqs4ynu5u7x2">Ubuntu build that ran out of memory</a> before it could finish compiling Rakudo and it gave up. <a href="https://www.appveyor.com/docs/getting-started-with-appveyor-for-linux/">AppVeyor is rolling out Linux support</a> and I suspect their initial machines are underpowered (especially the ones I get for free—completely reasonable) but I haven&#39;t investigated it. It&#39;s certainly easier than the Pugs installations which could take days although much of that was just GHC. <!--more-->
@@ -732,7 +732,7 @@ install:
 	<item>
 		<title>Use pre-built Rakudo packages on Travis CI</title>
 		<link>http://www.learningraku.com/2018/03/15/use-pre-built-rakudo-packages-on-travis-ci/</link>
-		<pubDate>Thu, 15 Mar 2018 02:10:00 -0400</pubDate>
+		<pubDate>Thu, 15 Mar 2018 02:10:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[I changed my Perl 6 Travis setup so I&#39;m not using the <a href="https://docs.travis-ci.com/user/languages/community-supported-languages/">community supported</a> Perl 6. That one builds rakudo and sometimes it exhausts the memory. Even if it didn&#39;t do that it takes awhile to get to the things I want to test. My new configuration takes the run time from about 7 to under 2 minutes. <!--more-->
@@ -772,7 +772,7 @@ script:
 	<item>
 		<title>Coercion types in signatures don't work and won't for awhile</title>
 		<link>http://www.learningraku.com/2018/03/14/coercion-types-in-signatures-dont-work-and-wont-for-awhile/</link>
-		<pubDate>Wed, 14 Mar 2018 09:26:00 -0400</pubDate>
+		<pubDate>Wed, 14 Mar 2018 09:26:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[I wanted to make a method that took an integer or a string that looked like an integer. I thought a coercion type would work nicely for that. The <code>Int</code> is the target type and <code>Str</code> is the type it will accept then coerce:
@@ -824,7 +824,7 @@ I filed <a href="https://rt.perl.org/Ticket/Display.html?id=132980">RT 132980</a
 	<item>
 		<title>My AppVeyor config now tests Perl 6 on Linux too</title>
 		<link>http://www.learningraku.com/2018/03/13/my-appveyor-config-now-tests-perl-6-on-linux-too/</link>
-		<pubDate>Tue, 13 Mar 2018 08:43:00 -0400</pubDate>
+		<pubDate>Tue, 13 Mar 2018 08:43:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[AppVeyor now <a href="https://www.appveyor.com/docs/getting-started-with-appveyor-for-linux/">supports Ubuntu</a> along with Windows. I&#39;ve updated my <a href="https://github.com/briandfoy/perl6_appveyor_test">Perl 6 AppVeyor config example</a> to include that. I created a <a href="/2017/05/01/rakudo-in-chocolatey-makes-appveyor-easier/">chocolatey package for Rakudo Star</a> to make it easier to test on AppVeyor. I think there are some Rakudo Star packages for linux in the future and that will make the linux side even easier and faster. At the moment it takes about 20 minutes to build before you get to the tests.
@@ -840,7 +840,7 @@ I filed <a href="https://rt.perl.org/Ticket/Display.html?id=132980">RT 132980</a
 	<item>
 		<title>Infinite, cycling sequences</title>
 		<link>http://www.learningraku.com/2018/03/02/infinite-cycling-sequences/</link>
-		<pubDate>Fri, 02 Mar 2018 17:32:00 -0400</pubDate>
+		<pubDate>Fri, 02 Mar 2018 17:32:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[My <a href="https://www.metacpan.org/module/Tie::Cycle">Tie::Cycle</a> Perl 5 module is almost trivial but it solved a customer problem a long, long time ago. It&#39;s makes a list that looks like a scalar. Every time you access the scalar you get the next value in the list (wrapping around at the end).
@@ -912,7 +912,7 @@ It could be a module but this isn&#39;t node.]]></description>
 	<item>
 		<title>The Universal Set</title>
 		<link>http://www.learningraku.com/2018/02/16/the-universal-set/</link>
-		<pubDate>Fri, 16 Feb 2018 01:55:00 -0400</pubDate>
+		<pubDate>Fri, 16 Feb 2018 01:55:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Some people like to think you can&#39;t have a universal set. I say otherwise. The difference is what you can do about it.
@@ -958,7 +958,7 @@ The trick is to figure out how to represent a set difference with a universal se
 	<item>
 		<title>Hints for Perl 6 on Windows</title>
 		<link>http://www.learningraku.com/2018/01/18/hints-for-perl-6-on-windows/</link>
-		<pubDate>Thu, 18 Jan 2018 21:34:00 -0400</pubDate>
+		<pubDate>Thu, 18 Jan 2018 21:34:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[<style>
@@ -1057,7 +1057,7 @@ There are some Unicode test programs in the <a href="https://github.com/briandfo
 	<item>
 		<title>Custom operators for Knuth's Arrow</title>
 		<link>http://www.learningraku.com/2018/01/18/525/</link>
-		<pubDate>Thu, 18 Jan 2018 09:28:00 -0400</pubDate>
+		<pubDate>Thu, 18 Jan 2018 09:28:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[[mathjax]
@@ -1186,7 +1186,7 @@ You get the idea. I&#39;ve made a much longer <a href="https://gist.github.com/b
 	<item>
 		<title>Test a module version</title>
 		<link>http://www.learningraku.com/2018/01/17/test-a-module-version/</link>
-		<pubDate>Wed, 17 Jan 2018 09:55:00 -0400</pubDate>
+		<pubDate>Wed, 17 Jan 2018 09:55:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[The <i>META6.json</i> file has metadata for a Perl 6 module. But I like to also put things in the module file. I&#39;d rather have some of that stuff with the code in case the metadata file goes missing as it might if you throw a <i>.pm</i> file in a directory rather than installing with <code>zef</code>. That means I forget to update one of them (it&#39;s usually the <i>META6.json</i>). <!--more-->
@@ -1225,7 +1225,7 @@ The obvious next step is to make a program to update <i>META6.json</i> for me bu
 	<item>
 		<title>De-duping iTunes</title>
 		<link>http://www.learningraku.com/2018/01/16/de-duping-itunes/</link>
-		<pubDate>Tue, 16 Jan 2018 07:43:00 -0400</pubDate>
+		<pubDate>Tue, 16 Jan 2018 07:43:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Every so often I notice that my iTunes library has a lot of duplicate items and I need to get rid of things. It&#39;s mostly a task for finding an audio file that has the same name as another audio file but with a space and digit added right before the extension. <i>Song.mp3</i> and <i>Song 1.mp3</i> are examples of this problem. They&#39;ll be in the same directory; duplicates in different directories are a different matter and I&#39;ve done that too by comparing file digests. That&#39;s not this problem.
@@ -1347,7 +1347,7 @@ I&#39;ll probably lose my Perl 6 program, forget I wrote this, and recreate this
 	<item>
 		<title>Turning strings into fake positionals</title>
 		<link>http://www.learningraku.com/2018/01/11/turning-strings-into-fake-positionals/</link>
-		<pubDate>Thu, 11 Jan 2018 07:25:00 -0400</pubDate>
+		<pubDate>Thu, 11 Jan 2018 07:25:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[While playing with some strings I realized that I really wanted strings to do the <a href="https://docs.perl6.org/type/Positional">Positional</a> role. When I&#39;m inspecting or modifying strings I&#39;m often doing things based on positions so the <code>Positional</code> interface seems interesting. Just for fun I can adapt the <code>[ ]</code> to be the interface to <code>substr</code>: <!--more-->
@@ -1396,7 +1396,7 @@ I don&#39;t want to make a habit of this though even if it is interesting.]]></d
 	<item>
 		<title>Quick Trick: Catching a Perl 6 warning</title>
 		<link>http://www.learningraku.com/2018/01/10/quick-trick-catching-a-perl-6-warning/</link>
-		<pubDate>Wed, 10 Jan 2018 11:17:00 -0400</pubDate>
+		<pubDate>Wed, 10 Jan 2018 11:17:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[While testing <a href="https://github.com/briandfoy/perl6-file-find">a module</a> I wanted to check that a deprecation warning shows up. <a href="https://docs.perl6.org/routine/warn">Warnings are a special sort of exception</a> that you can catch in a <code>CONTROL</code> block. <!--more-->
@@ -1460,7 +1460,7 @@ This is a warning
 	<item>
 		<title>Converting numbers to strings the hard way</title>
 		<link>http://www.learningraku.com/2018/01/09/converting-numbers-to-strings-the-hard-way/</link>
-		<pubDate>Tue, 09 Jan 2018 06:02:00 -0400</pubDate>
+		<pubDate>Tue, 09 Jan 2018 06:02:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Turning numbers into strings can be a big waste of time and money.  Paul Khuong wrote about this in <a href="//www.pvk.ca/Blog/2017/12/22/appnexus-common-framework-its-out-also-how-to-print-integers-faster/">How to Print Integers Really Fast (With Open Source AppNexus Code!)</a>. If you&#39;ve bought into the JSON mania you&#39;re probably serializing numbers as strings quite a bit without even thinking about it. Much of his discussion is special to C or C++ where you (think) you directly control the hardware. Since this is also a typical interview problem I thought I&#39;d work on it in Perl 6 with a few extras. <!--more-->
@@ -1642,7 +1642,7 @@ $sequence.hyper.map( { $formatter.( $_ ) } ).reverse.join( &#39;|&#39; ).say;
 	<item>
 		<title>Playing with Heap's Algorithm</title>
 		<link>http://www.learningraku.com/2017/12/31/playing-with-heaps-algorithm/</link>
-		<pubDate>Sun, 31 Dec 2017 06:14:00 -0400</pubDate>
+		<pubDate>Sun, 31 Dec 2017 06:14:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[I implemented Heap&#39;s algorithm, which generates all permutations of a list, in Perl 6. It&#39;s the end of the year and I&#39;m cleaning out all the things I marked to read later. Sometimes I&#39;ll take something simple, such as a famous algorithm, and try to do it on my own. It&#39;s good practice for language skills but it&#39;s also a good education on languages. <!--more-->
@@ -1839,7 +1839,7 @@ for @$seq -&gt; $next {
 	<item>
 		<title>Two ways to change multiple hash values at the same time</title>
 		<link>http://www.learningraku.com/2017/07/10/two-ways-to-change-multiple-hash-values-at-the-same-time/</link>
-		<pubDate>Mon, 10 Jul 2017 00:36:00 -0400</pubDate>
+		<pubDate>Mon, 10 Jul 2017 00:36:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Somehow I ended up a binary assignment with the <a href="https://docs.perl6.org/routine/Z#(Operators)_infix_Z">zip operator</a>:
@@ -1873,7 +1873,7 @@ And, for what it&#39;s worth, the results are pretty much what I expected despit
 	<item>
 		<title>How you average numbers doesn't matter</title>
 		<link>http://www.learningraku.com/2017/06/17/how-you-average-numbers-doesnt-matter/</link>
-		<pubDate>Sat, 17 Jun 2017 08:54:00 -0400</pubDate>
+		<pubDate>Sat, 17 Jun 2017 08:54:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Perl 6 averages &quot;floating point&quot; numbers correctly. That&#39;s an interesting statement because it seems like it should be obvious and expected. However, people around computers long enough are used to round-off error. Sinan Ünür wrote <a href="https://www.nu42.com/2015/03/how-you-average-numbers.html">How you average numbers matters</a> to show the curious compounding of small effects. He shows some Perl 5 code:
@@ -1985,7 +1985,7 @@ The array now has is flat. The sublist inserted their items into the larger list
 	<item>
 		<title>Don't use < in programming</title>
 		<link>http://www.learningraku.com/2017/05/21/dont-use-in-programming/</link>
-		<pubDate>Sun, 21 May 2017 16:48:00 -0400</pubDate>
+		<pubDate>Sun, 21 May 2017 16:48:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[I don&#39;t actually mean that you shouldn&#39;t use <code>&lt;</code>, but I&#39;m playing off <a href="http://llewellynfalco.blogspot.hu/2016/02/dont-use-greater-than-sign-in.html">Don&#39;t use the greater than sign in programming</a>. That post from Lewellyn Falco reminded me of a trick for a conditional that checks if a number is inside or outside of a range. A C programmer pointed this out to me years and years ago. It&#39;s not an uncommon trick, but it&#39;s not one I think about much. And, in Perl 6, there&#39;s another way to do the same thing.
@@ -2052,7 +2052,7 @@ But, you don&#39;t need the chain. The <a href="/2020/03/17/reducing-comparison-
 	<item>
 		<title>Rakudo in Chocolatey makes AppVeyor easier</title>
 		<link>http://www.learningraku.com/2017/05/01/rakudo-in-chocolatey-makes-appveyor-easier/</link>
-		<pubDate>Mon, 01 May 2017 23:59:00 -0400</pubDate>
+		<pubDate>Mon, 01 May 2017 23:59:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Rakudo is now easier to install on Windows. <a href="https://chocolatey.org/packages/rakudostar">Rakudo Star is now in Chocolatey</a> (with 2017.04 awaiting moderation as I write this). This makes it much easier to automatically deploy Rakudo Star in Windows environments.
@@ -2099,7 +2099,7 @@ Now my AppVeyor config in the <a href="https://github.com/briandfoy/perl6_appvey
 	<item>
 		<title>As many digits as you like</title>
 		<link>http://www.learningraku.com/2017/04/24/as-many-digits-as-you-like/</link>
-		<pubDate>Mon, 24 Apr 2017 01:11:00 -0400</pubDate>
+		<pubDate>Mon, 24 Apr 2017 01:11:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[[mathjax]
@@ -2237,7 +2237,7 @@ sub MAIN ( $places = 15 ) { # could constrain further
 	<item>
 		<title>The 24 Puzzle, in Perl 6, using Channels and Promises</title>
 		<link>http://www.learningraku.com/2017/04/18/the-24-puzzle-in-perl-6-using-channels-and-promises/</link>
-		<pubDate>Tue, 18 Apr 2017 14:10:00 -0400</pubDate>
+		<pubDate>Tue, 18 Apr 2017 14:10:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[<a href="http://blog.plover.com/math/24-puzzle.html">Mark Jason Dominus solved the 24 Puzzle in Perl</a>, then explicated some non-Perl solutions other people sent him. <a href="https://rjbs.manxome.org/rubric/entry/2102">RJBS tried it in Forth</a>. I&#39;ve been meaning to try it in Perl 6. I bumbled around as I stubbornly tried to include language features I didn&#39;t really need, but that&#39;s part of the fun. <!--more-->
@@ -2687,7 +2687,7 @@ multi op ( &#39;*&#39;, $m, $n ) { $m[0] * $n[0] }
 	<item>
 		<title>Quick Trick: Longest string using the reduction operator</title>
 		<link>http://www.learningraku.com/2017/04/16/quick-trick-longest-string-using-the-reduction-operator/</link>
-		<pubDate>Sun, 16 Apr 2017 15:51:00 -0400</pubDate>
+		<pubDate>Sun, 16 Apr 2017 15:51:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[I had a problem where I wanted the longest string from a list. I didn&#39;t want to sort because I wanted to do it with a single pass. (The comments show sorting through <code>max</code>, which I was also avoiding). <!--more-->
@@ -2737,7 +2737,7 @@ say &quot;Longest is ｢$longest｣&quot;;
 	<item>
 		<title>All things being equal, not all things are eqv</title>
 		<link>http://www.learningraku.com/2017/04/07/a-wealth-of-comparison-operators/</link>
-		<pubDate>Fri, 07 Apr 2017 12:12:00 -0400</pubDate>
+		<pubDate>Fri, 07 Apr 2017 12:12:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Perl 6 has a wealth of comparison operators so I don&#39;t have to do a lot of work to test complex data structures. Consider the case where I want to test two lists. I might reach for the <a href="https://docs.perl6.org/language/operators#infix_eq"><code>eq</code></a> and think that it works. Here&#39;s a demonstration of that in the REPL: <!--more-->
@@ -2867,7 +2867,7 @@ There are many other <a href="https://docs.perl6.org/language/operators#infix_eq
 	<item>
 		<title>Rakudo Star on AppVeyor</title>
 		<link>http://www.learningraku.com/2017/04/02/rakudo-star-on-appveyor/</link>
-		<pubDate>Sun, 02 Apr 2017 00:48:00 -0400</pubDate>
+		<pubDate>Sun, 02 Apr 2017 00:48:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[<i><b>UPDATE</b> - <a href="/2017/05/01/rakudo-in-chocolatey-makes-appveyor-easier/">Rakudo is now in Chocolatey</a> so most of this is really easy now.</i>
@@ -2914,7 +2914,7 @@ I&#39;m done working on it until I have another problem, but there are <a href="
 	<item>
 		<title>Close enough</title>
 		<link>http://www.learningraku.com/2017/03/23/close-enough/</link>
-		<pubDate>Thu, 23 Mar 2017 21:36:00 -0400</pubDate>
+		<pubDate>Thu, 23 Mar 2017 21:36:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[[mathjax]
@@ -3059,7 +3059,7 @@ Now I want the string version of this.]]></description>
 	<item>
 		<title>Testing JSON grammars</title>
 		<link>http://www.learningraku.com/2017/02/24/testing-json-grammars/</link>
-		<pubDate>Fri, 24 Feb 2017 22:53:00 -0400</pubDate>
+		<pubDate>Fri, 24 Feb 2017 22:53:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Perl 6 grammars make it easy to parse JSON and it&#39;s a favorite example to show off the feature. This post is about testing the grammar; you don&#39;t need another example here. I list several at the end of this post.
@@ -3139,7 +3139,7 @@ If you want some grammar examples, here are some JSON parsers:
 	<item>
 		<title>Three ways to pretty print Perl 6</title>
 		<link>http://www.learningraku.com/2017/01/26/three-ways-to-pretty-print-perl-6/</link>
-		<pubDate>Thu, 26 Jan 2017 07:39:00 -0400</pubDate>
+		<pubDate>Thu, 26 Jan 2017 07:39:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[I&#39;ve had my head down working on the &quot;Grammars&quot; chapter, and along
@@ -3458,7 +3458,7 @@ It might be more comfortable for people used to the Microsoft hierarchical inter
 	<item>
 		<title>BBEdit Text Filters in Perl 6</title>
 		<link>http://www.learningraku.com/2017/01/17/bbedit-text-filters-in-perl-6/</link>
-		<pubDate>Tue, 17 Jan 2017 14:26:00 -0400</pubDate>
+		<pubDate>Tue, 17 Jan 2017 14:26:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[I&#39;ve been writing BBEdit <q href="http://bbeditextras.org/wiki/index.php?title=Text_Filters">Text Filters in Perl 6. This isn&#39;t revolutionary and I&#39;ve made no great hack. It&#39;s not a hidden part of the BBEdit docs, and it&#39;s not a feature unique to my favorite editor. You don&#39;t even need to use Perl 6; any unix interpreter will do. Your editor can probably do the same thing, and maybe even with the same programs.
@@ -3532,7 +3532,7 @@ Now I need to figure out why BBEdit won&#39;t allow me to assign a keyboard shor
 	<item>
 		<title>6 More Things About 6, at Boston Perl mongers</title>
 		<link>http://www.learningraku.com/2017/01/11/6-more-things-about-6-at-boston-perl-mongers/</link>
-		<pubDate>Wed, 11 Jan 2017 14:22:00 -0400</pubDate>
+		<pubDate>Wed, 11 Jan 2017 14:22:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[<a href="http://www.theperlshop.com">The Perl Shop</a> sponsored me to present a <a href="http://www.slideshare.net/brian_d_foy/6-more-things-about-perl-6">Perl 6 talk</a> to the <a href="https://www.meetup.com/Boston-pm/">Boston Perl mongers</a> last night. I pulled out six thing that I didn&#39;t <a href="/2016/12/09/6-things-about-6-at-ny-pm/">talk about at the New York Perl mongers last month</a>. As before, these aren&#39;t really the big ideas or most exciting features. They are sometimes small corners that lead to other ideas.
@@ -3550,7 +3550,7 @@ I&#39;m lining up some Perl mongers groups I want to visit this spring. If you&#
 	<item>
 		<title>Andrew Shitov's Perl at a Glance</title>
 		<link>http://www.learningraku.com/2017/01/10/andrew-shitovs-perl-at-a-glance/</link>
-		<pubDate>Tue, 10 Jan 2017 03:09:00 -0400</pubDate>
+		<pubDate>Tue, 10 Jan 2017 03:09:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[<br>
@@ -3569,7 +3569,7 @@ Andrew Shitov has published <a href="https://deeptext.media/perl6-at-a-glance/">
 	<item>
 		<title>Buffers, hexdump, and Perl 6 Power Tools</title>
 		<link>http://www.learningraku.com/2017/01/09/buffers-hexdump-and-perl-6-power-tools/</link>
-		<pubDate>Mon, 09 Jan 2017 04:25:00 -0400</pubDate>
+		<pubDate>Mon, 09 Jan 2017 04:25:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[I was playing the <a href="https://docs.perl6.org/type/Buf">buffers</a> and reading binary data but I ended up implementing a <a href="https://github.com/briandfoy/Perl6PowerTools/blob/master/bin/hexdump">Perl 6 version of hexdump</a>. Looking for a place to put it, I figured <a href="https://github.com/briandfoy/Perl6PowerTools">Perl6PowerTools</a> might as well exist. Now it has a single program, but I figure there are people who will look at the original <a href="http://www.perlpowertools.com/">PerlPowerTools</a> and want to translate some of those to Perl 6.
@@ -3640,7 +3640,7 @@ put &quot;The value of \$foo is &quot;, $::(&#39;foo&#39;); # works just fine.
 	<item>
 		<title>Search Perl 6 repos with Marchex/github-api-tools</title>
 		<link>http://www.learningraku.com/2017/01/04/search-perl-6-repos-with-marchexgithub-api-tools/</link>
-		<pubDate>Wed, 04 Jan 2017 14:44:00 -0400</pubDate>
+		<pubDate>Wed, 04 Jan 2017 14:44:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[<a href="https://github.com/pudge">Chris Nandor</a> has been bugging me to use the <a href="https://github.com/Marchex/github-api-tools">Github tools he helped to develop for Marchex</a>, so when <a href="/2017/01/03/search-the-perl-6-repos-with-etsys-hound/">I posted about Hound</a> he showed me another way to search multiple <a href="https://github.com/">GitHub</a> repos at the same time. This version only works if everything is on GitHub (or your Enterprise version of that), but the Hound version can work with whatever mix of version control systems have, either local, remote, or both.
@@ -3735,7 +3735,7 @@ Either way I see two benefits here. I can do it from the command line and it wil
 	<item>
 		<title>Search the Perl 6 repos with Etsy's Hound</title>
 		<link>http://www.learningraku.com/2017/01/03/search-the-perl-6-repos-with-etsys-hound/</link>
-		<pubDate>Tue, 03 Jan 2017 22:51:00 -0400</pubDate>
+		<pubDate>Tue, 03 Jan 2017 22:51:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[<div class="image center">
@@ -3781,7 +3781,7 @@ $ make run
 	<item>
 		<title>Collating my activity to @LearningPerl6</title>
 		<link>http://www.learningraku.com/2017/01/03/collating-my-activity-to-learningperl6/</link>
-		<pubDate>Tue, 03 Jan 2017 06:07:00 -0400</pubDate>
+		<pubDate>Tue, 03 Jan 2017 06:07:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[I&#39;ve already told you about the <a href="/2016/12/19/a-dedicated-learningperl6-twitter-account/">@LearningPerl6</a> twitter account, and I spent today setting up some stuff to collect what I&#39;m doing elsewhere. I&#39;m using <a href="http://dlvr.it">Dlvr.it</a> to put the interesting things on Twitter. This way you can see what I&#39;m working on and what I&#39;m thinking about. <!--more-->
@@ -3817,7 +3817,7 @@ If you have an RT account, you can create your own search, grab the feed for tha
 	<item>
 		<title>indir() changes the directory just for its block</title>
 		<link>http://www.learningraku.com/2016/12/30/indir-changes-the-directory-just-for-its-block/</link>
-		<pubDate>Fri, 30 Dec 2016 23:15:00 -0400</pubDate>
+		<pubDate>Fri, 30 Dec 2016 23:15:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[<i>Update for April 2017: <code>indir</code> is now a <a href="https://docs.perl6.org/routine/indir">documented part of the language</a>.</i>
@@ -3843,7 +3843,7 @@ I feel a little bad that I&#39;m not stopping to fully investigate these corner 
 	<item>
 		<title>Strip leading spaces from here-docs</title>
 		<link>http://www.learningraku.com/2016/12/25/strip-leading-spaces-from-here-docs/</link>
-		<pubDate>Sun, 25 Dec 2016 05:37:00 -0400</pubDate>
+		<pubDate>Sun, 25 Dec 2016 05:37:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[<a href="https://www.effectiveperlprogramming.com/2016/12/strip-leading-spaces-from-here-docs-with-v5-26/">Perl v5.26 steals Perl 6&#39;s feature to strip leading whitespace from here-docs</a>. I wrote about that for The Effective Perler, but here&#39;s the same thing for <a href="https://docs.perl6.org/language/quoting#Heredocs:_:to">Perl 6 here-docs</a>. As with most things, the Perl 5 feature is slightly different. <!--more-->
@@ -3999,7 +3999,7 @@ So, be careful how you specify those leading spaces (and how you accept patches 
 	<item>
 		<title>Downloads</title>
 		<link>http://www.learningraku.com/downloads/</link>
-		<pubDate>Thu, 22 Dec 2016 19:03:00 -0400</pubDate>
+		<pubDate>Thu, 22 Dec 2016 19:03:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[For the book I provide interesting content and exercise aids. Until I get this more organized, I&#39;ll keep all of that in the <a href="https://github.com/briandfoy/LearningPerl6_Downloads">LearningPerl6_Downloads</a> GitHub repo.]]></description>
@@ -4009,7 +4009,7 @@ So, be careful how you specify those leading spaces (and how you accept patches 
 	<item>
 		<title>A dedicated LearningPerl6 Twitter account</title>
 		<link>http://www.learningraku.com/2016/12/19/a-dedicated-learningperl6-twitter-account/</link>
-		<pubDate>Mon, 19 Dec 2016 22:40:00 -0400</pubDate>
+		<pubDate>Mon, 19 Dec 2016 22:40:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[If you only want my Perl 6 messages, I&#39;ve created a new <a href="https://twitter.com/LearningPerl6">@LearningPerl6</a> Twitter account. Like my other <a href="https://twitter.com/briandfoy_perl">@briandfoy_perl</a> is mostly just Perl with some things that Perl people might like, this one will be even more restricted. If you like feeds, this blog can do that. You&#39;ll get the same articles on Twitter (through <a href="https://dlvrit.com">dlvr.it</a>), as well as other interesting things I might run across. <!--more-->
@@ -4027,7 +4027,7 @@ And, if there&#39;s another social media spot you&#39;d like to get notices, let
 	<item>
 		<title>Translating the perlfaq to Perl 6</title>
 		<link>http://www.learningraku.com/2016/12/19/translating-the-perlfaq-to-perl-6/</link>
-		<pubDate>Mon, 19 Dec 2016 22:30:00 -0400</pubDate>
+		<pubDate>Mon, 19 Dec 2016 22:30:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[I started a GitHub project to <a href="https://github.com/briandfoy/perl5faq_in_perl6">translate the Perl 5 perlfaq to Perl 6</a>. For years I maintained those documents so they are a bit special to me. Sadly, the <a href="https://github.com/tpf/perlfaq">canonical TPF repo</a> started over in 2012 with the sources current in v5.15, so most of that history has been lost. Oh well. <!--more-->
@@ -4049,7 +4049,7 @@ If it doesn&#39;t matter anymore, keeping the question but explaining the way Pe
 	<item>
 		<title>Quick Tip #30: Uninstall a Perl 6 module</title>
 		<link>http://www.learningraku.com/2016/12/15/quick-tip-30-uninstall-a-perl-6-module/</link>
-		<pubDate>Thu, 15 Dec 2016 09:23:00 -0400</pubDate>
+		<pubDate>Thu, 15 Dec 2016 09:23:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[You can uninstall Perl 6 modules. Many people have asked for a way to uninstall a Perl 5 module, but that toolchain didn&#39;t do the sort of tracking that Perl 6 does. Some of these are recent developments, so you should have the most recent <a href="http://www.rakudo.org">Rakudo</a> that you can use. <!--more-->
@@ -4081,7 +4081,7 @@ This is the final <a href="https://www.learningperl6.com/category/kickstarter-ti
 	<item>
 		<title>Quick Tip #29: Flip-flopping junctions</title>
 		<link>http://www.learningraku.com/2016/12/14/quick-tip-29-flip-flopping-junctions/</link>
-		<pubDate>Wed, 14 Dec 2016 13:52:00 -0400</pubDate>
+		<pubDate>Wed, 14 Dec 2016 13:52:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[The <a href="https://docs.perl6.org/language/operators#infix_ff">flip flop operator</a> isn&#39;t just something for politicians and nervous interface designers. It&#39;s a feature designed to turn on and off to set a window of processing. <!--more-->
@@ -4202,7 +4202,7 @@ If you&#39;re used to the sed version of flip-flopping, there&#39;s also <code><
 	<item>
 		<title>Quick Tip #28: Perl 6's Schwartzian Transform</title>
 		<link>http://www.learningraku.com/2016/12/13/quick-tip-28-perl-6s-schwartzian-transform/</link>
-		<pubDate>Tue, 13 Dec 2016 15:50:00 -0400</pubDate>
+		<pubDate>Tue, 13 Dec 2016 15:50:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[This is a really <a href="https://www.learningperl6.com/category/kickstarter-tips/">Quick Tip</a>. It&#39;s about the Schwartzian Transform, which makes things quicker. <!--more-->
@@ -4240,7 +4240,7 @@ Not only that, sort caches the result of the operation so it doesn&#39;t have to
 	<item>
 		<title>Quick Tip #27: Read the docs locally</title>
 		<link>http://www.learningraku.com/2016/12/12/quick-tip-27/</link>
-		<pubDate>Mon, 12 Dec 2016 17:13:00 -0400</pubDate>
+		<pubDate>Mon, 12 Dec 2016 17:13:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[The <code>p6doc</code> command helps you read the Perl 6 docs. It&#39;s in the <a href="https://github.com/perl6/doc">Perl 6 documentation repo</a> (so, it doesn&#39;t come with Rakudo). <!--more-->
@@ -4355,7 +4355,7 @@ And this is what you get:
 	<item>
 		<title>Quick Tip #26: Keep just the good parts</title>
 		<link>http://www.learningraku.com/2016/12/11/quick-tip-26-keep-just-the-good-parts/</link>
-		<pubDate>Sun, 11 Dec 2016 12:11:00 -0400</pubDate>
+		<pubDate>Sun, 11 Dec 2016 12:11:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Ever wanted to break up a string based on the parts that you wanted to keep? You probably already know about <code><a href="https://docs.perl6.org/routine/split">split</a></code>; it uses a pattern to find the parts to discard. Perl 6&#39;s <code><a comb" docs.perl6.org hre"https: routine>comb</a></code> uses a pattern to find the parts of a string it keeps. <!--more-->
@@ -4425,7 +4425,7 @@ And, for a final tip, <code>comb</code> with no pattern splits into characters:
 	<item>
 		<title>Quick Tip #25: Very literal Quoting</title>
 		<link>http://www.learningraku.com/2016/12/10/quick-tip-25-very-literal-quoting/</link>
-		<pubDate>Sat, 10 Dec 2016 09:02:00 -0400</pubDate>
+		<pubDate>Sat, 10 Dec 2016 09:02:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Perl 6 has a basic <a href="https://docs.perl6.org/language/quoting">quoting mechanism</a> that is as literal as it can be. It doesn&#39;t escape anything and doesn&#39;t interpolate anything. The <code>Q</code> does nothing special so you get a string as close to exactly what you see: <!--more-->
@@ -4516,7 +4516,7 @@ Q:qq/This and a newline \n/
 	<item>
 		<title>Quick Tip #24: How long did that take?</title>
 		<link>http://www.learningraku.com/2016/12/09/quick-tip-24-how-long-did-that-take/</link>
-		<pubDate>Fri, 09 Dec 2016 20:13:00 -0400</pubDate>
+		<pubDate>Fri, 09 Dec 2016 20:13:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[I can use P6&#39;s <a href="/2016/11/30/quick-tip-15-phasers/">phasers</a> to track how my program moves from one phase to the next. In particular, I&#39;m curious about how much time my program spends in the compile-phase. P6 might be a bit slow now, or at least slower than you think it should be, but that&#39;s okay. The core developers want to be correct first and fast second (but, also both). If you look at the <a href="https://github.com/rakudo/rakudo/blob/nom/docs/ChangeLog">Rakudo change logs</a>, you see lots of entries mentioning big speedups in things they got working first and are now optimizing. <!--more-->
@@ -4593,7 +4593,7 @@ If I loaded a different, more complicated module these result may be different. 
 	<item>
 		<title>6 Things About 6, at NY.pm</title>
 		<link>http://www.learningraku.com/2016/12/09/6-things-about-6-at-ny-pm/</link>
-		<pubDate>Fri, 09 Dec 2016 06:15:00 -0400</pubDate>
+		<pubDate>Fri, 09 Dec 2016 06:15:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[I gave a short talk to the <a href="https://www.meetup.com/The-New-York-Perl-Meetup-Group/">New York Perl mongers</a> about six things I like at Perl 6. I wouldn&#39;t label these as the most groundbreaking, novel, or exciting features. They are just six things I picked out from what I was thinking about this week. Sometimes it&#39;s the little touches that matter. <!--more-->
@@ -4611,7 +4611,7 @@ If you&#39;d like me to give a presentation to your group, let me know (brian.d.
 	<item>
 		<title>Quick Tip #23: Use prove to run Perl 6 tests</title>
 		<link>http://www.learningraku.com/2016/12/08/quick-tip-23-use-prove-to-run-perl-6-tests/</link>
-		<pubDate>Thu, 08 Dec 2016 17:59:00 -0400</pubDate>
+		<pubDate>Thu, 08 Dec 2016 17:59:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[<p>
@@ -4623,7 +4623,7 @@ You can run Perl 6 tests with <code><a href="http://www.metacpan.org/module/App:
 	<item>
 		<title>Quick Tip #22: Use Perl 5 modules in Perl 6</title>
 		<link>http://www.learningraku.com/2016/12/07/quick-tip-22-use-perl-5-modules-in-perl-6/</link>
-		<pubDate>Wed, 07 Dec 2016 17:37:00 -0400</pubDate>
+		<pubDate>Wed, 07 Dec 2016 17:37:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Perl 6 has always had a goal of interacting with other languages. When Larry Wall announced the project in 2000, he talked about <a href="http://www.perl.com/pub/2000/10/23/soto2000.html">translate with 95-percent accuracy 95 percent of the scripts</a>. He wanted a way to run Perl 5 from Perl 6. <!--more-->
@@ -4659,7 +4659,7 @@ say $isbn.as_isbn10.as_string;
 	<item>
 		<title>Quick Tip #21: The rats in the machine</title>
 		<link>http://www.learningraku.com/2016/12/06/quick-tip-21-the-rats-in-the-machine/</link>
-		<pubDate>Tue, 06 Dec 2016 08:17:00 -0400</pubDate>
+		<pubDate>Tue, 06 Dec 2016 08:17:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Let&#39;s think about numbers. I&#39;ve been inserting Kickstarter messages into my Quick Tips, but this post is <i>about</i> Kickstarter. Or, about their mistreatment of numbers. There&#39;s no scandal, just those little inconsistencies that the experienced programmer notices because they have made the same mistakes. Perl 6 has features to make this easier. <!--more-->
@@ -4790,7 +4790,7 @@ And, we know what that small round errors lead to bigger problems.
 	<item>
 		<title>Quick Tip #20: Way off base</title>
 		<link>http://www.learningraku.com/2016/12/05/quick-tip-20-way-off-base/</link>
-		<pubDate>Mon, 05 Dec 2016 09:33:00 -0400</pubDate>
+		<pubDate>Mon, 05 Dec 2016 09:33:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Want to use numbers that are represented in something other than base 10? That&#39;s no problem in Perl 6. Some languages throw you a bone with binary, octal, or hexadecimal conversions, but what if you want base 17? Or, better yet, base 36?  <!--more-->
@@ -4845,7 +4845,7 @@ alias h2d=&quot;perl6 -e &#39;say sprintf q/:10(%d)/, :16(@*ARGS.shift)&#39;&quo
 	<item>
 		<title>Quick Tip #19: Build reusable data types</title>
 		<link>http://www.learningraku.com/2016/12/04/quick-tip-19-build-reusable-data-types/</link>
-		<pubDate>Sun, 04 Dec 2016 14:59:00 -0400</pubDate>
+		<pubDate>Sun, 04 Dec 2016 14:59:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Perl 6 lets you constrain variable values with types, but you don&#39;t have to limit yourself to the built-in types. Once defined, these act like the built-in types. Here are some subsets I&#39;ve stolen from Brad Clawsie&#39;s <a href="https://github.com/bradclawsie/Subsets-Common">Subsets::Common</a> module: <!--more-->
@@ -4891,7 +4891,7 @@ For my subset, I exported it by declaring it <code>is export</code> so other peo
 	<item>
 		<title>Quick Tip #18: Short circuit subroutines with multi</title>
 		<link>http://www.learningraku.com/2016/12/03/quick-tip-18-short-circuit-subroutines-with-multi/</link>
-		<pubDate>Sat, 03 Dec 2016 16:15:00 -0400</pubDate>
+		<pubDate>Sat, 03 Dec 2016 16:15:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[In <a href="https://www.learningperl6.com/2016/12/02/quick-tip-17-rakudos-built-in-profiler/">yesterday&#39;s Quick Tip</a> I used the Fibonacci sequence as an example to show off Rakudo&#39;s <code>--profile</code> option. In today&#39;s tip I&#39;ll use that same sequence to show off Perl 6&#39;s multi-dispatch features. <!--more-->
@@ -5079,7 +5079,7 @@ I could also use this for debugging where I know I have one case that I want to 
 	<item>
 		<title>Quick Tip #17: Rakudo's built-in profiler</title>
 		<link>http://www.learningraku.com/2016/12/02/quick-tip-17-rakudos-built-in-profiler/</link>
-		<pubDate>Fri, 02 Dec 2016 14:03:00 -0400</pubDate>
+		<pubDate>Fri, 02 Dec 2016 14:03:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Rakudo comes with a built-in profiler. Invoke the program with the <code>--profiler</code> option and
@@ -5190,7 +5190,7 @@ Third, consider a completely different approach than any you see here. The Fibon
 	<item>
 		<title>Quick Tip #16: Explosive combinatorials</title>
 		<link>http://www.learningraku.com/2016/12/01/quick-tip-16-explosive-combinatorials/</link>
-		<pubDate>Thu, 01 Dec 2016 15:27:00 -0400</pubDate>
+		<pubDate>Thu, 01 Dec 2016 15:27:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Perl 6 has several sophisticated ways to make lists. I was playing with a particular task where I needed combinations for something similar to bin packing.
@@ -5328,7 +5328,7 @@ This sort of thing replaces several Perl 5 modules I&#39;ve written where I had 
 	<item>
 		<title>Should I just call it P6? or v6?</title>
 		<link>http://www.learningraku.com/2016/12/01/should-i-just-call-it-p6-or-v6/</link>
-		<pubDate>Thu, 01 Dec 2016 11:23:00 -0400</pubDate>
+		<pubDate>Thu, 01 Dec 2016 11:23:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[I&#39;m working on chapter that I need to turn in to O&#39;Reilly and I keep typing &quot;Perl 6&quot;. It&#39;s annoying. But, what else would I call it? I&#39;m not looking to change the name, just the nickname in the book. <!--more-->
@@ -5348,7 +5348,7 @@ And, when are we going to get an implementation named Camelia? ;)]]></descriptio
 	<item>
 		<title>Quick Tip #15: Phasers</title>
 		<link>http://www.learningraku.com/2016/11/30/quick-tip-15-phasers/</link>
-		<pubDate>Wed, 30 Nov 2016 10:32:00 -0400</pubDate>
+		<pubDate>Wed, 30 Nov 2016 10:32:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Perl 6 has phasers, which are subroutines that run at particular times despite their spatial placement inside the the program text. As a program moves from one thing to another, it might trigger a phaser. I wanted to use a cute title like &quot;Phasers set to stun!&quot;, but <a href="https://perl6advent.wordpress.com/2012/12/15/day-15-phasers-set-to-stun/">Jonathan Worthington got there first in the 2012 Perl 6 Advent Calendar</a>. (And, tomorrow is the first day of the <a href="https://perl6advent.wordpress.com">2016 Perl 6 Advent Calendar</a>). <!--more-->
@@ -5467,7 +5467,7 @@ for 0 .. 3 -&gt; $item {
 	<item>
 		<title>Quick Tip #14: Myriad output routines</title>
 		<link>http://www.learningraku.com/2016/11/29/quick-tip-14-myriad-output-routines/</link>
-		<pubDate>Tue, 29 Nov 2016 13:55:00 -0400</pubDate>
+		<pubDate>Tue, 29 Nov 2016 13:55:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Perl 6 has many ways to output things. Here&#39;s a table of the various routines you may want, along with their subtle differences. <!--more-->
@@ -5541,7 +5541,7 @@ for 0 .. 3 -&gt; $item {
 	<item>
 		<title>Quick Tip #13: Kapreker's Constant</title>
 		<link>http://www.learningraku.com/2016/11/28/quick-tip-13-krapukers-constant/</link>
-		<pubDate>Mon, 28 Nov 2016 09:19:00 -0400</pubDate>
+		<pubDate>Mon, 28 Nov 2016 09:19:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[A Kaprekar&#39;s Constant is the number you end up with when you repeatedly substract the descending digits of a four digit number from the ascending digits. This is mostly a problem with rearranging characters. <!--more-->
@@ -5612,7 +5612,7 @@ I could define my own <code>USAGE</code>, but I&#39;ll save that for another Qui
 	<item>
 		<title>Quick Tip #12: Unicode Helper Apps</title>
 		<link>http://www.learningraku.com/2016/11/27/quick-tip-12-unicode-helper-apps/</link>
-		<pubDate>Sun, 27 Nov 2016 10:26:00 -0400</pubDate>
+		<pubDate>Sun, 27 Nov 2016 10:26:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Perl 6 uses fancy Unicode characters to do some of its work, but those don&#39;t show up on most keyboards. I like the Mac program <a href="https://earthlingsoft.net/UnicodeChecker/">UnicodeChecker</a>. I can search by name, code point, or I can paste a character. I find the one that I want, copy it, and paste it into source. The Windows program <a href="http://www.babelstone.co.uk/Software/BabelMap.html">BabelStine</a> looks similar. Leave me suggestions if you know something for your distro. <!--more-->
@@ -5645,7 +5645,7 @@ alias u2char=&#39;perl6 -e &quot;for @*ARGS { say chr(:16(\$_)) }&quot;&#39;
 	<item>
 		<title>Quick Tip #11: Number, Strings, and NumberString Allomorphs</title>
 		<link>http://www.learningraku.com/2016/11/26/quick-tip-11-number-strings-and-numberstring-allomorphs/</link>
-		<pubDate>Sat, 26 Nov 2016 09:11:00 -0400</pubDate>
+		<pubDate>Sat, 26 Nov 2016 09:11:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Perl 6 has a variety of ways to quote things (maybe too many), but they aren&#39;t all the same thing. The angle-bracket quote words, <code>&lt;...&gt;</code> isn&#39;t just <code>qw//</code> written with different characters. It tries to  guess what the words inside the brackets mean. That wasn&#39;t documented today, but <a href="https://github.com/perl6/doc/commit/fa0b8f643356a3db1e5e59fda4f153f48f90ee90">Zoffix has changed the docs</a> so now it does. <!--more-->
@@ -5839,7 +5839,7 @@ Okay, that&#39;s weird. With no spaces it&#39;s just the number type. With some 
 	<item>
 		<title>Quick Tip #10: Syntax highlighting Perl 6</title>
 		<link>http://www.learningraku.com/2016/11/25/quick-tip-10-syntax-highlighting-perl-6/</link>
-		<pubDate>Fri, 25 Nov 2016 08:33:00 -0400</pubDate>
+		<pubDate>Fri, 25 Nov 2016 08:33:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[So far, my quick tips haven&#39;t been that quick. I&#39;ve gotten mired in the tarpit of tracking down weird behaviors and whatnot. Here&#39;s a truly quick tip. If you have more info on editor syntax highlighting for Perl 6, leave a comment. <!--more-->
@@ -5865,7 +5865,7 @@ If you know of more stuff, leave a comment.]]></description>
 	<item>
 		<title>Quick Tip #9: User-defined data types</title>
 		<link>http://www.learningraku.com/2016/11/24/quick-tip-8-user-defined-data-types/</link>
-		<pubDate>Thu, 24 Nov 2016 02:10:00 -0400</pubDate>
+		<pubDate>Thu, 24 Nov 2016 02:10:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Perl 6 has <a href="http://wphomes.soic.indiana.edu/jsiek/what-is-gradual-typing/">&quot;gradual typing&quot;</a>. I can constrain values when I like, and let them run free otherwise. User-defined data types are one of the Perl 6 features that excite me the most. I can define what sort of value I can put in a container thingy, and I can define my own types any way that I like. <!--more-->
@@ -5935,7 +5935,7 @@ Worthington has an <a href="http://www.jnthn.net/papers/2008-yapc-eu-perl6types.
 	<item>
 		<title>Quick Tip #8: Perl 6 sets</title>
 		<link>http://www.learningraku.com/2016/11/23/quick-tip-8-perl-6-sets/</link>
-		<pubDate>Wed, 23 Nov 2016 05:26:00 -0400</pubDate>
+		<pubDate>Wed, 23 Nov 2016 05:26:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Perl 6 has proper sets and set-like types, along operators to do proper set operations. <!--more-->
@@ -6038,7 +6038,7 @@ There are operators that return sets from two lists:
 	<item>
 		<title>Quick Tip #7: Texas and Unicode things</title>
 		<link>http://www.learningraku.com/2016/11/22/quick-tip-7-texas-and-unicode-things/</link>
-		<pubDate>Tue, 22 Nov 2016 05:33:00 -0400</pubDate>
+		<pubDate>Tue, 22 Nov 2016 05:33:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[<i>[&quot;Texas&quot; as a cute name has been changed to the less offensive and more prosaic &quot;ASCII&quot;]</i>
@@ -6147,7 +6147,7 @@ And, I do a few hash slices here, but never change the sigil.]]></description>
 	<item>
 		<title>Quick Tip #6: Data dumping is built into Rakudo</title>
 		<link>http://www.learningraku.com/2016/11/21/quick-tip-6-data-dumping-is-built-in/</link>
-		<pubDate>Mon, 21 Nov 2016 00:38:00 -0400</pubDate>
+		<pubDate>Mon, 21 Nov 2016 00:38:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[I&#39;ve often wished that Perl 5&#39;s <a href="http://www.metacpan.org/module/Data::Dumper">Data::Dumper</a> was built into the language. I often have statements like: <!--more-->
@@ -6198,7 +6198,7 @@ If that&#39;s not enough for you, there&#39;s the <a href="https://modules.perl6
 	<item>
 		<title>Quick Tip #5: The Z=> zip operator, lazy ranges, and terse hash creation.</title>
 		<link>http://www.learningraku.com/2016/11/20/the-z-zip-operator-lazy-ranges-and-terse-hash-creation/</link>
-		<pubDate>Sun, 20 Nov 2016 03:10:00 -0400</pubDate>
+		<pubDate>Sun, 20 Nov 2016 03:10:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Perl 6 has some very sophisticated operators, and many of them naturally do the sorts of things that we do quite a bit unnaturally otherwise. The strength of these operators are the ugliness they hide from us. <!--more-->
@@ -6262,7 +6262,7 @@ my %hash2 = @array Z=&gt; 0 .. *;
 	<item>
 		<title>Quick Tip #4: The Hamming Sequence and hyper-operators</title>
 		<link>http://www.learningraku.com/2016/11/19/quick-tip-4-the-hamming-sequence-and-hyper-operators/</link>
-		<pubDate>Sat, 19 Nov 2016 06:04:00 -0400</pubDate>
+		<pubDate>Sat, 19 Nov 2016 06:04:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[The Hamming Sequence shows up in <a href="http://web.cecs.pdx.edu/~cs410aph/Lectures/Smalltalk%20II/Dijkstra%20on%20Hamming&#39;s%20Problem.pdf">programming exercises</a>. It&#39;s the sequence of numbers that have only 2, 3, or 5 as divisors. The trick is to generate them in ascending order. Dijkstra figured it out, but he cheated a bit by restraining his problem to the first 1,000 values. Some people have a pre-occupation with programs that finish. <!--more-->
@@ -6413,7 +6413,7 @@ In the last bit of code, I just the <code>all</code> <a href="https://docs.perl6
 	<item>
 		<title>Quick Tip #3: Inclusive and Exclusive</title>
 		<link>http://www.learningraku.com/2016/11/18/quick-tip-3-inclusive-and-exclusive/</link>
-		<pubDate>Fri, 18 Nov 2016 09:51:00 -0400</pubDate>
+		<pubDate>Fri, 18 Nov 2016 09:51:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Every day of the <a href="https://www.kickstarter.com/projects/1422827986/learning-perl-6">Learning Perl 6 Kickstarter campaign</a>, I&#39;ll present a quick tip about something I like in Perl 6. Yesterday I posted <a href="/2016/11/17/quick-tip-2-fancier-sequences/">Fancier sequences</a>. In that post I only showed how you could use blocks to decide the next element in the sequence. <!--more-->
@@ -6522,7 +6522,7 @@ But, the block can be anything that I like. I can terminate the sequence after a
 	<item>
 		<title>Quick Tip #2: Fancier sequences</title>
 		<link>http://www.learningraku.com/2016/11/17/quick-tip-2-fancier-sequences/</link>
-		<pubDate>Thu, 17 Nov 2016 06:47:00 -0400</pubDate>
+		<pubDate>Thu, 17 Nov 2016 06:47:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Every day of the <a href="https://www.kickstarter.com/projects/1422827986/learning-perl-6">Learning Perl 6 Kickstarter campaign</a>, I&#39;ll present a <a href="/category/kickstarter-tips/">quick tip</a> about something I like in Perl 6. Yesterday I posted <a href="/2016/11/16/quick-tip-1-user-defined-infinite-sequences/">User-defined infinite sequences</a>. In that post I only showed sequences of positive numbers. That&#39;s a bit boring. Let&#39;s make something fancier. <!--more-->
@@ -6594,7 +6594,7 @@ Speak and say: 1 11 21 1211 111221 312211
 	<item>
 		<title>Quick Tip 1: User-defined infinite sequences</title>
 		<link>http://www.learningraku.com/2016/11/16/quick-tip-1-user-defined-infinite-sequences/</link>
-		<pubDate>Wed, 16 Nov 2016 16:03:00 -0400</pubDate>
+		<pubDate>Wed, 16 Nov 2016 16:03:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Every day of the <a href="https://www.kickstarter.com/projects/1422827986/learning-perl-6">Learning Perl 6 Kickstarter campaign</a>, I&#39;ll present a <a href="/category/kickstarter-tips/">quick tip</a> about something I like in Perl 6. Let&#39;s start with sequences. <!--more-->
@@ -6656,7 +6656,7 @@ Yep, we just stored an infinite number of values in a single hash value. I&#39;l
 	<item>
 		<title>Experiment in the Perl 6 REPL</title>
 		<link>http://www.learningraku.com/2016/10/15/experiment-in-the-perl-6-repl/</link>
-		<pubDate>Sat, 15 Oct 2016 09:58:00 -0400</pubDate>
+		<pubDate>Sat, 15 Oct 2016 09:58:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Perl 6 has a REPL. That&#39;s a tiny, language-specific shell that <b>R</b>eads a line, <b>E</b>valuates it, <b>P</b>rints the result, and <b>L</b>oops to do it again. It can remember the previous results in the same session.
@@ -6835,7 +6835,7 @@ I could keep going like this to try bits of Perl 6. I don&#39;t have to write pr
 	<item>
 		<title>DOS pattern matching, in Perl 6</title>
 		<link>http://www.learningraku.com/2016/02/28/dos-pattern-matching-in-perl-6/</link>
-		<pubDate>Sun, 28 Feb 2016 05:26:00 -0400</pubDate>
+		<pubDate>Sun, 28 Feb 2016 05:26:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[I rewrote my <a href="http://www.learning-perl.com/2016/02/dos-pattern-matching-in-perl/">DOS pattern matching</a> in Perl 6. There&#39;s nothing particularly fancy here and I tried to keep it close to the version I wrote in Perl 5 and <a href="https://blogs.msdn.microsoft.com/oldnewthing/20071217-00/?p=24143">the way Raymond Chen presented it</a>. <!--more-->
@@ -6928,7 +6928,7 @@ And, check out that anonymous variable in the <code>printf</code> line. Perl 6 h
 	<item>
 		<title>Perl 6 Examples</title>
 		<link>http://www.learningraku.com/2016/02/23/perl-6-examples/</link>
-		<pubDate>Tue, 23 Feb 2016 19:12:00 -0400</pubDate>
+		<pubDate>Tue, 23 Feb 2016 19:12:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[In the early days of Perl 6 we don&#39;t have a library of reliable books, mostly because the language had shifted so rapidly. But, there are plenty of examples of Perl 6. I&#39;ve listed some of them in the sidebar of <a href="/">this website</a>. <!--more-->
@@ -6947,7 +6947,7 @@ We don&#39;t emphasize code reading enough. We&#39;re used to teaching you how t
 	<item>
 		<title>Don't install over your existing Perl 6</title>
 		<link>http://www.learningraku.com/2016/02/06/dont-install-over-your-existing-perl-6/</link>
-		<pubDate>Sat, 06 Feb 2016 20:27:00 -0400</pubDate>
+		<pubDate>Sat, 06 Feb 2016 20:27:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[When you want to install a new Perl 6 (or any of its backend stuff), don&#39;t install over what you already have working. The language and the tools aren&#39;t stable or reliable enough for you to end up with something that still works. It&#39;s getting better (relative to Pugs, which could take days, or the situation five years ago), but it doesn&#39;t pass the <a href="//www.urbandictionary.com/define.php?term=Grandma+Test">grandma test</a> yet. <!--more-->
@@ -6998,7 +6998,7 @@ I recommend that you don&#39;t nuke your existing implementation when you want a
 	<item>
 		<title>Topaz is still on SourceForge</title>
 		<link>http://www.learningraku.com/2016/01/27/topaz-is-still-on-sourceforge/</link>
-		<pubDate>Wed, 27 Jan 2016 23:46:00 -0400</pubDate>
+		<pubDate>Wed, 27 Jan 2016 23:46:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Topaz, which was almost the next version of Perl in 2000, is still in Sourceforge. Chip Salzenberg had a hunch that rewriting Perl&#39;s guts in C++ would be the thing to solve its maintenance issues. He codenamed his project <a href="http://topaz.sourceforge.net">Topaz</a> and went to work. <!--more-->
@@ -7024,7 +7024,7 @@ There&#39;s <a href="//github.com/perl6/nqp">NQP</a>, or &quot;Not Quite Perl 6&
 	<item>
 		<title>A Perl 6 BBEdit Codeless Language Module</title>
 		<link>http://www.learningraku.com/2016/01/10/a-perl-6-bbedit-codeless-language-module/</link>
-		<pubDate>Sun, 10 Jan 2016 15:49:00 -0400</pubDate>
+		<pubDate>Sun, 10 Jan 2016 15:49:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Now I have rudimentary Perl 6 syntax coloring for BBEdit, my long-preferred editor on the Mac for years. I don&#39;t need anything fancy, so I did the minimum to color the stuff in the files I had open. BBEdit supports <a href="http://www.barebones.com/support/develop/clm.html">Codeless Language Modules</a> that specify various things about the language, including its file extensions, name, keywords, and so on. It&#39;s something a normal user can put into an XML or JSON file and drop into an <i>Application Support/BBEdit/Language Modules</i> directory for immediate use (with an application restart). It&#39;s not as clever as a compiled code module, but good enough for me at the moment. <!--more-->
@@ -7051,7 +7051,7 @@ If you know of others, let me know.]]></description>
 	<item>
 		<title>Perl 6 modulinos are even easier</title>
 		<link>http://www.learningraku.com/2016/01/10/perl-6-modulinos-are-even-easier/</link>
-		<pubDate>Sun, 10 Jan 2016 12:48:00 -0400</pubDate>
+		<pubDate>Sun, 10 Jan 2016 12:48:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[Perl 6 has this wonderful thing called <code>MAIN</code> which is a built-in modulino thingy.
@@ -7113,7 +7113,7 @@ I love string objects. I call the external command and can <code>chomp</code> it
 	<item>
 		<title>Perl 6 at a Glance, by Andrew Shitov</title>
 		<link>http://www.learningraku.com/2016/01/03/perl-6-at-a-glance-by-andrew-shitov/</link>
-		<pubDate>Sun, 03 Jan 2016 08:19:00 -0400</pubDate>
+		<pubDate>Sun, 03 Jan 2016 08:19:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[<br>
@@ -7133,7 +7133,7 @@ If you are daunted by the reams of pages the printed docs would be, this 130-pag
 	<item>
 		<title>Restrain return values</title>
 		<link>http://www.learningraku.com/2015/12/28/restrain-return-values/</link>
-		<pubDate>Mon, 28 Dec 2015 23:45:00 -0400</pubDate>
+		<pubDate>Mon, 28 Dec 2015 23:45:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[<p>
@@ -7146,7 +7146,7 @@ regular Perl), I ask them if they are having trouble getting what they want out 
 	<item>
 		<title>Book</title>
 		<link>http://www.learningraku.com/book/</link>
-		<pubDate>Tue, 15 Dec 2015 11:44:00 -0400</pubDate>
+		<pubDate>Tue, 15 Dec 2015 11:44:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[<p>
@@ -7161,7 +7161,7 @@ I initially funded this book through a <a href="https://www.kickstarter.com/proj
 	<item>
 		<title>About</title>
 		<link>http://www.learningraku.com/about/</link>
-		<pubDate>Tue, 15 Dec 2015 11:40:00 -0400</pubDate>
+		<pubDate>Tue, 15 Dec 2015 11:40:00 -0500</pubDate>
 		<dc:creator><![CDATA[brian]]></dc:creator>
 		
 		<description><![CDATA[brian d foy is working on a Perl 6 book aimed at an introductory audience. This site is about that book and a testbed for some of the writing. Some of the posts are merely experimental. Comment on what you like and what you don&#39;t like.]]></description>

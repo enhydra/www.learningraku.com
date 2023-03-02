@@ -1,0 +1,195 @@
+<html>
+
+<head>
+	<base href="https://test.learningraku.com/">
+	<title>June 2017 - Learning Raku (formerly Perl 6)</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="brian's site generator" />
+	<meta charset="UTF-8" />
+</head>
+
+<!-- start excerpt_list -->
+<div id="content">
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2017/06/17/how-you-average-numbers-doesnt-matter/">How you average numbers doesn't matter</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">June 17, 2017</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Perl 6 averages &quot;floating point&quot; numbers correctly. That&#39;s an interesting statement because it seems like it should be obvious and expected. However, people around computers long enough are used to round-off error. Sinan Ünür wrote <a href="https://www.nu42.com/2015/03/how-you-average-numbers.html">How you average numbers matters</a> to show the curious compounding of small effects. He shows some Perl 5 code:
+
+<!--more-->
+
+<pre class="brush:perl">
+my @data = (1_000_000_000.1, 1.1) x 50_000;
+printf &quot;Naive mean:                  %f\n&quot;, (sum @data) / @data;
+</pre>
+
+This outputs the wrong answer instead of 500,000,000.6:
+
+<pre class="brush:plain">
+Naive mean:                  500000000.600916
+</pre>
+
+I wanted to try this in Perl 6 and had been putting it off thinking I might have to do a work to see what&#39;s going on.
+
+<pre class="brush:perl">
+my @data = slip(1_000_000_000.1, 1.1) xx 50_000;
+printf &quot;Naive mean: %f\n&quot;, ([+] @data) / @data.elems;
+</pre>
+
+But no, Perl 6 give the right answer:
+
+<pre class="brush:plain">
+Naive mean: 500000000.600000
+</pre>
+
+You can expand the example to show the identity of the first object in the list. The <code>.^name</code> meta method will tell you that:
+
+<pre class="brush:perl">
+my @data = slip(1_000_000_000.1, 1.1) xx 50_000;
+put @data[0].^name;
+printf &quot;Naive mean: %f\n&quot;, ([+] @data) / @data.elems;
+</pre>
+
+You see that the first thing (and all the other things) is a <a href="https://doc.perl6.org/type/Rat">Rat</a>, Perl 6&#39;s builtin rational number type:
+
+<pre class="brush:plain">
+Rat
+Naive mean: 500000000.600000
+</pre>
+
+Perl 6 stored the number as a ratio instead of a floating point number. It stays as an exact value. You can add a <a href="https://doc.perl6.org/type/Rat">Rat</a> and another <a href="https://doc.perl6.org/type/Rat">Rat</a> and get another exact value in the resultant <a href="https://doc.perl6.org/type/Rat">Rat</a>. You can keep doing that almost as long as you like as long as Perl 6 can represent the numerator and denominator (and it reduces the fraction as it goes along). Beyond that there&#39;s a <a href="https://doc.perl6.org/type/FatRat">FatRat</a> that can take you even further.
+
+You can sort it ascending or descending, like Sinan did. In his examples, each order got a different answer in the end. You can try that in the Perl 6 version:
+
+<pre class="brush:plain">
+my @data = slip(1_000_000_000.1, 1.1) xx 5;
+printf &quot;Naive mean: %f\n&quot;, ([+] @data) / @data.elems;
+
+my @asc  = @data.sort: &amp;infix:«<=>»;
+printf &quot;Naive mean: %f\n&quot;, ([+] @asc) / @asc.elems;
+
+my @desc = @asc.reverse;
+printf &quot;Naive mean: %f\n&quot;, ([+] @desc) / @desc.elems;
+</=></pre>
+
+But, every mean gives the same answer:
+
+<pre class="brush:plain">
+Naive mean: 500000000.600000
+Naive mean: 500000000.600000
+Naive mean: 500000000.600000
+</pre>
+
+So, there&#39;s nothing to see here. At least it&#39;s off my to-do list. Many of the things Sinan sends me requires long reads and working out math by hand, but this was easy.
+
+You can still have some small effects in the final operation to turn the rational number into a floating point, but that&#39;s something unrelated to the averaging.
+
+<hr>
+
+There are a few other interesting things in the simple code which I&#39;ll cover quickly:
+
+The <a href="https://docs.perl6.org/routine/reduce">reduction operator</a>, <code>[+]</code> is a quick way to type that you want to apply that operation between every item in the list. You don&#39;t have to use the addition operator. You can put almost anything in there.
+
+<hr>
+
+The <code>xx</code> is the <a href="https://docs.perl6.org/routine/xx">list repetition operator</a>. But, I want each list to combine into a flatten larger list. The <code><a href="https://docs.perl6.org/type/Slip#sub_slip">slip</a></code> causes an inner list to lose its list structure and become separate items in the larger list. Without the <code><a href="https://docs.perl6.org/type/Slip#sub_slip">slip</a></code> you&#39;d get a list of 50,000 sublists. Try it with only five sublists:
+
+<pre class="brush:plain">
+my @data = (1_000_000_000.1, 1.1) xx 5;
+say @data;
+</pre>
+
+The <code>@data</code> array has five items, all of which are lists:
+
+<pre class="brush:plain">
+[(1000000000.1 1.1) (1000000000.1 1.1) (1000000000.1 1.1) (1000000000.1 1.1) (1000000000.1 1.1)]
+</pre>
+
+Now add the <code><a href="https://docs.perl6.org/type/Slip#sub_slip">slip</a></code>:
+
+<pre class="brush:plain">
+my @data = slip(1_000_000_000.1, 1.1) xx 5;
+say @data;
+</pre>
+
+The array now has is flat. The sublist inserted their items into the larger list without the structure:
+
+<pre class="brush:plain">
+[1000000000.1 1.1 1000000000.1 1.1 1000000000.1 1.1 1000000000.1 1.1 1000000000.1 1.1]
+</pre>
+
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2017/06/17/how-you-average-numbers-doesnt-matter/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+
+Unterminated <> operator at template line 11.
+Context:
+  6: <%
+  7: 	my $items = get_var('items');
+  8: 
+  9: 	foreach my $item ( $items->@* ) {
+  10: 		my $date = Time::Moment
+  11: 			->from_string( $item->{date} . '-0400', lenient => 1 )
+  12: 			->strftime( '%B %d, %Y' );
+  13: %>
+  14:     <!-- ----------------------------------------------------------- -->
+  15: 	<div class="post">
+  16: 		<h2 class="post_title excerpt_page"><a href="<%= $item->{web_path} =%>"><%= $item->{title} =%></a></h2>
+Traceback (most recent call first):
+  File "template", line 11, in "Mojo::Template::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 148, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::render"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox::include"
+  File "_templates/month_list", line 34, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 173, in "Mojo::Template::render"
+  File "bin/cook", line 258, in "Mojo::Template::render_file"
+  File "bin/cook", line 44, in "main::make_year_month_pages"
+Context:
+  6: my $bin  = get_var('bin');
+  7: %>
+  8: 
+  9: 
+  10: foreach my $n ( 1 .. $bins ) {
+  11: %><a class="pag_link<%= $n == $bin ? ' pag_current'  : '' =%>" href="index<%= $n == 1 ? '' : "_$n" =%>.html"><%= $n =%></a>
+  12: <% } %>
+  13: </div>
+  14: <!-- end paginate -->
+Traceback (most recent call first):
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::render"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox::include"
+  File "_templates/month_list", line 34, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 173, in "Mojo::Template::render"
+  File "bin/cook", line 258, in "Mojo::Template::render_file"
+  File "bin/cook", line 44, in "main::make_year_month_pages"
+
+</div>
+<!-- end excerpt_list -->
+
+</html>
+

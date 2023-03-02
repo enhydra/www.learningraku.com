@@ -1,0 +1,281 @@
+<html>
+
+<head>
+	<base href="https://test.learningraku.com/">
+	<title>December 2017 - Learning Raku (formerly Perl 6)</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="brian's site generator" />
+	<meta charset="UTF-8" />
+</head>
+
+<!-- start excerpt_list -->
+<div id="content">
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2017/12/31/playing-with-heaps-algorithm/">Playing with Heap's Algorithm</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">December 31, 2017</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+I implemented Heap&#39;s algorithm, which generates all permutations of a list, in Perl 6. It&#39;s the end of the year and I&#39;m cleaning out all the things I marked to read later. Sometimes I&#39;ll take something simple, such as a famous algorithm, and try to do it on my own. It&#39;s good practice for language skills but it&#39;s also a good education on languages. <!--more-->
+
+I was reading David M.Bradford&#39;s <a href="http://tinypig2.blogspot.co.za/2016/12/heaps-algorithm-and-generating-perl.html">Heap&#39;s Algorithm and Generating Perl Code From Pseudocode</a>, which referenced the Wikipedia entry for <a href="https://en.wikipedia.org/wiki/Heap&#39;s_algorithm">Heap&#39;s Algorithm</a>.
+
+There&#39;s already a method that does this, but I&#39;m not going to let that stand in my way:
+
+<pre class="brush:plain">
+&gt; my @array = &lt;a b c&gt;
+[a b c]
+&gt; @array.permutations
+((a b c) (a c b) (b a c) (b c a) (c a b) (c b a))
+</pre>
+
+The structure of my solution is mostly the same (<i>mutatis mutandi</i>) that I&#39;d read on either of those pages:
+
+<pre class="brush:plain">
+my @array = &lt;a b c&gt;;
+
+for heaps-algorithm( @array, ) -&gt; $permutation {
+	put $permutation;
+	}
+
+sub heaps-algorithm ( *@array ) {
+	state $i = 0;
+	state @permutations = [ @array.clone, ];
+	state @A = |@permutations.[0].clone;
+	state @c = (0) xx @A.elems;
+
+	loop {
+		if @c[$i] &lt; $i {
+			my $swap-index = $i %% 2 ?? 0 !! @c[$i];
+			@A[$swap-index, $i] = @A[$i, $swap-index];
+			@permutations.push: @A.clone;
+			@c[$i]++;
+			$i = 0;
+			}
+		else {
+			@c[$i] = 0;
+			$i++;
+			}
+		
+		last unless $i &lt; @array.elems;
+		}
+
+	return @permutations;
+	}
+</pre>
+
+There are a few interesting bits of Perl 6 syntax. It&#39;s the end of the year and I have many other things to use or lose so I&#39;ll merely point out a few things:
+
+<h3>The single argument rule</h3>
+
+I wanted to build up an array of permutations. For the first item I store the original array. I have a significant trailing comma there:
+
+<pre class="brush:plain">
+	state @permutations = [ @array.clone, ];
+</pre>
+
+If I only use a single array argument (the single argument), the array is automatically flattened. The comma means that it&#39;s not a single argument even though there isn&#39;t a second argument. That isn&#39;t flattened. Notice the extra structure:
+
+<pre class="brush:perl">
+% perl 6
+&gt; my @array = &lt;a b c&gt;
+[a b c]
+&gt; my @p = [ @array ]
+[a b c]
+&gt; my @p = [ @array, ]
+[[a b c]]
+</pre> 
+
+When I initialize <code>@A</code>, which is the structure that I want to change, I flatten the first element with the <code>|</code>. 
+
+<h3>In-place swapping</h3>
+
+Many other places I looked followed the pseudocode that checked the cursor and then called one of two swap operations:
+
+<pre class="brush:perl">
+			if i is even then
+				swap(A[0], A[i])
+			else
+				swap(A[c[i]], A[i])
+			end if
+</pre> 
+
+I&#39;ll choose the right index and put that into the slices:
+
+<pre class="brush:perl">
+			my $swap-index = $i %% 2 ?? 0 !! @c[$i];
+			@A[$swap-index, $i] = @A[$i, $swap-index];
+</pre> 
+
+<h3>Cloning</h3>
+
+Each time I create a new permutation I add it to <code>@permutations</code>. But, I don&#39;t want to keep adding the same object because that object will keep moving it&#39;s elements around. I want to preserve the order each time so I call <code>clone</code>. I probably overuse that method.
+
+<pre class="brush:perl">
+@permutations.push: @A.clone;
+</pre> 
+
+I could have done something different, such as using <code>.List</code> to make a new list out of the current state of the array. I wasn&#39;t thinking too hard about what I wanted on the other side but it&#39;s unlikely that I&#39;d want something mutable.
+
+<pre class="brush:perl">
+@permutations.push: @A.List;
+</pre> 
+
+<h2>Make it a sequence, part 1</h2>
+
+The solution that I translated created all the permutations. That&#39;s okay for small lists but not so good for bigger ones. Perl 6 has user-defined sequences. These are lazy and don&#39;t create the next item until it needs to. Could I make this a sequence using the <code>...</code> operator? Mostly I&#39;m doing this to see if it would work because I&#39;ve been playing with other weird sequences. I certainly don&#39;t encourage this.
+
+I can use a code reference to decide the next thingy. If that code reference takes arguments, it gets that number of the prior elements in the sequence. I&#39;d like to get the first element to initialize the <code>@A</code>. After that I just ignore the argument.
+
+I have to adjust the code a bit to end with the right thing. I can&#39;t <code>return</code> because this is not a routine. It&#39;s just a <code>Block</code>. I&#39;ll use <code>$next</code> for that.
+
+I don&#39;t particularly like my solution but this is where I ran out of steam:
+
+<pre class="brush:plain">
+my $array = [ 1, 2, 3 ];
+
+my $code-ref = -&gt; ( *@a ) { 
+	state $i = 0;
+	state @A = @a.clone;
+	state @c = (0) xx @A.elems;
+
+	my $next;
+	
+	loop {
+		if @c[$i] &lt; $i {
+			my $swap-index = $i %% 2 ?? 0 !! @c[$i];
+			@A[$swap-index, $i] = @A[$i, $swap-index];
+			$next = @A.clone;
+			@c[$i]++;
+			$i = 0;
+			last;
+			}
+		else {
+			@c[$i] = 0;
+			$i++;
+			}
+
+		last unless $i &lt; @A.elems; 
+		}
+
+	$next;
+	}
+
+sub make-sequence ( $a --&gt; Seq ) { $a, $code-ref ...^ !*.defined }
+
+my $seq = make-sequence( $array );
+
+for @$seq -&gt; $next { 
+	put $next;
+	}
+</pre>
+
+<h2>Make it a sequence, part 2</h2>
+
+The <code>...</code> worked but is pretty ugly. As Michael mentioned in the comments I should have used <code>gather</code> for this. This generates a <code>Seq</code> (similar to Python&#39;s <code>yield</code>). The <code>gather</code> block is the sequence and every <code>take</code> can generate one or more elements for the sequence. The code only runs to the point that it gets another element; when you want another element the code resumes where it left off. If the code finishes without encountering another <code>take</code> (like when this <code>while</code> is done) the sequence is exhausted:
+
+<pre class="brush:plain">
+sub heaps-sequence ( *@a --&gt; Seq:D ) {
+	gather {
+		state $i = 0;
+		state @c = (0) xx @a.elems;
+		take @a.List;
+
+		while $i &lt;  @a.elems {
+			if @c[$i] &lt; $i {
+				my $swap-index = $i %% 2 ?? 0 !! @c[$i];
+				@a[$swap-index, $i] = @a[$i, $swap-index];
+				take @a.List;
+				@c[$i]++;
+				$i = 0;
+				}
+			else {
+				@c[$i] = 0;
+				$i++
+				}
+			}
+		}
+	}
+
+my $seq = heaps-sequence( <1 2 3> );
+
+for @$seq -&gt; $next {
+	put $next;
+	last if $next &gt; 10;
+	}
+</1></pre>
+
+
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2017/12/31/playing-with-heaps-algorithm/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+
+Unterminated <> operator at template line 11.
+Context:
+  6: <%
+  7: 	my $items = get_var('items');
+  8: 
+  9: 	foreach my $item ( $items->@* ) {
+  10: 		my $date = Time::Moment
+  11: 			->from_string( $item->{date} . '-0400', lenient => 1 )
+  12: 			->strftime( '%B %d, %Y' );
+  13: %>
+  14:     <!-- ----------------------------------------------------------- -->
+  15: 	<div class="post">
+  16: 		<h2 class="post_title excerpt_page"><a href="<%= $item->{web_path} =%>"><%= $item->{title} =%></a></h2>
+Traceback (most recent call first):
+  File "template", line 11, in "Mojo::Template::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 148, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::render"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox::include"
+  File "_templates/month_list", line 34, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 173, in "Mojo::Template::render"
+  File "bin/cook", line 258, in "Mojo::Template::render_file"
+  File "bin/cook", line 44, in "main::make_year_month_pages"
+Context:
+  6: my $bin  = get_var('bin');
+  7: %>
+  8: 
+  9: 
+  10: foreach my $n ( 1 .. $bins ) {
+  11: %><a class="pag_link<%= $n == $bin ? ' pag_current'  : '' =%>" href="index<%= $n == 1 ? '' : "_$n" =%>.html"><%= $n =%></a>
+  12: <% } %>
+  13: </div>
+  14: <!-- end paginate -->
+Traceback (most recent call first):
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::render"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox::include"
+  File "_templates/month_list", line 34, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 173, in "Mojo::Template::render"
+  File "bin/cook", line 258, in "Mojo::Template::render_file"
+  File "bin/cook", line 44, in "main::make_year_month_pages"
+
+</div>
+<!-- end excerpt_list -->
+
+</html>
+

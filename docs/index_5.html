@@ -2,7 +2,7 @@
 title: Index 5
 link: http://www.learningraku.com/index_5.html
 author: brian
-date: 2022-04-20 19:46:44
+date: 2023-03-02 1:50:44
 post_name: main 5
 status: publish
 type: list
@@ -718,77 +718,7 @@ The array now has is flat. The sublist inserted their items into the larger list
 
 
 
-Unterminated <> operator at template line 11.
-Context:
-  6: 	my $n = get_var('start_post_n') // 1;
-  7: 	my $m = get_var('end_post_n') // get_var( 'config' )->{page_size};
-  8: 
-  9: 	foreach ( $n .. $m ) {
-  10: 		my $post = $posts[$_];
-  11: 		next unless $post;
-  12: 
-  13: 		my $date = Time::Moment
-  14: 			->from_string( $post->{date} . '-0400', lenient => 1 )
-  15: 			->strftime( '%B %d, %Y' );
-  16: %>
-Traceback (most recent call first):
-  File "template", line 11, in "main"
-  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 148, in "Mojo::Template"
-  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 163, in "Mojo::Template"
-  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::Sandbox"
-  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox"
-  File "template", line 37, in "Mojo::Template::Sandbox"
-  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
-  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
-  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 163, in "Mojo::Template"
-  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::Sandbox"
-  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox"
-  File "template", line 6, in "Mojo::Template::Sandbox"
-  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
-  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
-  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 163, in "Mojo::Template"
-  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::Sandbox"
-  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox"
-  File "_templates/index_5.html", line 25, in "Mojo::Template::Sandbox"
-  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
-  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
-  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 163, in "Mojo::Template"
-  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 173, in "Mojo::Template"
-  File "bin/cook", line 90, in "main"
-  File "bin/cook", line 48, in "main"
-Context:
-  6: my $bin  = get_var('bin');
-  7: %>
-  8: 
-  9: 
-  10: foreach my $n ( 1 .. $bins ) {
-  11: %><a class="pag_link<%= $n == $bin ? ' pag_current'  : '' =%>" href="index<%= $n == 1 ? '' : "_$n" =%>.html"><%= $n =%></a>
-  12: <% } %>
-  13: </div>
-  14: <!-- end paginate -->
-Traceback (most recent call first):
-  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 163, in "Mojo::Template"
-  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::Sandbox"
-  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox"
-  File "template", line 37, in "Mojo::Template::Sandbox"
-  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
-  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
-  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 163, in "Mojo::Template"
-  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::Sandbox"
-  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox"
-  File "template", line 6, in "Mojo::Template::Sandbox"
-  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
-  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
-  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 163, in "Mojo::Template"
-  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::Sandbox"
-  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox"
-  File "_templates/index_5.html", line 25, in "Mojo::Template::Sandbox"
-  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
-  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 160, in "Mojo::Template"
-  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 163, in "Mojo::Template"
-  File "/usr/local/perls/perl-5.34.1/lib/site_perl/5.34.1/Mojo/Template.pm", line 173, in "Mojo::Template"
-  File "bin/cook", line 90, in "main"
-  File "bin/cook", line 48, in "main"
+
 
 </div>
 <!-- end excerpt_list -->

@@ -1,0 +1,262 @@
+<html>
+
+<head>
+	<base href="https://test.learningraku.com/">
+	<title>October 2016 - Learning Raku (formerly Perl 6)</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="brian's site generator" />
+	<meta charset="UTF-8" />
+</head>
+
+<!-- start excerpt_list -->
+<div id="content">
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/10/15/experiment-in-the-perl-6-repl/">Experiment in the Perl 6 REPL</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">October 15, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Perl 6 has a REPL. That&#39;s a tiny, language-specific shell that <b>R</b>eads a line, <b>E</b>valuates it, <b>P</b>rints the result, and <b>L</b>oops to do it again. It can remember the previous results in the same session.
+
+Let&#39;s start with something simple. Run the <i>perl6</i> command with no arguments and wait for the prompt: <!--more-->
+
+<pre class="brush:plain">
+$ perl6
+To exit type &#39;exit&#39; or &#39;^D&#39;
+&gt;
+</pre>
+
+I can try the usual &quot;Hello World&quot; program:
+
+<pre class="brush:plain">
+&gt; &#39;Hello World!&#39;
+Hello World!
+</pre>
+
+I can try it with <code>say</code>, which outputs the string with a newline on the end. That&#39;s how I would need to output it inside a program; inside the REPL, that doesn&#39;t look different than
+what I already did:
+
+<pre class="brush:plain">
+&gt; say &#39;Hello World!&#39;
+Hello World!
+</pre>
+
+In Perl 6 land, a string is an object, so I can call methods on the string. Perl 6 uses the dot as the method call operator:
+
+<pre class="brush:plain">
+&gt; &#39;Hello World!&#39;.say
+Hello World!
+</pre>
+
+What else can I do with &lt;code&#39;&quot;Hello World!&#39;? Perl 6 values are themselves objects. The <code>WHAT</code> &quot;meta&quot; method knows what thingys are:
+
+<pre class="brush:plain">
+&gt; &#39;Hello World!&#39;.WHAT
+(Str)
+</pre>
+
+The <code>(Str)</code> is the name of the class in parentheses. I don&#39;t need to know the type of thing it is to figure out what I can do. Or, read another way, I don&#39;t need to look at the <a href="https://docs.perl6.org/type/Str">docs for Str</a> to see what methods I can call. The <code>.^methods</code> method (ahem) tells me what the object can respond to:
+
+<pre class="brush:plain">
+&gt; &#39;Hello World!&#39;.^methods
+(BUILD Int Num chomp pred succ simplematch match ords samecase
+samemark samespace word-by-word trim-leading trim-trailing trim
+encode NFC NFD NFKC NFKD wordcase trans indent codes chars uc lc tc
+fc tclc flip ord WHY WHICH Bool Str Stringy DUMP ACCEPTS chop
+starts-with ends-with substr-eq contains indices index rindex Numeric
+gist perl comb subst-mutate subst lines split words)
+</pre>
+
+That <code>.^methods</code> looks weird, but it&#39;s really just a shortcut for <code>.HOW.methods</code>. The <a href="https://docs.perl6.org/type/Metamodel$COLON$COLONClassHOW"><b>H</b>igher <b>O</b>rder <b>W</b>orkings</a> class has many ways to <i>introspect</i> a thingy. This is an amazing boon to learning the language since you can, at least partly, discover things about the objects from inside the language. All your Ruby friends will say &quot;Welcome to 1995!&quot;.
+
+Notice that <code>say</code> is not in the list. By default, <code>.^methods</code> doesn&#39;t show methods from certain base classes. I can ask for different slices of that list by adding the <code>:all</code> adverb:
+
+<pre class="brush:plain">
+&gt; &#39;Hello World!&#39;.^methods(:all)
+(BUILD Int Num chomp pred succ simplematch match ords samecase
+samemark samespace word-by-word trim-leading trim-trailing trim encode
+NFC NFD NFKC NFKD wordcase trans indent codes chars uc lc tc fc tclc
+flip ord WHY WHICH Bool Str Stringy DUMP ACCEPTS chop starts-with
+ends-with substr-eq contains indices index rindex Numeric gist perl
+comb subst-mutate subst lines split words trans fmt comb acosech cotan
+sin fc contains EVAL cosec atan2 abs ord trim-trailing ords acotan
+asec ceiling unpolar acosec acos indices log10 exp match subst chrs
+acosh truncate acotanh Num path floor UInt words flip asin codes
+univals asech chomp split cotanh ...)
+</pre>
+
+That&#39;s right, I said adverb. Things that start with a colon are modifiers for an action. You can worry about those later. In this case, <code>:all</code> modifies how <code>.^methods</code> responds.
+
+Still, I don&#39;t see <code>say</code> in that list, which is truncated with <code>...</code>. Perl 6 displays the result as a &quot;gist&quot;, or, the general idea of the result in a human-readable form. It&#39;s the same thing as this:
+
+<pre class="brush:plain">
+&gt; &#39;Hello World!&#39;.^methods(:all).gist
+</pre>
+
+This gist an amazing feature. I&#39;ve wished that <a href="">Data::Dumper</a> was built into Perl 5 so many times. Now it&#39;s available to most objects automatically, but it is not going to overload you with output. I&#39;ll have to do a bit of work on my own for that.
+
+If that&#39;s too high-level for you, the <code>perl</code> method is closer to the internal representation. You can run this yourself if you&#39;d like to see the very long and complicated output that&#39;s pretty useless to all but 11 people in the world:
+
+<pre class="brush:plain">
+&gt; &#39;Hello World!&#39;.^methods(:all).perl
+</pre>
+
+But, I want to find that <code>say</code> method. What do I get back from <code>^methods()</code>? I call <code>WHAT</code> again and see that I get a <a href="https://docs.perl6.org/type/List">List</a> object:
+
+<pre class="brush:plain">
+&gt; &#39;Hello World!&#39;.^methods(:all).WHAT
+(List)
+</pre>
+
+That&#39;s a list, but what&#39;s in the list? I can call <code>map</code> on the <a href="https://docs.perl6.org/type/List">List</a>. I cheat a bit here because I know that there should be something like <code>map</code> and I looked at the documentation. I&#39;d much rather discover that through exploration, but that&#39;s how it is at the moment:
+
+<pre class="brush:plain">
+&gt; &#39;Hello World!&#39;.^methods(:all).map( {.WHAT.gist} ).unique
+((Submethod) (Method) (Method+{Callable[Int:D]}) (Method+{&lt;anon|140546676469920&gt;}))
+</pre>
+
+
+The <code>map</code> gets each item in the list and passes it to the block argument. Perl 6 does some impressive stuff with blocks, but for now think of it as an inline subroutine. Inside this <code>map</code>, I call <code>.WHAT.gist</code>. What&#39;s up with the leading dot?
+
+Perl 6 has a default variable, which it calls the <i>topic</i>. If there&#39;s no object in front of the method-calling dot, it uses that topic.
+
+Once I&#39;ve constructed that list I call <code>unique</code> to make a list of just the types it saw. Each thing is a some sort of <a href="https://docs.perl6.org/type/Method">Method</a>.
+
+A <a href="https://docs.perl6.org/type/Method">Method</a> knows its name (if it has one). This in itself is quite interesting. If I call <code>can</code> on an object and that object can respond to a method of that name, it gives me back a list of methods? (A list? Yep! Because Perl 6 has multi dispatch based on the arguments I pass!). Even though I have a list of one item, I only want to first item. I store that in <code>$method</code> (which I must declare before use):
+
+<pre class="brush:plain">
+&gt; my $method = &#39;Hello World!&#39;.can( &#39;say&#39; ).first
+say
+</pre>
+
+
+The REPL remembers what I stored in that variable. It&#39;s a <a href="https://docs.perl6.org/type/Method">Method</a> and I can ask it its name. I can also use the variable in place of the literal method name to operate on my string:
+
+<pre class="brush:plain">
+&gt; $method.name
+say
+&gt; &#39;Hello World!&#39;.$method
+Hello World!
+</pre>
+
+It&#39;s a bit easier to see if I use a different method, such as <code>uc</code> to uppercase
+
+<pre class="brush:plain">
+&gt; my $method = &#39;Hello World!&#39;.can( &#39;uc&#39; ).first
+uc
+&gt; &#39;Hello World!&#39;.$method
+HELLO WORLD!
+</pre>
+
+This is very exciting! It might not seem like much, but when these things are objects that know things about themselves, a big world of  programming opens up.
+
+But, I started off looking for <code>say</code> but I haven&#39;t found it yet.
+
+I can make a new list of just the names by calling <code>map</code> and <code>sort</code> that. When I give only one argument to the block in <code>sort</code>, it uses that result to compare elements. It also remembers that value so it does not calculate it again (so, no Schwartzian Transform needed!):
+
+<pre class="brush:plain">
+&gt; &#39;Hello World!&#39;.^methods(:all).map( { .name } ).sort( { .lc } ).unique.join( &quot;\n&quot; )
+</pre>
+
+This creates a really long string, but it&#39;s all the methods available on <code>&quot;Hello World&quot;</code>. I can make a shorter list with <code>grep</code> by looking for things that have <code>sa</code> at the start of the string:
+
+<pre class="brush:plain">
+&gt; &#39;Hello World!&#39;.^methods(:all).map( {.name} ).grep( { /^^ sa/ } ).join( &quot;\n&quot; )
+samecase
+samemark
+samespace
+samecase
+say
+</pre>
+
+And, I&#39;ve found <code>say</code>! It took me a bit, but I was able to find out quite a bit starting with just the object.
+
+I can define my own class with some attributes. Here&#39;s a <code>Butterfly</code> class that has a name and a type attribute. I
+can create an object in that class, then look at the
+
+<pre class="brush:plain">
+&gt; class Butterfly { has Str $.name; has Str $.type; }
+(Butterfly)
+&gt; my $camelia = Butterfly.new( name =&gt; &#39;Camelia&#39;, type =&gt; &#39;Monarch&#39; );
+Butterfly.new(name =&gt; &quot;Camelia&quot;, type =&gt; &quot;Monarch&quot;)
+&gt; $camelia.WHAT
+(Butterfly)
+&gt; $camelia.^attributes
+(Str $!name Str $!type)
+</pre>
+
+I could keep going like this to try bits of Perl 6. I don&#39;t have to write programs for the very short experiements. Personally, I like to keep the experiments in files because I keep changing things. It&#39;s better than retyping.
+
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/10/15/experiment-in-the-perl-6-repl/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+
+Unterminated <> operator at template line 11.
+Context:
+  6: <%
+  7: 	my $items = get_var('items');
+  8: 
+  9: 	foreach my $item ( $items->@* ) {
+  10: 		my $date = Time::Moment
+  11: 			->from_string( $item->{date} . '-0400', lenient => 1 )
+  12: 			->strftime( '%B %d, %Y' );
+  13: %>
+  14:     <!-- ----------------------------------------------------------- -->
+  15: 	<div class="post">
+  16: 		<h2 class="post_title excerpt_page"><a href="<%= $item->{web_path} =%>"><%= $item->{title} =%></a></h2>
+Traceback (most recent call first):
+  File "template", line 11, in "Mojo::Template::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 148, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::render"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox::include"
+  File "_templates/month_list", line 34, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 173, in "Mojo::Template::render"
+  File "bin/cook", line 258, in "Mojo::Template::render_file"
+  File "bin/cook", line 44, in "main::make_year_month_pages"
+Context:
+  6: my $bin  = get_var('bin');
+  7: %>
+  8: 
+  9: 
+  10: foreach my $n ( 1 .. $bins ) {
+  11: %><a class="pag_link<%= $n == $bin ? ' pag_current'  : '' =%>" href="index<%= $n == 1 ? '' : "_$n" =%>.html"><%= $n =%></a>
+  12: <% } %>
+  13: </div>
+  14: <!-- end paginate -->
+Traceback (most recent call first):
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::render"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox::include"
+  File "_templates/month_list", line 34, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 173, in "Mojo::Template::render"
+  File "bin/cook", line 258, in "Mojo::Template::render_file"
+  File "bin/cook", line 44, in "main::make_year_month_pages"
+
+</div>
+<!-- end excerpt_list -->
+
+</html>
+

@@ -1,0 +1,116 @@
+<html>
+
+<head>
+	<base href="https://test.learningraku.com/">
+	<title>July 2017 - Learning Raku (formerly Perl 6)</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="brian's site generator" />
+	<meta charset="UTF-8" />
+</head>
+
+<!-- start excerpt_list -->
+<div id="content">
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2017/07/10/two-ways-to-change-multiple-hash-values-at-the-same-time/">Two ways to change multiple hash values at the same time</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">July 10, 2017</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Somehow I ended up a binary assignment with the <a href="https://docs.perl6.org/routine/Z#(Operators)_infix_Z">zip operator</a>:
+
+<pre class="brush:plain">
+$giver&lt;wallet given&gt; Z+= (-$amount, $amount)
+</pre>
+
+<!--more-->
+
+I was playing around with a <a href="http://www.decisionsciencenews.com/2017/06/19/counterintuitive-problem-everyone-room-keeps-giving-dollars-random-others-youll-never-guess-happens-next/">simulation problem from Uri Wilensky</a> (R&#39;s <code>gganimate</code> is pretty cool, and pretty and cool). 
+
+That&#39;s the same thing as writing out both sides:
+
+<pre class="brush:plain">
+$giver&lt;wallet given&gt; = $giver&lt;wallet given&gt; Z+ ( -$amount, $amount )
+</pre>
+
+But, I also could have used a hyper here:
+
+<pre class="brush:plain">
+$giver&lt;wallet given&gt; &gt;&gt;+=&lt;&lt; ( -$amount, $amount )
+</pre>
+
+I&#39;ve longed wished for this sort of thing in Perl 5, and I think I&#39;ve strained various unmaintainable kludges to get it. Even these Perl 6 expressions might be too mind bending for the work-a-day maintainer.
+
+And, for what it&#39;s worth, the results are pretty much what I expected despite the those Ph.D.s guessing incorrectly. But then, I also have a <a href="https://www.amazon.com/gp/product/0716710889/ref=as_li_tl?ie=UTF8&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0716710889&amp;linkCode=as2&amp;tag=hashbang09-20&amp;linkId=d67a7004d58db1f05afe368c4421e067" target="_blank">statistical thermodynamics</a> book with arm&#39;s reach of my keyboard. A closed system with a fixed number of particles and a fixed amount of energy where particles can transfer energy to other particles is a type of <a href="https://www.amazon.com/gp/product/093570258X/ref=as_li_tl?ie=UTF8&amp;camp=1789&amp;creative=9325&amp;creativeASIN=093570258X&amp;linkCode=as2&amp;tag=hashbang09-20&amp;linkId=2bba09bd19d4454e380924f053b57929" target="_blank">Spherical Cow</a>. The system can exist in any of its microstates. Particle identity aside, some distributions of energy are more probable. The one that everyone might guess, that all particles will have the close to the same energy, just isn&#39;t that likely. But, this isn&#39;t a physics blog.   
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2017/07/10/two-ways-to-change-multiple-hash-values-at-the-same-time/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+
+Unterminated <> operator at template line 11.
+Context:
+  6: <%
+  7: 	my $items = get_var('items');
+  8: 
+  9: 	foreach my $item ( $items->@* ) {
+  10: 		my $date = Time::Moment
+  11: 			->from_string( $item->{date} . '-0400', lenient => 1 )
+  12: 			->strftime( '%B %d, %Y' );
+  13: %>
+  14:     <!-- ----------------------------------------------------------- -->
+  15: 	<div class="post">
+  16: 		<h2 class="post_title excerpt_page"><a href="<%= $item->{web_path} =%>"><%= $item->{title} =%></a></h2>
+Traceback (most recent call first):
+  File "template", line 11, in "Mojo::Template::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 148, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::render"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox::include"
+  File "_templates/month_list", line 34, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 173, in "Mojo::Template::render"
+  File "bin/cook", line 258, in "Mojo::Template::render_file"
+  File "bin/cook", line 44, in "main::make_year_month_pages"
+Context:
+  6: my $bin  = get_var('bin');
+  7: %>
+  8: 
+  9: 
+  10: foreach my $n ( 1 .. $bins ) {
+  11: %><a class="pag_link<%= $n == $bin ? ' pag_current'  : '' =%>" href="index<%= $n == 1 ? '' : "_$n" =%>.html"><%= $n =%></a>
+  12: <% } %>
+  13: </div>
+  14: <!-- end paginate -->
+Traceback (most recent call first):
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::render"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox::include"
+  File "_templates/month_list", line 34, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 173, in "Mojo::Template::render"
+  File "bin/cook", line 258, in "Mojo::Template::render_file"
+  File "bin/cook", line 44, in "main::make_year_month_pages"
+
+</div>
+<!-- end excerpt_list -->
+
+</html>
+

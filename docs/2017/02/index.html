@@ -1,0 +1,162 @@
+<html>
+
+<head>
+	<base href="https://test.learningraku.com/">
+	<title>February 2017 - Learning Raku (formerly Perl 6)</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="brian's site generator" />
+	<meta charset="UTF-8" />
+</head>
+
+<!-- start excerpt_list -->
+<div id="content">
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2017/02/24/testing-json-grammars/">Testing JSON grammars</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">February 24, 2017</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Perl 6 grammars make it easy to parse JSON and it&#39;s a favorite example to show off the feature. This post is about testing the grammar; you don&#39;t need another example here. I list several at the end of this post.
+
+<br clear="all">
+
+<div class="image center">
+<div>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/biologycorner/7674804806/in/photolist-cGco5N-jDPx7o-D7jsPJ-jDPwZE-eNyQL4-jDQipJ-jDNgFV-jDNhrx-jDMmj6-4p4okm-5CZWUC-7EbF4x-7j2sZG-eam9bC-4bC8DR-jDPuqw-kxeLJR-dhba9j-4ofgYx-7egWrQ-jDQfRs-asN4p6-4ewqCq-pFwsom-h9rU23-7egWgb-r64D7q-7egWwE-92k3pn-Dbp2c-7ed45P-7egWaq-7egWv5-7ed42r-7egWmy-7ed4aK-yrFwd3-7egW5j-7egW7A-7ed3Za-4Mx1Ux-nDY6UG-5zgnYt-pXJZeH-6n88Ux-pXURYe-jhG7qm-6CUhCp-jMgN-nqnDK9" title="Standardized Test Close-Up"><img alt="Standardized Test Close-Up" height="375" src="https://c1.staticflickr.com/9/8017/7674804806_7bd5ff8688.jpg" width="500"></a><script async charset="utf-8" src="//embedr.flickr.com/assets/client-code.js"></script>
+</div>
+</div>
+
+<!--more-->
+
+I went looking for some sort of official test corpus to throw at parsers. Googling gave me some internal links to json.org for a tool called <a href="http://www.json.org/JSON_checker/">JSON_Checker</a> that has some test files.  As I created my own JSON grammar (which looks just like all the examples I list at the end of this post, really), I used JSON_Checker files as the tests. I fixed some tests and put my versions in it my <a href="https://github.com/briandfoy/json-acceptance-tests">json-acceptance-tests GitHub repo</a>.
+
+<pre class="brush:plain">
+use Terminal::ANSIColor;
+
+# https://github.com/briandfoy/json-acceptance-tests
+my $pass_fail_directory = @*ARGS[0]; # wherever you put them
+my @files = dir( $pass_fail_directory, test =&gt; rx/ &#39;.json&#39; $ / );
+
+# two grammars I created, which aren&#39;t important here.
+my @grammars = &lt;Grammar::JSON Grammar::RFC7159&gt;;
+
+for @grammars -&gt; $grammar {
+	put &quot;Trying grammar $grammar&quot;;
+	require ::($grammar);
+	try-grammar( $grammar, @files );
+	put &quot;\n&quot;;
+	}
+
+sub try-grammar ( $grammar-class, @files ) {
+	state @tag = (
+		colored( &#39;NOT OK&#39;, &#39;white on_red&#39;   ),
+		colored( &#39;  OK  &#39;, &#39;white on_green&#39; ),
+		);
+	state %expected = (
+		&#39;pass&#39; =&gt; 0,
+		&#39;fail&#39; =&gt; 1,
+		);
+
+	for @files -&gt; $file {
+		$file.IO.basename ~~ m/ ^ $&lt;result&gt; = [ pass | &#39;fail&#39; ] $&lt;number&gt; = \d+/;
+		my ( $expected, $number ) = $&lt;result&gt;, $&lt;number&gt;;
+		my $result = ::($grammar-class).parsefile( $file );
+
+		say @tag[ (%expected{$expected} + $result.so) % 2 ] ~ &quot; { $file.IO.basename }&quot;;
+		}
+	}
+</pre>
+
+Here&#39;s the output, which I&#39;ve labeled nicely with <a href="https://github.com/tadzik/Terminal-ANSIColor">Terminal::ANSIColor</a>. Those failures aren&#39;t real. One doesn&#39;t believe that anything other than an object or array can be a top-level value and the other thinks you should stop parsing at a certain depth.
+
+<div class="image center">
+<div>
+<img src="/images/json-tests.png">
+<p></p>
+</div>
+</div>
+
+There&#39;s a <a href="https://jsonplaceholder.typicode.com">fake REST service</a> and some <a href="https://www.sitepoint.com/10-example-json-files/">canned files for popular services</a> I could test against too. I do wish the RFCs came with test suites and sample data though. If you know of other useful collections of valid and invalid files, tell me about them.
+
+If you want some grammar examples, here are some JSON parsers:
+
+<ul>
+<li><a href="https://github.com/moritz/json">JSON::Tiny</a> from Moritz Lenz, with <a href="https://bryanstamour.com/2016/09/28/parsing-json-with-perl-6.html">a Weather Underground example</a> from Bryan Stamour.
+</li><li><a href="https://www.codementor.io/perl/tutorial/how-to-use-json-in-perl-6">How to Use JSON in Perl 6</a> from Rudolf Olah
+</li><li><a href="https://github.com/timo/json_fast">JSON::Fast</a>, created as a optimization test for <a href="https://github.com/moritz/json">JSON::Tiny</a>.
+</li><li><a href="https://github.com/FROGGS/p6-JSON-Pretty">JSON::Pretty</a> from Tobias Leich.
+</li><li>There&#39;s a JSON parser built into Rakudo, although <a href="https://github.com/rakudo/rakudo/blob/beec02a6fa69e3ac290b4dd24c07d87a9f248b13/src/core/JSON/Pretty.pm">it&#39;s  deprecated</a> in favor of modules now. 
+</li></ul>
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2017/02/24/testing-json-grammars/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+
+Unterminated <> operator at template line 11.
+Context:
+  6: <%
+  7: 	my $items = get_var('items');
+  8: 
+  9: 	foreach my $item ( $items->@* ) {
+  10: 		my $date = Time::Moment
+  11: 			->from_string( $item->{date} . '-0400', lenient => 1 )
+  12: 			->strftime( '%B %d, %Y' );
+  13: %>
+  14:     <!-- ----------------------------------------------------------- -->
+  15: 	<div class="post">
+  16: 		<h2 class="post_title excerpt_page"><a href="<%= $item->{web_path} =%>"><%= $item->{title} =%></a></h2>
+Traceback (most recent call first):
+  File "template", line 11, in "Mojo::Template::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 148, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::render"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox::include"
+  File "_templates/month_list", line 34, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 173, in "Mojo::Template::render"
+  File "bin/cook", line 258, in "Mojo::Template::render_file"
+  File "bin/cook", line 44, in "main::make_year_month_pages"
+Context:
+  6: my $bin  = get_var('bin');
+  7: %>
+  8: 
+  9: 
+  10: foreach my $n ( 1 .. $bins ) {
+  11: %><a class="pag_link<%= $n == $bin ? ' pag_current'  : '' =%>" href="index<%= $n == 1 ? '' : "_$n" =%>.html"><%= $n =%></a>
+  12: <% } %>
+  13: </div>
+  14: <!-- end paginate -->
+Traceback (most recent call first):
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::render"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox::include"
+  File "_templates/month_list", line 34, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 173, in "Mojo::Template::render"
+  File "bin/cook", line 258, in "Mojo::Template::render_file"
+  File "bin/cook", line 44, in "main::make_year_month_pages"
+
+</div>
+<!-- end excerpt_list -->
+
+</html>
+

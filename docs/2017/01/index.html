@@ -1,0 +1,853 @@
+<html>
+
+<head>
+	<base href="https://test.learningraku.com/">
+	<title>January 2017 - Learning Raku (formerly Perl 6)</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="brian's site generator" />
+	<meta charset="UTF-8" />
+</head>
+
+<!-- start excerpt_list -->
+<div id="content">
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2017/01/03/collating-my-activity-to-learningperl6/">Collating my activity to @LearningPerl6</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 03, 2017</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+I&#39;ve already told you about the <a href="/2016/12/19/a-dedicated-learningperl6-twitter-account/">@LearningPerl6</a> twitter account, and I spent today setting up some stuff to collect what I&#39;m doing elsewhere. I&#39;m using <a href="http://dlvr.it">Dlvr.it</a> to put the interesting things on Twitter. This way you can see what I&#39;m working on and what I&#39;m thinking about. <!--more-->
+
+<ul>
+<li>a feed of <a href="http://stackoverflow.com/search?q=user%3A2766176+%5Bperl6%5D">my StackOverflow Perl 6 questions</a>
+</li><li>a feed of the tickets I add to the <a href="https://rt.perl.org/Public/">perl6 RT queue</a>
+</li></ul>
+
+<h3>StackOverflow</h3>
+
+There&#39;s a <a href="https://api.stackexchange.com">StackExchange API</a>. I can get a feed of a particular user&#39;s questions, and from that, get the question text with another query. It&#39;s not so bad; you can see it in my <a href="https://gist.github.com/briandfoy/4b4025b8026e4eee26c11811ba1a7efe">stackfeed gist</a>. It&#39;s a bit hacky (and, Perl 5), but I started with something else I had. I watched as what I thought were some simple modules start to install a bunch of things I didn&#39;t need, so I switched to making XML by hand. Yeah, I did that. You&#39;ll have to excuse the flurry of tweets that showed up because I neglected to tell the feed processor to handle only the most recent so it did all of them. Oops.
+
+If you don&#39;t want this one from Twitter, I also have it as a <a href="https://www.learningperl6.com/downloads/stackoverflow-questions.xml">regular Atom feed through this site.</a>. I&#39;ll probably mess with it a bit more, but there it is.
+
+<h3>The Perl 6 RT queue</h3>
+
+The RT queue is a bit trickier since you can&#39;t get a feed out of <a href="https://rt.perl.org/Public/">the public interface</a>. I can log in, do a search, then find my secret feed URL in the upper right:
+
+<div class="center image">
+<div>
+<img height="260" src="/images/rt-search-feeds.png" width="500">
+<p>You only get the Feeds menu while logged in</p>
+</div>
+</div>
+
+Since this is supposed to be a secret URL, I&#39;m not supposed to give it to the public. I can give it to Dlvr.it and let it post to @LearningPerl6 though.
+
+If you have an RT account, you can create your own search, grab the feed for that, and add it to your own aggregator.
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2017/01/03/collating-my-activity-to-learningperl6/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2017/01/03/search-the-perl-6-repos-with-etsys-hound/">Search the Perl 6 repos with Etsy's Hound</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 03, 2017</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+<div class="image center">
+<div>
+<img height="375" src="https://c5.staticflickr.com/3/2135/2130638404_84c86b7421.jpg" style="margin-left:auto;margin-right: auto;border=0;" width="500">
+<p><a href="https://www.flickr.com/photos/estro/2130638404/in/photolist-4fh5yU-4pLHQm-7twak7-4oxJAp-5h8irh-9oLE2R-7dQjxW-qjC7PD-4fd6Qk-4rnfnT-dFG2gm-4XwGbT-7X3gZx-nLrwqL-pqtnLg-5TN4uu-J7g8U-4szusX-9AoQfP-4RZQvi-qznvt2-8ikYRU-84dnnC-67u5aW-71XbMG-EGZvVg-4QSXQr-qpjiqS-3yTHwC-6AUnqD-7REW8b-49We4b-nugBMy-5j2Z3t-4u8LAj-88hh5t-mAn8bb-67u5Fh-bE8inF-bMQ27c-o4GKCN-9mkmaR-jwf4dB-9AmJYf-4rnd1k-ef42Vy-nAccQ2-qfNq8X-pjzKdR-Hr2Qwd">Hound photo</a> by <a href="https://www.flickr.com/photos/estro/">Jen on Flickr</a></p>
+</div>
+</div>
+
+I&#39;m working on <a href="https://www.learningperl6.org">Learning Perl 6</a> and I spend a lot of my time going between repos to suss out various things. Etsy&#39;s <a href="https://github.com/etsy/hound">Hound</a> is a tool that makes that easier, and I&#39;ve made a <a href="https://github.com/briandfoy/perl6-hound">GitHub project with my setup</a>.
+
+<!--more-->
+
+<a href="http://www.perl6.org">Perl 6</a> development is spread over several repositories. That&#39;s a consequence that there&#39;s no <i>a priori</i> preferred implementation, and that&#39;s on purpose.
+
+Anything that passes the <a href="https://github.com/perl6/roast">roast tests</a> is Perl 6. That has its own repo. <a href="https://github.com/rakudo/rakudo">Rakudo</a> is one such implementation. It has its own repo.
+
+But, Perl 6 is largely written in Perl 6. There&#39;s a smaller version of the language, <a href="https://github.com/perl6/nqp">NQP</a> for <b>N</b>ot <b>Q</b>uite <b>P</b>erl6, that targets the virtual machines. A smaller feature set makes it easier to implement new virtual targets and that should encourage more backends. NQP has its own repo.
+
+And the <a href="https://github.com/perl6/doc">docs</a> have their own directory too.
+
+That means it&#39;s not quite as simple as grepping (acking, whatever) a repository. These are separate projects that I&#39;d have to keep separately updated.
+
+Etsy released a tool they call <a href="https://github.com/etsy/hound">hound</a>, written in <a href="https://golang.org">Go</a>. They have instructions, but here&#39;s a summary:
+
+<ul>
+<li><a href="https://golang.org/dl/">Install Go 1.3+</a>. I used a binary package.
+</li><li>Run <code>go get github.com/etsy/hound/cmds/...</code>
+</li><li>Create a directory for <i>houndd</i> to do its work
+</li><li>Create your <a href="https://github.com/briandfoy/perl6-hound/blob/master/config.json">config.json</a> to list the repos in that directory
+</li><li>Run <code>$GOPATH/bin/houndd</code> in that directory
+</li><li>Go to <a href="http://localhost:6080">http://localhost:6080</a>
+</li></ul>
+
+I&#39;ve also built most of this into the <a href="https://github.com/briandfoy/perl6-hound/blob/master/Makefile">Makefile</a>. Use the *run* target to get it going:
+
+<pre class="brush:plain">
+$ make run
+</pre>
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2017/01/03/search-the-perl-6-repos-with-etsys-hound/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2017/01/04/search-perl-6-repos-with-marchexgithub-api-tools/">Search Perl 6 repos with Marchex/github-api-tools</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 04, 2017</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+<a href="https://github.com/pudge">Chris Nandor</a> has been bugging me to use the <a href="https://github.com/Marchex/github-api-tools">Github tools he helped to develop for Marchex</a>, so when <a href="/2017/01/03/search-the-perl-6-repos-with-etsys-hound/">I posted about Hound</a> he showed me another way to search multiple <a href="https://github.com/">GitHub</a> repos at the same time. This version only works if everything is on GitHub (or your Enterprise version of that), but the Hound version can work with whatever mix of version control systems have, either local, remote, or both.
+
+<!--more-->
+
+This task is really simple, so it&#39;s not that impressive for those tools, but you can still search multiple GitHub repos. It only looks like you need a <a href="https://github.com/settings/tokens">GitHub personal access token</a> because the tools assume you&#39;ll want to do all the other stuff too. The stuff here doesn&#39;t actually use the <a href="https://developer.github.com/v3/">GitHub API</a>.
+
+Now I put it all together. This is really the sort of thing that Perl 5 was made to do. Here&#39;s a quickie Perl 5 example (and hey, last time is was Go, so I&#39;m getting closer). This constructs the right query, submits it to GitHub, and opens your browser to the results.
+
+<pre class="brush:perl">
+#!/Users/brian/bin/perls/perl5.14.2
+use v5.10;
+
+# You might have Enterprise, so this would be different
+$ENV{GITHUB_HOST}  //= &#39;github.com&#39;;
+$ENV{GITHUB_TOKEN} //= &#39;vanilla nut taps&#39;; # can be anything, but var needs to be defined
+
+# https://github.com/Marchex/github-api-tools
+my $binary = &#39;/Users/brian/bin/perls/github_search5.14.2&#39;;
+
+my $repos = join &#39; &#39;, map { &quot;repo:$_&quot; } qw(
+	rakudo/rakudo
+	perl6/nqp
+	perl6/doc
+	perl6/roast
+	perl6/specs
+	);
+
+@ARGV = qw(Mayor of Dunkin) unless @ARGV;
+my @command = (
+	$binary,
+	&#39;-O&#39;,
+	&#39;-f&#39;,
+	&quot;&#39;$repos&#39;&quot;,
+	@ARGV
+	);
+
+say &quot;@command&quot;;
+system { $command[0] } @command;
+</pre>
+
+To run it, I give it something to search:
+
+<pre class="brush:plain">
+$ search_perl6 encoding
+<pre>
+
+(<a href="https://github.com/search?q=encoding%20%27repo%3Arakudo%2Frakudo%20repo%3Aperl6%2Fnqp%20repo%3Aperl6%2Fdoc%20repo%3Aperl6%2Froast%20repo%3Aperl6%2Fspecs%27&amp;ref=searchresults&amp;type=Code">See that result</a>).
+
+But, I don&#39;t really need any Perl 5 here. Although the Marchex tools are in Perl 5, my program merely glues together a bunch of stuff then shells out. The Perl 6 version doesn&#39;t look that much different:
+
+<pre class="brush:plain">
+#!/Applications/Rakudo/bin/perl6
+use v6;
+
+# You might have Enterprise, so this would be different
+%*ENV{&#39;GITHUB_HOST&#39;}  //= &#39;github.com&#39;;
+%*ENV{&#39;GITHUB_TOKEN&#39;} //= &#39;gfy&#39;; # can be anything, but var needs to be defined
+
+# https://github.com/Marchex/github-api-tools
+my $binary = &#39;/Users/brian/bin/perls/github_search5.14.2&#39;;
+
+my $repos = q:w{
+	rakudo/rakudo
+	perl6/nqp
+	perl6/doc
+	perl6/roast
+	perl6/specs
+	}.map( { &quot;repo:$_&quot; } ).join( &#39; &#39; );
+
+@*ARGS = q:w/Mayor of Dunkin/ unless @*ARGS;
+my @command = (
+	$binary,
+	&#39;-O&#39;,
+	&#39;-f&#39;,
+	&quot;&#39;$repos&#39;&quot;,
+	|@*ARGS  # flatten that list with |
+	);
+
+say &quot;{@command}&quot;;
+run |@command;  # From class Proc https://docs.perl6.org/type/Proc
+</pre>
+
+Either way I see two benefits here. I can do it from the command line and it will automatically open my browser with the results. And, I don&#39;t have to remember how to type out the query. Since it doesn&#39;t use the GitHub API, it also doesn&#39;t count against my search rate limit. So, maybe two and a half benefits.
+
+
+</pre></pre>
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2017/01/04/search-perl-6-repos-with-marchexgithub-api-tools/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2017/01/09/buffers-hexdump-and-perl-6-power-tools/">Buffers, hexdump, and Perl 6 Power Tools</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 09, 2017</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+I was playing the <a href="https://docs.perl6.org/type/Buf">buffers</a> and reading binary data but I ended up implementing a <a href="https://github.com/briandfoy/Perl6PowerTools/blob/master/bin/hexdump">Perl 6 version of hexdump</a>. Looking for a place to put it, I figured <a href="https://github.com/briandfoy/Perl6PowerTools">Perl6PowerTools</a> might as well exist. Now it has a single program, but I figure there are people who will look at the original <a href="http://www.perlpowertools.com/">PerlPowerTools</a> and want to translate some of those to Perl 6.
+
+<div class="image center">
+<div>
+<img height="384" src="/images/hexdump.png" style="border:0" width="500">
+</div>
+</div>
+
+<!--more-->
+
+There&#39;s quite a bit going on in the program, but I&#39;ll pull out just a bit of it. 
+
+<pre class="brush:plain">
+	my @options = qw/ C c d b o x /.grep: { $::($_) };
+	while my Buf $buf = $fh.read( octets_to_read( $counter, $n ) ) {
+		# You can select more than one option at a time
+		# change the option order to change the output order
+		# These correspond to the named Bool parameters in the signature
+		for @options -&gt; $option {
+			put $counter.fmt( &#39;%08x  &#39; ), &amp;::(&quot;show_$option&quot;)($buf);
+			}
+		$counter += $buf.elems;
+		last if $n &amp;&amp; $counter &gt;= $n;
+		}
+</pre>
+
+I implemented the <code>-C</code>, <code>-c</code>, <code>-d</code>, <code>-b</code>, <code>-o</code>, and <code>-x</code> switches. Each of these present the data in a different way, making all the combinations of octet or words with octal, decimal, or hexadecimal. 
+
+Surprisingly, the hexdump I have on my Mac will happily do all of these at once. That means I have it a bit easier since I don&#39;t have to create an option processing hierarchy to exclude others. I figured that Perl 6&#39;s <a href="https://docs.perl6.org/routine/multi">multi methods</a> would be good for that, which is one of the reasons I started writing the program. Even when I found out I didn&#39;t need that I kept going.
+
+So, on each group of octets that I read, I have the opportunity to print several lines. I need to check which options are set to True. I could do that with a lot of repeated code:
+
+<pre class="brush:plain">
+		put $counter.fmt( &#39;%08x  &#39; ), show_C($buf) if $C;
+		put $counter.fmt( &#39;%08x  &#39; ), show_c($buf) if $c;
+		put $counter.fmt( &#39;%08x  &#39; ), show_d($buf) if $d;
+		...
+</pre>
+
+Instead, I use a variable to decide the variable name with <code>$::($some_variable)</code>. I filter out all the ones that are False:
+
+<pre class="brush:plain">
+	my @options = qw/ C c d b o x /.grep: { $::($_) };
+</pre>
+
+When it&#39;s time to output something, I go through the options that I have left. Each one has an associated subroutine, which I lookup in the same way:
+
+<pre class="brush:plain">
+		for @options -&gt; $option {
+			put $counter.fmt( &#39;%08x  &#39; ), &amp;::(&quot;show_$option&quot;)($buf);
+			}
+</pre>
+
+I also thought of translating those subroutine lookups beforehand but I didn&#39;t get that far. I don&#39;t really need to keep constructing the subroutine name. That&#39;s something I can fix later.
+
+There&#39;s something that&#39;s probably surprising to Perl 5 people. This little trick isn&#39;t limited to a particular set of variables. It works with lexicals too:
+
+<pre class="brush:plain">
+my $foo = &quot;Some value&quot;;
+
+put &quot;The value of \$foo is &quot;, $::(&#39;foo&#39;); # works just fine.
+</pre>
+
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2017/01/09/buffers-hexdump-and-perl-6-power-tools/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2017/01/10/andrew-shitovs-perl-at-a-glance/">Andrew Shitov's Perl at a Glance</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 10, 2017</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+<br>
+
+<div class="image left">
+<div>
+<img height="216" src="/images/perl6-at-a-glance.jpg" width="150">
+</div>
+</div>
+
+
+Andrew Shitov has published <a href="https://deeptext.media/perl6-at-a-glance/">Perl 6 at a Glance</a>, a survey book for the new language. I haven&#39;t had a change to read it yet, but you can buy it now and read it yourself. Some people have already received their copy. Get yours and tell everyone else about it.
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2017/01/10/andrew-shitovs-perl-at-a-glance/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2017/01/11/6-more-things-about-6-at-boston-perl-mongers/">6 More Things About 6, at Boston Perl mongers</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 11, 2017</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+<a href="http://www.theperlshop.com">The Perl Shop</a> sponsored me to present a <a href="http://www.slideshare.net/brian_d_foy/6-more-things-about-perl-6">Perl 6 talk</a> to the <a href="https://www.meetup.com/Boston-pm/">Boston Perl mongers</a> last night. I pulled out six thing that I didn&#39;t <a href="/2016/12/09/6-things-about-6-at-ny-pm/">talk about at the New York Perl mongers last month</a>. As before, these aren&#39;t really the big ideas or most exciting features. They are sometimes small corners that lead to other ideas.
+
+<div class="image center">
+<div>
+<a href="http://www.slideshare.net/brian_d_foy/6-more-things-about-perl-6"><img height="376" src="/images/6more-cover.png" style="border:0" width="484"></a>
+</div>
+</div>
+
+I&#39;m lining up some Perl mongers groups I want to visit this spring. If you&#39;d like me to give a presentation to your group, let me know (brian.d.foy@gmail.com).
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2017/01/11/6-more-things-about-6-at-boston-perl-mongers/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2017/01/17/bbedit-text-filters-in-perl-6/">BBEdit Text Filters in Perl 6</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 17, 2017</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+I&#39;ve been writing BBEdit <q href="http://bbeditextras.org/wiki/index.php?title=Text_Filters">Text Filters in Perl 6. This isn&#39;t revolutionary and I&#39;ve made no great hack. It&#39;s not a hidden part of the BBEdit docs, and it&#39;s not a feature unique to my favorite editor. You don&#39;t even need to use Perl 6; any unix interpreter will do. Your editor can probably do the same thing, and maybe even with the same programs.
+
+<div class="image center">
+<div>
+<img height="430" src="/images/text_filters.png" style="border:0" width="500">
+</div>
+</div>
+
+
+<!--more-->
+
+In your <i>.../Application Support/BBEdit/Text Filters</i>, drop in any sort of Unix script you like (mine is actually in my Dropbox folder and thus shared across my network, a feature from <a href="http://www.barebones.com/products/bbedit/bbedit10.html">BBEdit 10</a>). It uses the shebang line to run the program just as it does if you run it from the command line. This text filter gets the text you selected in the editor. Whatever you print to standard output replaces the selected text.
+
+I wanted to turn a string into the codepoint numbers and names that represent their characters. Here&#39;s that in Perl 6:
+
+<pre class="brush:plain">
+#!/Applications/Rakudo/bin/perl6
+
+$*IN
+	.lines
+	.map: {
+		eager ($_.ords Z, $_.uninames).map: {
+			printf &quot;%04x %s\n&quot;, $_.list
+			}
+		}
+</pre>
+
+This turns text such as &quot;Hamadryas&quot; into this:
+
+<pre class="brush:plain">
+0048 LATIN CAPITAL LETTER H
+0061 LATIN SMALL LETTER A
+006d LATIN SMALL LETTER M
+0061 LATIN SMALL LETTER A
+0064 LATIN SMALL LETTER D
+0072 LATIN SMALL LETTER R
+0079 LATIN SMALL LETTER Y
+0061 LATIN SMALL LETTER A
+0073 LATIN SMALL LETTER S
+</pre>
+
+There&#39;s another text filter I like. I use it to align <code>=</code> and <code>=&gt;</code> (or anything that starts with <code>=</code> in code:
+
+<pre class="brush:plain">
+my $longest = 0;
+my @lines;
+
+for $*IN.lines -&gt; $line {
+	my @columns = $line.split( / \s+ &#39;=&#39; \S+ \s+ /, 2 );
+	$longest max= @columns.[0].chars;
+	push @lines, @columns;
+	}
+
+for @lines -&gt; $line {
+	printf &quot;%-{$longest}s =&gt; %s\n&quot;, $line.list;
+	}
+</pre>
+
+Notice that <code>max=</code>. That&#39;s a binary assignment with the <a href="https://docs.perl6.org/language/operators#infix_max">max</a> operator. That&#39;s like <code>$longest = $longest max @columns.[0].chars</code>.
+
+Now I need to figure out why BBEdit won&#39;t allow me to assign a keyboard shortcut to it.
+
+
+
+</q>
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2017/01/17/bbedit-text-filters-in-perl-6/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2017/01/26/three-ways-to-pretty-print-perl-6/">Three ways to pretty print Perl 6</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 26, 2017</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+I&#39;ve had my head down working on the &quot;Grammars&quot; chapter, and along
+the way I&#39;ve been using <code>dd</code> to look at things. It&#39;s better than nothing, but it&#39;s also very compact and unwrapped. I really wanted a pretty printer, and I was even prepared to write my own. But, I don&#39;t have to. Here are three modules that can do it for you. <!--more-->
+
+But Jeff Goff has already written <a href="https://github.com/drforr/perl6-pp">Pretty::Printer</a>. I wasn&#39;t able to install it with panda or zef (and it&#39;s not listed on <a href="http://modules.perl6.org">modules.perl6.org</a>). But, you can get it from the <a href="https://github.com/drforr/perl6-pp">perl6-pp GitHub repo</a>.
+
+Here&#39;s a structure that I want to inspect. It includes a <a href="https://docs.perl6.org/type/Match">Match</a> object with a named capture:
+
+<pre class="brush:plain">
+use v6;
+use lib qw/lib/;
+
+my $match = (&#39;123456789&#39; ~~ m:g/$&lt;digit&gt;=(\d+:)/);
+
+my %hash =
+	dog =&gt; &#39;Nikki&#39;,
+	cat =&gt; &#39;Buster&#39;,
+	butterfly =&gt; &#39;Hamadryas&#39;,
+	array =&gt; [ 5 .. 10 ],
+	complex =&gt; {
+		one =&gt; 37,
+		two =&gt; &quot;Buster&quot;,
+		three =&gt; [ 3..7 ],
+		four =&gt; {
+			array =&gt; [ 4..7 ],
+			hash  =&gt; {
+				dog =&gt; &#39;Newfie&#39;,
+				}
+			},
+		},
+	match =&gt; $match;
+	;
+</pre>
+
+I can use the built-in <code>dd</code> to get this very compact representation that just needs whitespace in the right places:
+
+<pre class="brush:plain">
+Hash %hash = {:array($[5, 6, 7, 8, 9, 10]), :butterfly(&quot;Hamadryas&quot;), :cat(&quot;Buster&quot;), :complex(${:four(${:array($[4, 5, 6, 7]), :hash(${:dog(&quot;Newfie&quot;)})}), :one(37), :three($[3, 4, 5, 6, 7]), :two(&quot;Buster&quot;)}), :dog(&quot;Nikki&quot;), :match($(Match.new(ast =&gt; Any, list =&gt; (), hash =&gt; Map.new((:digit(Match.new(ast =&gt; Any, list =&gt; (), hash =&gt; Map.new(()), orig =&gt; &quot;123456789&quot;, to =&gt; 9, from =&gt; 0)))), orig =&gt; &quot;123456789&quot;, to =&gt; 9, from =&gt; 0),))}
+</pre>
+
+With <a href="https://github.com/drforr/perl6-pp/pull/2">Pretty::Printer</a> (using the <a href="https://github.com/drforr/perl6-pp/pull/2">pull request I just sent</a>), I can choose some formatting options:
+
+<pre class="brush:plain">
+use Pretty::Printer;
+
+my $pp = Pretty::Printer.new(
+	pre-item-spacing       =&gt; &quot;\n&quot;,
+	post-item-spacing      =&gt; &quot;\n&quot;,
+
+	intra-group-spacing    =&gt; &quot;&quot;,
+
+	pre-separator-spacing  =&gt; &#39;&#39;,
+	post-separator-spacing =&gt; &quot;\n&quot;,
+
+	indent-style           =&gt; &quot;   &quot;,
+	);
+
+say $pp.pp( %hash );
+</pre>
+
+The output is a bit rough, but it&#39;s much easier for me to read, especially with the match stuff:
+
+<pre class="brush:plain">
+${
+   :array($[
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+   ]),
+   :butterfly(&quot;Hamadryas&quot;),
+   :cat(&quot;Buster&quot;),
+   :complex(${
+      :four(${
+         :array($[
+            4,
+            5,
+            6,
+            7
+         ]),
+         :hash(${
+            :dog(&quot;Newfie&quot;)
+         })
+      }),
+      :one(37),
+      :three($[
+         3,
+         4,
+         5,
+         6,
+         7
+      ]),
+      :two(&quot;Buster&quot;)
+   }),
+   :dog(&quot;Nikki&quot;),
+   :match($(
+         Match.new(${
+                    :ast(Any),
+                    :from(0),
+                    :hash(Map.new(
+                       :digit(Match.new(${
+                              :ast(Any),
+                              :from(0),
+                              :hash(Map.new()),
+                              :list($()),
+                              :orig(&quot;123456789&quot;),
+                              :to(9)
+                       })))),
+                    :list($()),
+                    :orig(&quot;123456789&quot;),
+                    :to(9)
+         })
+   ))
+}
+</pre>
+
+There&#39;s also <a href="https://github.com/tony-o/perl6-data-dump">Data::Dump</a> (which you can install with <i>panda</i>:
+
+<pre class="brush:plain">
+use Data::Dump;
+say Dump %hash;
+</pre>
+
+I find the output is a bit too detailed for most of my needs, but does fine with the <a href="https://docs.perl6.org/type/Match">Match</a> object. Although you can&#39;t see it here, the output can be colored if your terminal supports that:
+
+<pre class="brush:plain">
+{
+  array     =&gt; [
+    5.Int,
+    6.Int,
+    7.Int,
+    8.Int,
+    9.Int,
+    10.Int,
+  ],
+  butterfly =&gt; &quot;Hamadryas&quot;.Str,
+  cat       =&gt; &quot;Buster&quot;.Str,
+  complex   =&gt; {
+    four  =&gt; {
+      array =&gt; [
+        4.Int,
+        5.Int,
+        6.Int,
+        7.Int,
+      ],
+      hash  =&gt; {
+        dog =&gt; &quot;Newfie&quot;.Str,
+      },
+    },
+    one   =&gt; 37.Int,
+    three =&gt; [
+      3.Int,
+      4.Int,
+      5.Int,
+      6.Int,
+      7.Int,
+    ],
+    two   =&gt; &quot;Buster&quot;.Str,
+  },
+  dog       =&gt; &quot;Nikki&quot;.Str,
+  match     =&gt; [
+    Match :: (
+      $!CURSOR =&gt; undefined,
+      $!from  =&gt; 0.Int,
+      $!made  =&gt; (Any),
+      $!orig  =&gt; &quot;123456789&quot;.Str,
+      $!to    =&gt; 9.Int,
+      %!hash  =&gt; {
+        digit =&gt; Match :: (
+          $!CURSOR =&gt; undefined,
+          $!from  =&gt; 0.Int,
+          $!made  =&gt; (Any),
+          $!orig  =&gt; &quot;123456789&quot;.Str,
+          $!to    =&gt; 9.Int,
+          %!hash  =&gt; { },
+          @!list  =&gt; [ ],
+
+          method ACCEPTS () returns Mu {...},
+          method BUILD (:@list, :%hash) returns Nil {...},
+          method Bool () returns Mu {...},
+          method Bool () returns Mu {...},
+          method CURSOR () returns Mu {...},
+          method Capture () returns Mu {...},
+          method FLATTENABLE_HASH () returns Mu {...},
+          method FLATTENABLE_LIST () returns Mu {...},
+          method Method+{<anon|140185815714976>}.new () returns Mu {...},
+          method Method+{<anon|140185815714976>}.new () returns Mu {...},
+          method Method+{<anon|140185815714976>}.new () returns Mu {...},
+          method Method+{<anon|140185815714976>}.new () returns Mu {...},
+          method Method+{<anon|140185815714976>}.new () returns Mu {...},
+          method Method+{<anon|140185815714976>}.new () returns Mu {...},
+          method Method+{<anon|140185815714976>}.new () returns Mu {...},
+          method Method+{<anon|140185815714976>}.new () returns Mu {...},
+          method Numeric () returns Mu {...},
+          method Numeric () returns Mu {...},
+          method Str () returns Mu {...},
+          method Str () returns Mu {...},
+          method WHICH () returns Mu {...},
+          method ast () returns Mu {...},
+          method caps () returns Mu {...},
+          method chunks () returns Mu {...},
+          method elems () returns Mu {...},
+          method from () returns Mu {...},
+          method from-args () returns Mu {...},
+          method gist () returns Mu {...},
+          method gist () returns Mu {...},
+          method hash () returns Mu {...},
+          method list () returns Mu {...},
+          method made () returns Mu {...},
+          method make (Mu \made) returns Mu {...},
+          method new (:$orig, :$from, :$to, :$CURSOR, :$made) returns Mu {...},
+          method new (:@list, :%hash) returns Mu {...},
+          method orig () returns Mu {...},
+          method perl () returns Mu {...},
+          method perl () returns Mu {...},
+          method postmatch () returns Mu {...},
+          method prematch () returns Mu {...},
+          method to () returns Mu {...},
+        ),
+      },
+      @!list  =&gt; [ ],
+
+      method ACCEPTS () returns Mu {...},
+      method BUILD (:@list, :%hash) returns Nil {...},
+      method Bool () returns Mu {...},
+      method Bool () returns Mu {...},
+      method CURSOR () returns Mu {...},
+      method Capture () returns Mu {...},
+      method FLATTENABLE_HASH () returns Mu {...},
+      method FLATTENABLE_LIST () returns Mu {...},
+      method Method+{&lt;anon|140185815714976&gt;}.new () returns Mu {...},
+      method Method+{&lt;anon|140185815714976&gt;}.new () returns Mu {...},
+      method Method+{&lt;anon|140185815714976&gt;}.new () returns Mu {...},
+      method Method+{&lt;anon|140185815714976&gt;}.new () returns Mu {...},
+      method Method+{&lt;anon|140185815714976&gt;}.new () returns Mu {...},
+      method Method+{&lt;anon|140185815714976&gt;}.new () returns Mu {...},
+      method Method+{&lt;anon|140185815714976&gt;}.new () returns Mu {...},
+      method Method+{&lt;anon|140185815714976&gt;}.new () returns Mu {...},
+      method Numeric () returns Mu {...},
+      method Numeric () returns Mu {...},
+      method Str () returns Mu {...},
+      method Str () returns Mu {...},
+      method WHICH () returns Mu {...},
+      method ast () returns Mu {...},
+      method caps () returns Mu {...},
+      method chunks () returns Mu {...},
+      method elems () returns Mu {...},
+      method from () returns Mu {...},
+      method from-args () returns Mu {...},
+      method gist () returns Mu {...},
+      method gist () returns Mu {...},
+      method hash () returns Mu {...},
+      method list () returns Mu {...},
+      method made () returns Mu {...},
+      method make (Mu \made) returns Mu {...},
+      method new (:$orig, :$from, :$to, :$CURSOR, :$made) returns Mu {...},
+      method new (:@list, :%hash) returns Mu {...},
+      method orig () returns Mu {...},
+      method perl () returns Mu {...},
+      method perl () returns Mu {...},
+      method postmatch () returns Mu {...},
+      method prematch () returns Mu {...},
+      method to () returns Mu {...},
+    ),
+  ],
+}
+</anon|140185815714976></anon|140185815714976></anon|140185815714976></anon|140185815714976></anon|140185815714976></anon|140185815714976></anon|140185815714976></anon|140185815714976></pre>
+
+And, there&#39;s <a href="https://github.com/nkh/P6-Data-Dump-Tree">Data::Dump::Tree</a>, which is also colorized. 
+
+<pre class="brush:plain">
+use Data::Dump::Tree;
+say dump %hash;
+</pre>
+
+It might be more comfortable for people used to the Microsoft hierarchical interfaces, but notice how it&#39;s not that interesting for <a href="https://docs.perl6.org/type/Match">Match</a> objects:
+
+<pre class="brush:plain">
+{6} @0
+├ array =&gt; [6] @1
+│ ├ 0 = 5.Int
+│ ├ 1 = 6.Int
+│ ├ 2 = 7.Int
+│ ├ 3 = 8.Int
+│ ├ 4 = 9.Int
+│ └ 5 = 10.Int
+├ butterfly =&gt; Hamadryas.Str
+├ cat =&gt; Buster.Str
+├ complex =&gt; {4} @2
+│ ├ four =&gt; {2} @3
+│ │ ├ array =&gt; [4] @4
+│ │ │ ├ 0 = 4.Int
+│ │ │ ├ 1 = 5.Int
+│ │ │ ├ 2 = 6.Int
+│ │ │ └ 3 = 7.Int
+│ │ └ hash =&gt; {1} @5
+│ │   └ dog =&gt; Newfie.Str
+│ ├ one =&gt; 37.Int
+│ ├ three =&gt; [5] @6
+│ │ ├ 0 = 3.Int
+│ │ ├ 1 = 4.Int
+│ │ ├ 2 = 5.Int
+│ │ ├ 3 = 6.Int
+│ │ └ 4 = 7.Int
+│ └ two =&gt; Buster.Str
+├ dog =&gt; Nikki.Str
+└ match =&gt; (1) @7
+  └ 0 = 123456789[0..9|
+</pre>
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2017/01/26/three-ways-to-pretty-print-perl-6/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+
+Unterminated <> operator at template line 11.
+Context:
+  6: <%
+  7: 	my $items = get_var('items');
+  8: 
+  9: 	foreach my $item ( $items->@* ) {
+  10: 		my $date = Time::Moment
+  11: 			->from_string( $item->{date} . '-0400', lenient => 1 )
+  12: 			->strftime( '%B %d, %Y' );
+  13: %>
+  14:     <!-- ----------------------------------------------------------- -->
+  15: 	<div class="post">
+  16: 		<h2 class="post_title excerpt_page"><a href="<%= $item->{web_path} =%>"><%= $item->{title} =%></a></h2>
+Traceback (most recent call first):
+  File "template", line 11, in "Mojo::Template::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 148, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::render"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox::include"
+  File "_templates/month_list", line 34, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 173, in "Mojo::Template::render"
+  File "bin/cook", line 258, in "Mojo::Template::render_file"
+  File "bin/cook", line 44, in "main::make_year_month_pages"
+Context:
+  6: my $bin  = get_var('bin');
+  7: %>
+  8: 
+  9: 
+  10: foreach my $n ( 1 .. $bins ) {
+  11: %><a class="pag_link<%= $n == $bin ? ' pag_current'  : '' =%>" href="index<%= $n == 1 ? '' : "_$n" =%>.html"><%= $n =%></a>
+  12: <% } %>
+  13: </div>
+  14: <!-- end paginate -->
+Traceback (most recent call first):
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::render"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox::include"
+  File "_templates/month_list", line 34, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 173, in "Mojo::Template::render"
+  File "bin/cook", line 258, in "Mojo::Template::render_file"
+  File "bin/cook", line 44, in "main::make_year_month_pages"
+
+</div>
+<!-- end excerpt_list -->
+
+</html>
+

@@ -1,0 +1,274 @@
+<html>
+
+<head>
+	<base href="https://test.learningraku.com/">
+	<title>February 2016 - Learning Raku (formerly Perl 6)</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="brian's site generator" />
+	<meta charset="UTF-8" />
+</head>
+
+<!-- start excerpt_list -->
+<div id="content">
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/02/06/dont-install-over-your-existing-perl-6/">Don't install over your existing Perl 6</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">February 06, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+When you want to install a new Perl 6 (or any of its backend stuff), don&#39;t install over what you already have working. The language and the tools aren&#39;t stable or reliable enough for you to end up with something that still works. It&#39;s getting better (relative to Pugs, which could take days, or the situation five years ago), but it doesn&#39;t pass the <a href="//www.urbandictionary.com/define.php?term=Grandma+Test">grandma test</a> yet. <!--more-->
+
+I&#39;m at the first meeting of the Perl 6 Study Group in NYC, which Jim Keenan has organized in the back of <a href="//www.yelp.com/biz/d-b-a-new-york-2">dba</a>. That&#39;s the same place the first ever Perl users group meeting took place. My goal today was to explore some installation strategies for Perl 6.
+
+First, you aren&#39;t merely installing Perl 6. There&#39;s a <b>backend</b> you&#39;ll need. Perl 6 can run on <a href="//www.moarvm.org">MoarVM</a>, JVM, and maybe a few others. You&#39;ll need to build that. Second, you need to bootstrap Perl 6 since it&#39;s written in Perl 6. <a href="//github.com/perl6/nqp">NQP</a> (Not Quite Perl 6) is the path to that bootstrapping. Third, there&#39;s the Perl 6 implementation. Most people will go for <a href="//rakudo.org/downloads/star/">Rakudo</a>, but one of the goals of Perl 6 is to get away from the single, canonical interpreter we have in Perl 5 Land.
+
+<div class="image center">
+<div>
+<img height="392" src="http://i0.kym-cdn.com/entries/icons/original/000/000/574/moar-cat.jpg" width="500">
+</div>
+</div>
+
+Most of this you won&#39;t have to worry about in most cases. The <a href="//github.com/tadzik/rakudobrew">rakudobrew</a> tool automates this. When you follow that link, you&#39;ll end up on a GitHub page. When you run rakudobrew, you&#39;ll pull from several GitHub projects:
+
+<pre class="brush:perl">
+my %git_repos = (
+    rakudo =&gt; &quot;$GIT_PROTO://github.com/rakudo/rakudo.git&quot;,
+    MoarVM =&gt; &quot;$GIT_PROTO://github.com/MoarVM/MoarVM.git&quot;,
+    nqp    =&gt; &quot;$GIT_PROTO://github.com/perl6/nqp.git&quot;,
+    panda  =&gt; &quot;$GIT_PROTO://github.com/tadzik/panda.git&quot;,
+    zef    =&gt; &quot;$GIT_PROTO://github.com/ugexe/zef.git&quot;,
+);
+</pre>
+
+I strongly believe that the path to mastery includes understanding what a tool does even if it automates really annoying stuff that you don&#39;t want to think about. You see the rakudo, MoarVM, and NQP components there. Panda and zef are Perl 6 module tools.
+
+Pulling directly from repos, even if its from a  specific tag, seems fragile and makes me nervous. Some of this is technically unfounded but socially aware. Pulling from several repos each time I want to build Perl 6 also makes me nervous. I could download <a href="//rakudo.org/downloads/star/">Rakudo Star</a>, a tarball that includes the basics and a MoarVM and install it by hand.
+
+rakudobrew is more interesting because it should manage several installed versions at the same time. Pulling from the repositories works fine, but the various hand-offs to external programs and the shell are fragile. I talked to a tech from Amazon Web Services about setting up a shared Perl 6 machine, and sadly he ran into problems on a fresh install of everything. These aren&#39;t uncommon. It&#39;s also the first problem that people are going to run into and the quickest way that they are going to give up. We need more binary packages until the installation system is reliable to the point that we never think about it.
+
+For my task, I installed several by hand and these worked without a problem:
+
+<pre class="brush:plain">
+$ perl Configure.pl --prefix=/Users/brian/Dropbox/Perl6/20160205 --gen-moar --make-install
+$ perl Configure.pl --prefix=/Users/brian/Dropbox/Perl6/20160205.2 --gen-moar --make-install
+$ git checkout -b v6.c
+$ perl Configure.pl --prefix=/Users/brian/Dropbox/Perl6/6.c --gen-moar --make-install
+</pre>
+
+For some reason, the same session wouldn&#39;t build using rakudobrew. It would fail with the a similar mismatch in tools I reported in <a href="//github.com/MoarVM/MoarVM/issues/334">Issue 334 for MoarVM</a>. Basically, the installer chooses a set of tools and adds them to the Makefile as the command name, like  <code>AR=ar</code>. This leaves it up to the path to choose the first one it finds, not the one that goes with the compiler it chose.
+
+I recommend that you don&#39;t nuke your existing implementation when you want a different version of Perl 6. You might even up with something that doesn&#39;t work. I should be old enough to know not to install new software while I&#39;m at an airport, but I tried to upgrade and spent the rest of the flight trying to fix the installation errors.
+
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/02/06/dont-install-over-your-existing-perl-6/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/02/23/perl-6-examples/">Perl 6 Examples</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">February 23, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+In the early days of Perl 6 we don&#39;t have a library of reliable books, mostly because the language had shifted so rapidly. But, there are plenty of examples of Perl 6. I&#39;ve listed some of them in the sidebar of <a href="/">this website</a>. <!--more-->
+
+<ul>
+<li>The <a href="//github.com/perl6/roast">test suite (&quot;roast&quot;)</a> for Perl 6 has examples of almost all of the features so developers can verify the specification.
+</li><li><a href="//rosettacode.org/wiki/Category:Perl_6">Rosetta Code has a section with Perl 6 examples</a>.
+</li><li><a href="//examples.perl6.org/">There&#39;s examples.perl6.org</a>, which includes <a href="//examples.perl6.org/categories/euler.html">Project Euler solutions</a>. See it&#39;s <a href="https://github.com/perl6/perl6-examples">GitHub repo</a> too.
+</li><li><a href="//learnxinyminutes.com/docs/perl6/">Learn Perl 6 in Y minutes</a> is a summary of Perl 6, in code.
+</li></ul>
+
+We don&#39;t emphasize code reading enough. We&#39;re used to teaching you how to write new code, usually while you struggle with a particular concept we give you. You&#39;ll learn much more by reading code. Someone else will do it slightly differently or even in a completely different way using features you didn&#39;t know about. 
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/02/23/perl-6-examples/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2016/02/28/dos-pattern-matching-in-perl-6/">DOS pattern matching, in Perl 6</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">February 28, 2016</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+I rewrote my <a href="http://www.learning-perl.com/2016/02/dos-pattern-matching-in-perl/">DOS pattern matching</a> in Perl 6. There&#39;s nothing particularly fancy here and I tried to keep it close to the version I wrote in Perl 5 and <a href="https://blogs.msdn.microsoft.com/oldnewthing/20071217-00/?p=24143">the way Raymond Chen presented it</a>. <!--more-->
+
+<pre class="brush:plain">
+#!perl6
+
+=begin pod
+
+Match 8.3 filenames in the DOS way, from Raymond Chen
+
+https://blogs.msdn.microsoft.com/oldnewthing/20071217-00/?p=24143
+
+1. Start with eleven spaces and the cursor at position 1.
+
+2. Read a character from the input. If the end of the input is
+reached, then stop.
+
+3. If the next character in the input is a dot, then set positions 9,
+10, and 11 to spaces, move the cursor to position 9, and go back to
+step 2.
+
+4. If the next character in the input is an asterisk, then fill the
+rest of the pattern with question marks, move the cursor to position
+12, and go back to step 2. (Yes, this is past the end of the pattern.)
+
+5. If the cursor is not at position 12, copy the input character to
+the cursor position and advance the cursor.
+
+*: Remember that Perl 6 counts strings counting from zero.
+
+=end pod
+
+for $=finish.lines -&gt; $line {
+	my $dos_pattern = &#39; &#39; x 11;
+	my $cursor = 0;
+
+	for $line.split(&quot;&quot;, :skip-empty) -&gt; $char {
+		if $char eq &#39;.&#39; {
+			$dos_pattern.substr-rw( 8, 3 ) = &#39; &#39; x 3;
+			$cursor = 8;
+			}
+		elsif $char eq &#39;*&#39; {
+			$dos_pattern.substr-rw( $_, 1 ) = &#39;?&#39; for $cursor .. 10;
+			$cursor = 11;
+			}
+		elsif $cursor != 11 {
+			$dos_pattern.substr-rw( $cursor++, 1 ) = $char;
+			}
+
+		}
+
+	printf &quot;%d: %12s -&gt; %12s\n&quot;, $++, $line, $dos_pattern;
+	}
+
+=finish
+ABCD.TXT
+ABCDEFGHIJK
+A*B.TXT
+*.*
+*
+*.TXT
+.TXT
+</pre>
+
+I get the same output.
+
+<pre class="brush:plain">
+0:     ABCD.TXT -&gt;  ABCD    TXT
+1:  ABCDEFGHIJK -&gt;  ABCDEFGHIJK
+2:      A*B.TXT -&gt;  A???????TXT
+3:          *.* -&gt;  ???????????
+4:            * -&gt;  ???????????
+5:        *.TXT -&gt;  ????????TXT
+6:         .TXT -&gt;          TXT
+</pre>
+
+But let&#39;s look at some differences.
+
+I have <code>$line.split(&quot;&quot;, :skip-empty)</code>. Splitting with an empty string creates empty elements at the beginning <i>and</i> end of the list, so I can add the <code>:skip-empty</code>. 
+
+There&#39;s a <a href="https://doc.perl6.org/type/Str#routine_chars"><code>chars</code></a> method in the <code>Str</code> class, but it doesn&#39;t return characters. It returns a count. The <a href="https://doc.perl6.org/type/Str#routine_lines"><code>lines</code></a> method, however, returns lines and not a count.
+
+The <a href="https://doc.perl6.org/type/Str"><code>Str</code> class</a> has several <code>subst*</code> methods that do slightly different things. The <code>subset-rw</code> provides the lvalue that I can assign to. 
+
+And, check out that anonymous variable in the <code>printf</code> line. Perl 6 has a feature that creates persistent state variables that are private to a statement. Don&#39;t give the variable a name. <code>$++</code> is a variable without a name that I post-increment. That&#39;s pretty handy.
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2016/02/28/dos-pattern-matching-in-perl-6/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+
+Unterminated <> operator at template line 11.
+Context:
+  6: <%
+  7: 	my $items = get_var('items');
+  8: 
+  9: 	foreach my $item ( $items->@* ) {
+  10: 		my $date = Time::Moment
+  11: 			->from_string( $item->{date} . '-0400', lenient => 1 )
+  12: 			->strftime( '%B %d, %Y' );
+  13: %>
+  14:     <!-- ----------------------------------------------------------- -->
+  15: 	<div class="post">
+  16: 		<h2 class="post_title excerpt_page"><a href="<%= $item->{web_path} =%>"><%= $item->{title} =%></a></h2>
+Traceback (most recent call first):
+  File "template", line 11, in "Mojo::Template::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 148, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::render"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox::include"
+  File "_templates/month_list", line 34, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 173, in "Mojo::Template::render"
+  File "bin/cook", line 258, in "Mojo::Template::render_file"
+  File "bin/cook", line 44, in "main::make_year_month_pages"
+Context:
+  6: my $bin  = get_var('bin');
+  7: %>
+  8: 
+  9: 
+  10: foreach my $n ( 1 .. $bins ) {
+  11: %><a class="pag_link<%= $n == $bin ? ' pag_current'  : '' =%>" href="index<%= $n == 1 ? '' : "_$n" =%>.html"><%= $n =%></a>
+  12: <% } %>
+  13: </div>
+  14: <!-- end paginate -->
+Traceback (most recent call first):
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::render"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox::include"
+  File "_templates/month_list", line 34, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 173, in "Mojo::Template::render"
+  File "bin/cook", line 258, in "Mojo::Template::render_file"
+  File "bin/cook", line 44, in "main::make_year_month_pages"
+
+</div>
+<!-- end excerpt_list -->
+
+</html>
+

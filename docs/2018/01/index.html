@@ -1,0 +1,851 @@
+<html>
+
+<head>
+	<base href="https://test.learningraku.com/">
+	<title>January 2018 - Learning Raku (formerly Perl 6)</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="brian's site generator" />
+	<meta charset="UTF-8" />
+</head>
+
+<!-- start excerpt_list -->
+<div id="content">
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2018/01/09/converting-numbers-to-strings-the-hard-way/">Converting numbers to strings the hard way</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 09, 2018</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Turning numbers into strings can be a big waste of time and money.  Paul Khuong wrote about this in <a href="//www.pvk.ca/Blog/2017/12/22/appnexus-common-framework-its-out-also-how-to-print-integers-faster/">How to Print Integers Really Fast (With Open Source AppNexus Code!)</a>. If you&#39;ve bought into the JSON mania you&#39;re probably serializing numbers as strings quite a bit without even thinking about it. Much of his discussion is special to C or C++ where you (think) you directly control the hardware. Since this is also a typical interview problem I thought I&#39;d work on it in Perl 6 with a few extras. <!--more-->
+
+The solutions I found convert everything to decimal numbers. There are probably some hexadecimal converters out there. That&#39;s not so interesting. How about a converter for arbitrary bases with arbitrary digits? And, I can&#39;t use any of the builtin stuff to make this work (and so far I haven&#39;t peeked to see how Rakudo does it).
+
+The solution is to decompose a number into parts and convert that  partto a string with a lookup table. Put together all your string parts to get the full number. Optimizing that lookup table is most of the problem but I don&#39;t worry about that right away.
+
+I create a factory that takes a single string where each character represents a digit; the number of digits is the base. I don&#39;t care which characters are in the string. Maybe they aren&#39;t in order of their codepoints, or they are repeated, or some other weird thing. Specify a stupid string and get stupid number serializations. If I don&#39;t specify a string I&#39;ll default to the decimal digits. From that I get the base that I&#39;ll use to decompose the number and I&#39;ll break up the string into characters in an array so I can use the numeric value as the index to map it onto its string value. I&#39;ll collect the string values then join them:
+
+<pre class="brush:plain">
+sub int-to-str-factory (
+		Str:D $digit-str = &#39;0123456789&#39;
+		--&gt; Callable:D ) {
+	my Int:D $base  = $digit-str.chars;
+	my Str:D @table = $digit-str.comb;
+
+	sub ( Int:D $i is copy where * &gt;= 0 --&gt; Str:D ) {
+		my Str:D @temp = ();
+
+		return @table.[0] if $i == 0;
+
+		while $i &gt; 0 {
+			my Int:D $digit = $i % $base;
+			$i div= $base;
+			@temp.unshift: @table.[ $digit ];
+			}
+
+		@temp.join: &#39;&#39;;
+		}
+	}
+</pre>
+
+This doesn&#39;t convert numbers to strings. It creates code that converts numbers to strings and returns that anonymous subroutine. That&#39;s what a factory does. I&#39;ve also limited this to zero and positive integers but handling sign is not a big deal if I need it.
+
+The <code>div</code> operator for integer division is quite a handy complement to the <code>%</code> modulus to get the remainder. I thought briefly about defining my own operator to return the remainder and reduce the starting number in one step, but maybe I&#39;ll come back to that in some other post.
+
+If I were doing this in C++ I&#39;d care about that because the bits in physical storage probably care about them. The original posts were using binary-coded decimal that used four bits per digit. Add the same nybble to each of those and you get the ASCII character for that digit. Clever. Since Perl 6 doesn&#39;t let me look at the physical representation I can skip that part of the problem (although I could connect to external libraries). That also means that I don&#39;t have to allocate any memory for my final string. I don&#39;t get to make those choices although the C++ program thinks hard about that.
+
+Now I can create something to turn numbers into decimal strings:
+
+<pre class="brush:plain">
+my $decimal-stringifier = int-to-str-factory();
+put $decimal-stringifier.( 0xDEADBEEF );
+</pre>
+
+Remember that my use of a literal hexadecimal number there is a red herring. The parser converts that into an internal integer and doesn&#39;t care how it started. I&#39;m converting internal numbers to strings.
+
+So let&#39;s make some fancy strings. I&#39;ll make a hash with labels for the representation as keys and their code as the value (<a href="//gist.github.com/briandfoy/b648b4c88580d18ecc789b3e3e966c61">it&#39;s all in a gist</a>), but that might diverge from the code in this article):
+
+<pre class="brush:plain">
+#`(
+Create a bunch of anonymous subroutines to create different representations of an integer. The label is the key of the 
+hash and the sub is the value.
+)
+my %representations = map { $_.[0] =&gt; int-to-str-factory( $_.[1] ) }, (
+	( &#39;Decimal&#39;,&#39;0123456789&#39; ),
+	( &#39;Binary&#39;, &#39;👎👍&#39; ),
+	( &#39;Base3&#39;, &#39;012&#39; ),
+	( &#39;Octal&#39;, &#39;01234567&#39; ),
+	( &#39;Hex&#39;, &#39;0123456789abcdef&#39; ),
+	( &#39;Base36&#39;, &#39;0123456789abcdefghijklmnopqrstuvwxyz&#39; ),
+	( &#39;Braille&#39;, &#39;⠁⠃⠉⠙⠑⠋⠛⠓⠊⠚&#39; ),
+	( &#39;Arabic&#39;, @(
+		&#39;ARABIC-INDIC DIGIT ZERO&#39;.parse-names
+				..
+		&#39;ARABIC-INDIC DIGIT NINE&#39;.parse-names
+		).join: &#39;&#39; ),
+	);
+
+
+sub MAIN ( Int:D $n = 100_000_000.rand.Int ) {
+	put &quot;number is $n&quot;;
+
+	for %representations.kv -&gt; $label, $sub {
+		put &quot;$label: &quot;, $sub.( $n );
+		}
+	}
+</pre>
+
+Here&#39;s a run of that:
+
+<pre class="brush:plain">
+$ perl6 int-to-str.pl 137
+number is 137
+Base36: 3t
+Binary: 👍👎👎👎👍👎👎👍
+Base3: 1202
+Decimal: 137
+Octal: 211
+Arabic: ١٣٧
+Braille: ⠃⠙⠓
+Hex: 89
+</pre>
+
+As I mentioned earlier I don&#39;t get to think as hard in Perl 6 as C++. I&#39;m much farther away from the iron so choosing registers wisely and other things that hardware cares about. Andrei Alexandrescu writes about this in <a href="//www.facebook.com/notes/facebook-engineering/three-optimization-tips-for-c/10151361643253920">Three Optimization Tips for C++</a> where he solves the same problem.
+
+Part of these C++ solutions involve decomposing the number into larger chunks (powers of the base) and translating chunks with a longer lookup table. In C++ they wanted to minimize division operations, which probably makes less sense in a much higher level language like Perl 6. Instead of decomposing 8936 into 8, 9, 3, 6 I can decompose it into 89 and 36 and translate those numbers directly without more math. There&#39;s a trick; if I break up the number 1307 into 13 and 07, I can&#39;t translate 07 to 7. That zero needs to stay there.
+
+<pre class="brush:plain">
+sub int-to-str-factory (
+		Str:D $digit-str = &#39;0123456789&#39;
+		--&gt; Callable:D ) {
+	my Int:D $base   = $digit-str.chars;
+	my Int:D $base2  = $base ** 2;
+
+	# expand lookup to all one digit strings. These don&#39;t
+	# have leading zeros
+	my Str:D @digits = $digit-str.comb;
+
+	# expand lookup to all two digit strings
+	# leading zeros matter!
+	my Str:D @digits2 = @digits X~ @digits;
+
+	sub ( Int:D $i is copy where * &gt;= 0 --&gt; Str:D ) {
+		my Str:D @temp = ();
+
+		return @digits.[0] if $i == 0;
+
+		while $i &gt; 0 {
+			if $i &gt;= $base2 {
+				my Int:D $digit = $i % $base2;
+				@temp.unshift: @digits2.[ $digit ];
+				$i div= $base2
+				}
+			else {
+				my Int:D $digit = $i % $base;
+				@temp.unshift: @digits.[ $digit ];
+				$i div= $base
+				}
+			}
+
+		return @temp.join: &#39;&#39;;
+		}
+	}
+</pre>
+
+How big that lookup table is depends on many things including the typical size of your numbers. A smaller table requires you to do more divisions but a larger table might involve more searching. I used an array but I could have used a hash. No optimization is probably best for any situation. You have to know something about your numbers. If you always have numbers that take up all 256 bits (a SHA perhaps) you have a different optimization than numbers mostly under 100.
+
+But now here&#39;s another thing I can do. I can break up a really big number into much larger chunks and provide those smaller numbers as a sequence. I then format those separately (perhaps in parallel) by calling <code>.hyper</code> on that sequence. The <code>.hyper</code> allows parallelism (where available) and keeps everything in order (unlike <code>.race</code> which doesn&#39;t). I reässemble the chunks at the end.
+
+The <code>big-chunks-sequence</code> sequences makes the smaller numbers and I&#39;ve moved the factories into a module to get them out of the way (<a href="//gist.github.com/briandfoy/bc5b47efb30af6d84135a91bd5c44b2e">gist</a>).
+
+<pre class="brush:plain">
+use lib <.>;
+use IntToStrFactories;
+
+# some commit id
+my $int = :16&gt;a86288ce3bb62879a0c7169ee4ea89ba77577be7&gt;;
+say $int;
+say $int.fmt: &#39;%x&#39;;
+
+my $chunk_size = 10 ** 8;
+
+my $digits    = &#39;0123456789abcdef&#39;;
+my $formatter = int-to-str-factory-v2( $digits );
+my $sequence := big-chunks-sequence( $int, 8, $digits.chars );
+
+sub big-chunks-sequence (
+	Int:D $i is copy,
+	Int:D $order = 4,
+	Int:D $base = 10 ) {
+	state $divisor = $base**$order;
+	gather {
+		take 0 if $i == 0;
+
+		while $i &gt; 0 {
+			take $i % $divisor;
+			$i div= $divisor;
+			}
+		}
+	}
+
+$sequence.hyper.map( { $formatter.( $_ ) } ).reverse.join( &#39;|&#39; ).say;
+</.></pre>
+
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2018/01/09/converting-numbers-to-strings-the-hard-way/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2018/01/10/quick-trick-catching-a-perl-6-warning/">Quick Trick: Catching a Perl 6 warning</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 10, 2018</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+While testing <a href="https://github.com/briandfoy/perl6-file-find">a module</a> I wanted to check that a deprecation warning shows up. <a href="https://docs.perl6.org/routine/warn">Warnings are a special sort of exception</a> that you can catch in a <code>CONTROL</code> block. <!--more-->
+
+<div class="image center">
+<div>
+<a data-flickr-embed="true" href="https://www.flickr.com/photos/melystu/37292580974/in/photolist-YPqe53-nUC4oD-evv5mJ-Htsmd-H6opx-pyKgLb-aA77Ex-7FGuyD-5a1w8K-NZQ4C-RovuiA-6Pf16K-BDnfpU-qiwpvR-4WCtFb-dJ5pDe-b1Ejyk-TCH4WL-7mupFc-2T7pK-aNbbmk-vZbnP-9xsTYB-4SpkrJ-AWPMt-sAAcT-rdRWP5-a2p3MT-ouoRCq-qkS83i-6mZr18-aXtfkT-Two3N9-a2p41c-jJzAYb-71pDf-HFx1uf-Krr1E-cisdqw-9fH8E1-jWWBuX-8HrBUk-oGUeeR-SYSxjh-VV8NrT-8hGBuL-6qxFCb-eys5Ps-neD4M6-YBaPJK" title="Warning!"><img alt="Warning!" height="347" src="https://farm5.staticflickr.com/4483/37292580974_e11f1d4b14.jpg" width="500"></a>
+</div>
+</div>
+
+In my test file I add a <a href="https://docs.perl6.org/language/phasers#CONTROL">CONTROL phaser</a>. This catches the action of block exiting things including <code>return</code>, <code>fail</code>, <code>redo</code>, <code>next</code>, <code>last</code>, <code>take</code>, and in this case, <code>warn</code>:
+
+<pre class="brush:plain">
+{ # with forced find to Not work recursive
+CONTROL {
+	my $label = &#39;:recursive warns about deprecation&#39;;
+	when CX::Warn { like $_.message, /deprecated/, $label; }
+	default       { fail( $label ); }
+	}
+my $res = find(:dir&lt;t/dir1&gt;, :name&lt;file.bar&gt;, recursive =&gt; False);
+is $res.elems, 1, &#39;name with a string&#39;;
+}
+</pre>
+
+You won&#39;t catch these in a normal <code>CATCH</code> block:
+
+<pre class="brush:plain">
+sub foow { warn &quot;This is a warning&quot; }
+sub food { die  &quot;This is a death&quot; }
+
+{
+CONTROL {
+	when CX::Warn { put &quot;Caught warning in CONTROL&quot; }
+	}
+foow();
+}
+
+
+try {
+CATCH {
+	when CX::Warn  { put &quot;Caught warning in CATCH&quot; }
+	when  X::AdHoc { put &quot;Caught death in CATCH&quot; }
+	default { put &quot;Caught {$_.^name} with {$_.message}&quot; }
+	}
+foow();
+food();
+}
+</pre>
+
+The output shows that the <code>CONTROL</code> caught the warning from the first call but the <code>CATCH</code> let it pass through in the second:
+
+<pre class="brush:plain">
+Caught warning in CONTROL
+Caught death in CATCH
+This is a warning
+  in sub foow at /Users/brian/Desktop/test.p6 line 5
+</pre>
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2018/01/10/quick-trick-catching-a-perl-6-warning/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2018/01/11/turning-strings-into-fake-positionals/">Turning strings into fake positionals</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 11, 2018</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+While playing with some strings I realized that I really wanted strings to do the <a href="https://docs.perl6.org/type/Positional">Positional</a> role. When I&#39;m inspecting or modifying strings I&#39;m often doing things based on positions so the <code>Positional</code> interface seems interesting. Just for fun I can adapt the <code>[ ]</code> to be the interface to <code>substr</code>: <!--more-->
+
+<pre class="brush:plain">
+multi postcircumfix:<[ ]> ( Str:D $s, Int:D $n --&gt; Str ) {
+	$s.substr: $n, 1
+	}
+multi postcircumfix:<[ ]> ( Str:D $s, Range:D $r --&gt; Str ) {
+	$s.substr: $r.min, $r.max - $r.min + 1
+	}
+multi postcircumfix:<[ ]> ( Str:D $s, List:D $i --&gt; List ) {
+	map( { $s.substr: $_, 1 }, @$i ).List
+	}
+
+my $string = &#39;The quick, purple butterfly&#39;;
+
+{ # Works
+my $single = $string[0];
+say $single;
+}
+
+{ # Works
+my $substring = $string[5..9];
+say $substring;
+}
+
+{ # Works
+my $substring = $string[1,3,5,7];
+say $substring;
+}
+</[></[></[></pre>
+
+This outputs:
+
+<pre class="brush:plain">
+T
+uick,
+(h   u c)
+</pre>
+
+I don&#39;t want to make a habit of this though even if it is interesting.
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2018/01/11/turning-strings-into-fake-positionals/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2018/01/16/de-duping-itunes/">De-duping iTunes</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 16, 2018</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Every so often I notice that my iTunes library has a lot of duplicate items and I need to get rid of things. It&#39;s mostly a task for finding an audio file that has the same name as another audio file but with a space and digit added right before the extension. <i>Song.mp3</i> and <i>Song 1.mp3</i> are examples of this problem. They&#39;ll be in the same directory; duplicates in different directories are a different matter and I&#39;ve done that too by comparing file digests. That&#39;s not this problem.
+
+Here&#39;s what I did. It&#39;s not pretty because I didn&#39;t care to make it so. It&#39;s not exciting because I wasn&#39;t researching anything or exploring an idea. It&#39;s just getting rid of files. I solved the problem and moved on. 
+
+I develop these little tools incrementally. Can I get all the files? Can I find the files that have the name without the space and digit. I program a step and check the result. Then I add the next step. The process drives the procedural structure. 
+
+And during this process I forked then completely rewrote a <a href="https://github.com/briandfoy/perl6-file-find">File::Find</a> module. You don&#39;t need my version for this though. The one <code>zef install File::Find</code> gives you should be fine.
+
+A few quick notes:
+
+<ul>
+<li>I really like the <code>#`( ... )</code> comments
+</li><li>An array interpolated into a pattern is an alternation of the elements
+</li><li><code>.IO</code> objects know how to make or tear apart paths.
+</li></ul>
+
+<pre class="brush:plain">
+#!/Applications/Rakudo/bin/perl6
+
+use File::Find:auth&lt;bdfoy&gt;; # https://github.com/briandfoy/perl6-file-find
+
+#`( iTunes loves screwing up files. I get a file imported multiple
+times instead of realizing it&#39;s already in there.
+
+	some song.mp3
+	some song 1.mp3
+
+Let&#39;s find these pairs where the names differ by the addition of
+a space and a single digit (although I&#39;ve had problems like this with
+as high as 4.
+)
+my $dir = &#39;/Users/brian/Dropbox/iTunes/Music&#39;;
+my $target = &#39;/Users/brian/BackupMusic&#39;;
+
+#`(
+I actually used this module to count extensions and these are the
+one I want to focus on. An array in a regex is an alternation.
+)
+my @extensions = &lt;mp3 m4a=&quot;&quot; m4p=&quot;&quot;&gt;;
+my $sequence := find(
+	dir  =&gt; $dir,
+	name =&gt; / \h &#39;1&#39; &#39;.&#39; @extensions $ /,
+	);
+
+my $count = 0;
+my $dry-run = True; # try it before we move any files
+for $sequence -&gt; $file {
+
+	#`(
+	other = the file of the same name without a numbered copy
+	if that file doesn&#39;t exist we don&#39;t have a problem
+	)
+	my $other = $file.subst:
+		/ \h &#39;1&#39; &#39;.&#39; (@extensions) $ /,
+		&quot;.$0&quot;;
+	my $exists = $other.IO.e;
+	next unless $exists;
+	$count++;
+
+	put &#39;-&#39; x 50;
+	put &quot;file: $file&quot;;
+	put &quot;other: $other ($exists)&quot;;
+
+	#`(
+	We need the part after the starting directory because we&#39;ll add
+	that to the new target directory. We might have to make a subdir
+	tree
+	)
+	my $rel = $file.IO.relative: $dir;
+
+	my $new = $rel.IO.absolute: $target;
+	my $new-dir = $new.IO.parent.IO;
+	$new-dir.mkdir unless $new-dir.e;
+	$other.IO.rename( $new ) unless $dry-run;
+	}
+
+say &quot;Found $count files&quot;;
+</pre>
+
+Here&#39;s the program I used to survey the file extensions I used to populate <code>@extensions</code>:
+
+<pre class="brush:plain">
+use File::Find:auth&lt;BDFOY&gt;; # https://github.com/briandfoy/perl6-file-find
+use PrettyDump; 
+
+my $list := find( dir =&gt; $*HOME.child( &#39;Dropbox/iTunes/Music&#39; ) );
+
+my %extensions;
+for $list -&gt; $item {
+	next if $item.d;
+	%extensions{ $item.extension }++
+	}
+
+pd %extensions;
+</pre>
+
+And here&#39;s what I had done the last time I had this problem. It&#39;s Perl 5 interpreting the results of an external <code>find</code>. I think last time I ended up throwing an <code>unlink</code> in there at some point:
+
+<pre class="brush:plain">
+use v5.14;
+open my $fh, &#39;find . -name &quot;* [1234].m[p4][ap3]&quot; |&#39;;
+
+while( <$fh> ) {
+	chomp;
+	my $other = s/\s+(\d+)(?=\.[^.]+\z)//r;
+	next unless -e $other;
+	print &quot;$_\n\t$other\n&quot;;
+	}
+
+close $fh or die &quot;Error in Find!&quot;
+</$fh></pre>
+
+I&#39;ll probably lose my Perl 6 program, forget I wrote this, and recreate this in nine months. I might even post about it again.
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2018/01/16/de-duping-itunes/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2018/01/17/test-a-module-version/">Test a module version</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 17, 2018</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+The <i>META6.json</i> file has metadata for a Perl 6 module. But I like to also put things in the module file. I&#39;d rather have some of that stuff with the code in case the metadata file goes missing as it might if you throw a <i>.pm</i> file in a directory rather than installing with <code>zef</code>. That means I forget to update one of them (it&#39;s usually the <i>META6.json</i>). <!--more-->
+
+I created a test file to check that the versions in <i>META6.json</i>. I&#39;d been meaning to do this since I <a href="https://stackoverflow.com/q/44883887/2766176">asked about it on Stackoverflow</a> a long time ago:
+
+<pre class="brush:plain">
+use v6;
+
+use Test;
+use META6;
+
+use File::Find;
+constant package-name = &#39;File::Find&#39;;
+
+my $module-version = File::Find.^ver;
+ok $module-version.defined, &#39;Module specifies a version&#39;;
+diag &quot;Module version is $module-version&quot;;
+
+my $meta-file = &#39;META6.json&#39;;
+my $meta = META6.new: file =&gt; $meta-file;
+
+my $meta-version = $meta.version;
+ok $meta-version.defined, &#39;META6 specifies a version&#39;;
+diag &quot;META6 version is $meta-version&quot;;
+
+is $meta-version, $module-version, &#39;META6 version matches module version&#39;;
+
+done-testing();
+</pre>
+
+The obvious next step is to make a program to update <i>META6.json</i> for me but so far this way is a lot less work. I have no plans to make this a module but someone else can if they like. If you do, gfldex&#39;s <a href="https://gfldex.wordpress.com/2016/10/25/you-have-to-take-what-you-an-get/">You have to take what you can get</a> might be helpful.
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2018/01/17/test-a-module-version/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2018/01/18/525/">Custom operators for Knuth's Arrow</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 18, 2018</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+[mathjax]
+
+The <a href="https://en.wikipedia.org/wiki/Knuth%27s_up-arrow_notation">Wikipedia page for Knuth&#39;s up arrow notation</a> makes some claims about superscripts:
+
+<blockquote>
+But many environments — such as programming languages and plain-text e-mail — do not support superscript typesetting.
+</blockquote>
+
+<!--more-->
+
+I&#39;ll ignore the claim that plain text (<a href="https://en.wikipedia.org/wiki/Plain_text">their parochial definition</a>) is the same thing as 7-bit text ASCII.
+
+The first claim, however, isn&#39;t strictly true for Perl 6 and probably many other more esoteric languages (let me know if you know which ones you know about). It got me thinking about what I could do in Perl 6.
+
+Perl 6 uses superscripts as operators defined in the core language. I found this out between the time they were implemented and later documented when <a href="https://stackoverflow.com/q/34689850/2766176">I tried to use them in variable names</a>. Now I can write some exponentiations with superscripts:
+
+<pre class="brush:plain">
+my $square = $n²;  # valid Perl 6, same as $n ** 2
+</pre>
+
+I can&#39;t superscript superscripts or superscript superscripts of superscripts though and that&#39;s what most of that claim is about. Adding a character that is already a superscript isn&#39;t the point. We typically don&#39;t type something like these <a href="http://mathworld.wolfram.com/PowerTower.html">power towers</a> directly without some sort of being-the-scenes formatting instructions (so, not plain text). I do this with \(\LaTeX\):
+
+$$x^{2^{2^2}}$$
+
+$$a^{b^{b^b}}$$
+
+$$a^{some^{other^{terms}}}$$
+
+But Perl 6 also provides builtin features that it fully expects people to use to extend the language. I can create these operators myself. (Note that in mathematics, the up arrow is an example of a hyperoperator but that has a completely different meaning from the Perl 6 <a href="https://docs.perl6.org/language/operators#Hyper_Operators">hyperoperators</a> that apply an operation to corresponding elements of two lists.)
+
+I can create an up-arrow operator, <code>↑</code>. Had I googled first I would have found that it&#39;s already been done in <a href="https://github.com/ajs/perl6-Math-Arrow/blob/master/lib/Math/Arrow.pm">Math::Arrow</a>.
+
+A single up arrow is the same as exponentiation but without a superscript. The operand on the left is raised to the power on the right. It&#39;s in the progression of <code>+</code> for addition, <code>*</code> for multiplication, and then <code>↑</code> for exponentation. This is the basis for higher orders later.
+
+It&#39;s a binary infix operator (takes two operands and goes in the middle) so I add my symbols in the angle brackets after the <code>infix:</code>. I specify that it&#39;s right associative (as is exponentiation) and that it has the same precedence as exponentiation:
+
+<pre class="brush:plain">
+sub infix:&lt;↑&gt; ( Int:D \n, Int:D \m  --&gt; Int:D )
+	is equiv(&amp;infix:&lt;**&gt;)
+	is assoc&lt;right&gt;
+	{ n ** m }
+
+put 2 ↑  3;  # 2  * 2  * 2 =  8
+</pre>
+
+That&#39;s only the starting point. With this notation I can define higher orders of repetition. The double up arrow, <code>↑↑</code>, is repeated exponentiation just like multiplication is repeated addition. The number on the right is one more than the number of exponentiations in the power tower (the other one is the base):
+
+$$2↑↑4 = 2^{2^{2^2}}$$
+
+I make a couple of subroutine definitions here to handle the special cases where the second operand is <code>0</code> or <code>1</code> since the reduction operator won&#39;t deal with those cases. Since these subroutines have the same name I use <code>multi</code> to define the candidates. The dispatcher figures out which one fits best and use that:
+
+<pre class="brush:plain">
+proto infix:&lt;↑↑&gt; ( Int:D \n, Int:D \m  --&gt; Int:D )
+	is tighter(&amp;infix:&lt;↑&gt;)
+	is assoc&lt;right&gt;
+	{ * }
+multi infix:&lt;↑↑&gt; ( \n, 0  ) { 1 }
+multi infix:&lt;↑↑&gt; ( \n, 0  ) { \n }
+multi infix:&lt;↑↑&gt; ( \n, \m ) { [↑] n xx m }
+
+put 2 ↑  3;  # 2  * 2  * 2 =  8
+put 2 ↑↑ 3;  # 2 ** 2 ** 2 = 16
+</pre>
+
+The <code>proto</code> defines the basic template for all candidates with the same name. That&#39;s where I can constrain the types of values and set the associativity and precedence. It&#39;s the gatekeeper; once I annotate the types and set the traits I don&#39;t need to annotate them in the candidates (and in some cases can&#39;t re-define them).
+
+I make the double arrow version tighter than the single arrow one I just defined. The <code>*</code> in the <code>proto</code> block dispatches to the best candidate of the same name. The two <code>multis</code> can then assume everything that needs to be checked was already handled.
+
+Now I can extend that to the triple up arrow <code>↑↑↑</code>. It&#39;s the same thing with an additional up arrow:
+
+<pre class="brush:plain">
+proto infix:&lt;↑↑↑&gt; ( Int:D \n, Int:D \m  --&gt; Int:D )
+	is assoc&lt;right&gt;
+	is tighter(&amp;infix:&lt;↑↑&gt;)  { * }
+multi infix:&lt;↑↑↑&gt; ( \n,  0 ) { 1 }
+multi infix:&lt;↑↑↑&gt; ( \n, \m ) { [↑↑] n xx m }
+
+put 2 ↑   3;  # 2  *  2  * 2  =  8
+put 2 ↑↑  3;  # 2 ↑   2 ↑  2  = 16
+put 2 ↑↑↑ 3;  # 2 ↑↑ (2 ↑↑ 2) = 256
+</pre>
+
+But there&#39;s an alternate notation that goes back further than Knuth&#39;s up arrow. I can define prefix superscripts that denote particular up arrow versions. These use superscripts:
+
+<pre class="brush:plain">
+multi prefix:&lt;⁰&gt;  ( Int:D $m ) { 1 }
+multi prefix:&lt;²&gt;  ( Int:D $m ) { $m ↑↑ 2 }
+multi prefix:&lt;³&gt;  ( Int:D $m ) { $m ↑↑ 3 }
+multi prefix:&lt;³&gt;  ( Int:D $m ) { $m ↑↑ 4 }
+
+put ²2;
+put ⁴2;
+put ²3;
+put ³3;
+</pre>
+
+There&#39;s yet another notation that doesn&#39;t use repeated arrows. It uses a superscript on the arrow to specify how many arrows there are:
+
+<pre class="brush:plain">
+multi infix:&lt;↑²&gt; ( Int:D \n, 0        --&gt; Int:D )
+	is equiv(&amp;infix:&lt;↑↑&gt;)
+	is assoc&lt;right&gt; { 1 }
+multi infix:&lt;↑²&gt; ( Int:D \n, 1        --&gt; Int:D )
+	is equiv(&amp;infix:&lt;↑↑&gt;)
+	is assoc&lt;right&gt; { n }
+multi infix:&lt;↑²&gt; ( Int:D \n, Int:D \m --&gt; Int:D )
+	is equiv(&amp;infix:&lt;↑↑&gt;)
+	is assoc&lt;right&gt; { [↑] n xx m }
+</pre>
+
+You get the idea. I&#39;ve made a much longer <a href="https://gist.github.com/briandfoy/b85de0526e3a747c15376a3d33629f28">demonstration program</a> that&#39;s in a gist.
+
+<h2>Some things that came out of exercise</h2>
+
+<ul>
+<li><a href="https://stackoverflow.com/q/48219788/2766176">Why is Perl 6&#39;s right associativity not right?</a>
+</li><li><a href="https://rt.perl.org/Ticket/Display.html?id=132713">#132713: Order of `is assoc` and precedence traits</a>
+</li><li><a href="https://rt.perl.org/Ticket/Display.html?id=132711">#132711: [LTA] Stupidly using `is assoc` with unary prefix operator has an error message from the deep</a>
+</li><li><a href="https://rt.perl.org/Ticket/Display.html?id=132710">#132710: [LTA] Warning message for duplicated tighter trait</a>
+</li></ul>
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2018/01/18/525/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2018/01/18/hints-for-perl-6-on-windows/">Hints for Perl 6 on Windows</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">January 18, 2018</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+<style>
+img.post { border: 1px solid #000 }
+img.left { float: left; margin-right: 15px }
+img.right { float: right; margin-left: 15px }
+p.caption { font-style: italic }
+
+div.center div {
+        align: center;
+        display: block;
+	margin-top: 1em;
+	margin-bottom: 1em;
+        }
+
+div.image p {
+        font-style: italic;
+        text-align: center;
+        }
+
+div.image img {
+        border: 1px solid #000;
+        display:block;
+        margin: auto;
+        }
+
+div.right div {
+        float: right;
+        margin-left: 15px;
+        }
+
+div.left div {
+        float: left;
+        margin-right: 15px;
+        }
+</style>
+
+I&#39;m not going to waste too much time in the book explaining any particular operating system. I want to save space and I know I&#39;ll probably want to keep updating those bits anyway. Here are some hints for Windows. While writing the book I test stuff with Windows 10 and a particular workflow that I liked well enough. You might like something different (and if you do you probably don&#39;t need these instructions). <!--more-->
+
+And I need these instructions because I&#39;m not a regular Windows user. I&#39;ve also written about this setup in <a href="https://www.windowsperl.com/2018/01/18/my_windows_environment/">my Windows Perl site</a> so I won&#39;t repeat most of it here. If you have a different setup that works for you let me know about it.
+
+
+<h2>The Chocolatey package manager</h2>
+
+I use the <a href="https://chocolatey.org">Chocolatey</a> package manager to get most of what I need; that includes <a href="https://chocolatey.org/packages/rakudostar">Rakudo Star</a>, and <a href="https://conemu.github.io">ConEmu</a> Follow its installation instructions to install that from a PowerShell administrator window:
+
+<pre class="brush:plain">
+PS C:\WINDOWS\system32&gt; choco install rakudostar
+PS C:\WINDOWS\system32&gt; choco install ConEmu
+PS C:\WINDOWS\system32&gt; choco install notepadplusplus
+PS C:\WINDOWS\system32&gt; choco install git
+PS C:\WINDOWS\system32&gt; refreshenv
+</pre>
+
+<h2>Check your programs</h2>
+
+After you install Rakudo and refresh the environment try a simple invocation from the command line. You can check the version. You should get something like this:
+
+<pre class="brush:plain">
+C:\Users\hamadryas&gt; perl6 -v
+This is Rakudo Star version 2017.10 built on MoarVM version 2017.10
+implementing Perl 6.c.
+</pre>
+
+<h2>Edit a file</h2>
+
+Somehow create and edit a file. If you installed NotePad++ you can run it from the command line:
+
+<pre class="brush:plain">
+C:\Users\hamadryas&gt; notepad++ hello-perl6.p6
+</pre>
+
+Put in this text:
+
+<pre class="brush:plain">
+#!perl6
+put &#39;Hello Perl 6&#39;;
+</pre>
+
+<div class="image center">
+<div>
+<img src="/images/windows-setup/notepad-hello.png" style="border: 1px solid">
+</div>
+</div>
+
+<h2>Run a file</h2>
+
+<pre class="brush:plain">
+C:\Users\hamadryas&gt; perl6 hello-perl6.p6
+</pre>
+
+There are some Unicode test programs in the <a href="https://github.com/briandfoy/LearningPerl6_Downloads">Learning Perl 6 Downloads</a> repo.
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2018/01/18/hints-for-perl-6-on-windows/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+
+Unterminated <> operator at template line 11.
+Context:
+  6: <%
+  7: 	my $items = get_var('items');
+  8: 
+  9: 	foreach my $item ( $items->@* ) {
+  10: 		my $date = Time::Moment
+  11: 			->from_string( $item->{date} . '-0400', lenient => 1 )
+  12: 			->strftime( '%B %d, %Y' );
+  13: %>
+  14:     <!-- ----------------------------------------------------------- -->
+  15: 	<div class="post">
+  16: 		<h2 class="post_title excerpt_page"><a href="<%= $item->{web_path} =%>"><%= $item->{title} =%></a></h2>
+Traceback (most recent call first):
+  File "template", line 11, in "Mojo::Template::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 148, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::render"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox::include"
+  File "_templates/month_list", line 34, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 173, in "Mojo::Template::render"
+  File "bin/cook", line 258, in "Mojo::Template::render_file"
+  File "bin/cook", line 44, in "main::make_year_month_pages"
+Context:
+  6: my $bin  = get_var('bin');
+  7: %>
+  8: 
+  9: 
+  10: foreach my $n ( 1 .. $bins ) {
+  11: %><a class="pag_link<%= $n == $bin ? ' pag_current'  : '' =%>" href="index<%= $n == 1 ? '' : "_$n" =%>.html"><%= $n =%></a>
+  12: <% } %>
+  13: </div>
+  14: <!-- end paginate -->
+Traceback (most recent call first):
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::render"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox::include"
+  File "_templates/month_list", line 34, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 173, in "Mojo::Template::render"
+  File "bin/cook", line 258, in "Mojo::Template::render_file"
+  File "bin/cook", line 44, in "main::make_year_month_pages"
+
+</div>
+<!-- end excerpt_list -->
+
+</html>
+

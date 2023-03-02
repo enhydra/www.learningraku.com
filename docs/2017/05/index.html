@@ -1,0 +1,211 @@
+<html>
+
+<head>
+	<base href="https://test.learningraku.com/">
+	<title>May 2017 - Learning Raku (formerly Perl 6)</title>
+	<link rel="stylesheet" href="/style.css">
+	<meta name="generator" content="brian's site generator" />
+	<meta charset="UTF-8" />
+</head>
+
+<!-- start excerpt_list -->
+<div id="content">
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2017/05/01/rakudo-in-chocolatey-makes-appveyor-easier/">Rakudo in Chocolatey makes AppVeyor easier</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">May 01, 2017</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+Rakudo is now easier to install on Windows. <a href="https://chocolatey.org/packages/rakudostar">Rakudo Star is now in Chocolatey</a> (with 2017.04 awaiting moderation as I write this). This makes it much easier to automatically deploy Rakudo Star in Windows environments.
+
+<div class="image center">
+<div>
+<img height="216" src="/images/chocolatey.png" width="500">
+</div>
+</div>
+
+<!--more-->
+
+Earlier this month I spent too much time getting <a href="/2017/04/02/rakudo-star-on-appveyor/">Rakudo to install on AppVeyor</a>, and, having spent too much time on that, I spent a bunch more getting co-maintainer permissions on the chocolatey package. I updated the original package created by Jake Russo back in 2015, including all the new chocolatey requirements. I have all of that in GitHub as <a href="https://github.com/briandfoy/rakudo-star-chocolatey">rakudo-star-chocolatey</a>. After the semi-manual approval process, I have a fresh Rakudo available. Two days later 2017.04 came out. I&#39;ve updated the package again and it&#39;s in moderation (should clear in a couple days).
+
+Using a package manager that other services already support makes it a cinch to deploy Rakudo there. For example, Windows 10 has <a href="https://github.com/OneGet/oneget/blob/master/readme.md">OneGet</a>, a manager of package managers. You can install several package manager and ask OneGet to install something. Somehow it figures out who can provide it and does the magic:
+
+<div class="image center">
+<div>
+<img height="369" src="/images/oneget-powershell.png" style="border:1" width="500">
+</div>
+</div>
+
+That looks complicated, but it&#39;s really two commands with some confirmations:
+
+<pre class="brush:plain">
+PS C:\&gt; Get-PackageProvider -name chocolatey
+
+PS C:\&gt; Install-Package rakudostar
+</pre>
+
+You probably have to answer a couple of questions in this process. The rakudostar package isn&#39;t trusted, but the chocolatey package has the SHA256 of the MSI from <a href="http://rakudo.org/">rakudo.org</a>. But, chocolatey also trusts me to use the right URL. I could put anything in there. I&#39;ll have to work on the trusted part some other time (unless you want to figure it out).
+
+Now my AppVeyor config in the <a href="https://github.com/briandfoy/perl6_appveyor_test"> perl6_appveyor_test</a> test project is now much simpler. The Rakudo installation is a couple of lines instead of the tricky PowerShell I had before:
+
+<pre class="plain">
+  - if not exist &quot;C:\Rakudo&quot; cinst rakudostar
+  - SET PATH=C:\rakudo\bin;C:\rakudo\share\perl6\site\bin;%PATH%
+  - ps: refreshenv
+  - perl6 -v
+</pre>
+ 
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2017/05/01/rakudo-in-chocolatey-makes-appveyor-easier/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+    <!-- ----------------------------------------------------------- -->
+	<div class="post">
+		<h2 class="post_title excerpt_page"><a href="/2017/05/21/dont-use-in-programming/">Don't use < in programming</a></h2>
+		<div class="byline">
+		<span class="author">brian</span> • <span class="date">May 21, 2017</span>
+</div>
+
+		<div class="excerpt">
+
+
+
+
+
+I don&#39;t actually mean that you shouldn&#39;t use <code>&lt;</code>, but I&#39;m playing off <a href="http://llewellynfalco.blogspot.hu/2016/02/dont-use-greater-than-sign-in.html">Don&#39;t use the greater than sign in programming</a>. That post from Lewellyn Falco reminded me of a trick for a conditional that checks if a number is inside or outside of a range. A C programmer pointed this out to me years and years ago. It&#39;s not an uncommon trick, but it&#39;s not one I think about much. And, in Perl 6, there&#39;s another way to do the same thing.
+
+<!--more-->
+
+To convey intent, he constructed his comparisons so both uses of the variable were either on the inside or on the outside. That way, the position of the variable in the comparisons showed where he intended its value to be. Here&#39;s that expressed in C:
+<pre class="brush:c">/* x between 5 and 10 */
+if( 5 &lt; x &amp;&amp; x &lt; 10 ) { ... }
+
+/* x not between 5 and 10 */
+if( x &lt;= 5 &amp;&amp; 10 &lt;= x ) { ... }
+</pre>
+The lowest value is left-most and the greatest value is right-most. Those might be literals or variables. For this to work, the comparators have to be the same. Flip one of them and it might never work because the combined conditions don&#39;t mean what they superficially appear to mean:
+<pre class="brush:c">if( 5 &lt; x &amp;&amp; 10 &lt; x ) { ... }  /* Just x &gt; 10 really */
+</pre>
+Even with this trick of placing the variable in the literal code, thi still annoys me because I have to specify the variable twice.
+
+Python 2 lets you do it with a <i>chained comparison</i>:
+<pre class="brush:python">#!/usr/bin/python
+
+x = 6
+
+if 5 &lt; x &lt; 10 :
+	print &quot;It&#39;s between 5 and 10&quot;
+else:
+	print &quot;It&#39;s outside the range&quot;
+</pre>
+Python didn&#39;t invent this feature. <a href="http://rigaux.org/language-study/concepts-history.html">Various resources that credit BCPL curiously link to a Perl 6 RFC</a>. Odd. I think they are all pulling from the same source. You can do it in Ruby if you <a href="https://gist.github.com/padde/2429814">redefine some operators</a>. CoffeeScript has it. Other languages have it.
+
+But, this is a blog about Perl 6, which can do this too. This is one of the more pleasing small changes that I really like:
+<pre class="brush:plain">my $x = 6;
+
+if 5 &lt; $x &lt; 10 {
+	put &quot;x is between 5 and 10&quot;;
+	}
+else {
+	put &quot;x is not in range&quot;;
+	}
+</pre>
+But, Perl 6 goes one better. If you want to test that something is within a range, test that it&#39;s in a <a href="https://docs.perl6.org/type/Range">Range</a>. To exclude the endpoints, you need the <code>^</code> characters around the <code>..</code>:
+<pre class="brush:plain">if $x ~~ 5^..^10 {
+	put &quot;x is between 5 and 10&quot;;
+	}
+else {
+	put &quot;x is not in range&quot;;
+	}
+</pre>
+This comparison really is the same thing. Instead of checking that <code>$x</code> is in the set <i>6,7,8,9</i> (as you might expect from turning the Range into a list) it tests that the value of <code>$x</code> as a <a href="https://docs.perl6.org/type/Real">Real</a> is between the endpoints. So, 5.5 and 9.999 are within that Range. That&#39;s the same behavior as the previous examples.
+
+Perl 6 doesn&#39;t stop there. You can make the chain as long as you like:
+<pre class="brush:plain">if 1 &lt; 2 &lt; 3 &lt; 4 &lt; 5 &lt; 6 &lt; 7 {
+	say &quot;That&#39;s a long chain!&quot;;
+	}
+</pre>
+But, you don&#39;t need the chain. The <a href="/2020/03/17/reducing-comparison-operators/">reduction operator works with the comparison operators too</a>:
+<pre class="brush:plain">if [&lt;] 1, 2, 3, 4, 5, 6, 7 {
+	say &quot;That&#39;s a not long chain!&quot;;
+	}
+</pre>
+
+
+
+		</div> <!-- excerpt -->
+
+		<span class="read_more"><a href="/2017/05/21/dont-use-in-programming/">Read more...</a></span>
+</div> <!-- post -->
+
+
+
+
+Unterminated <> operator at template line 11.
+Context:
+  6: <%
+  7: 	my $items = get_var('items');
+  8: 
+  9: 	foreach my $item ( $items->@* ) {
+  10: 		my $date = Time::Moment
+  11: 			->from_string( $item->{date} . '-0400', lenient => 1 )
+  12: 			->strftime( '%B %d, %Y' );
+  13: %>
+  14:     <!-- ----------------------------------------------------------- -->
+  15: 	<div class="post">
+  16: 		<h2 class="post_title excerpt_page"><a href="<%= $item->{web_path} =%>"><%= $item->{title} =%></a></h2>
+Traceback (most recent call first):
+  File "template", line 11, in "Mojo::Template::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 148, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::render"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox::include"
+  File "_templates/month_list", line 34, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 173, in "Mojo::Template::render"
+  File "bin/cook", line 258, in "Mojo::Template::render_file"
+  File "bin/cook", line 44, in "main::make_year_month_pages"
+Context:
+  6: my $bin  = get_var('bin');
+  7: %>
+  8: 
+  9: 
+  10: foreach my $n ( 1 .. $bins ) {
+  11: %><a class="pag_link<%= $n == $bin ? ' pag_current'  : '' =%>" href="index<%= $n == 1 ? '' : "_$n" =%>.html"><%= $n =%></a>
+  12: <% } %>
+  13: </div>
+  14: <!-- end paginate -->
+Traceback (most recent call first):
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 35, in "Mojo::Template::render"
+  File "/Users/brian/Desktop/migrate sites/www.learningraku.com/lib/Mojo/Template/Sandbox.pm", line 25, in "Mojo::Template::Sandbox::include"
+  File "_templates/month_list", line 34, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "Mojo::Template::Sandbox::__ANON__"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 160, in "(eval)"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 163, in "Mojo::Template::process"
+  File "/usr/local/perls/perl-5.36.0/lib/site_perl/5.36.0/Mojo/Template.pm", line 173, in "Mojo::Template::render"
+  File "bin/cook", line 258, in "Mojo::Template::render_file"
+  File "bin/cook", line 44, in "main::make_year_month_pages"
+
+</div>
+<!-- end excerpt_list -->
+
+</html>
+
